@@ -11,8 +11,8 @@ Open source with MIT License
  
 
   
-[說明文件🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/Readme_ZHTW)
+[說明文件🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/Readme_ZHTW.md)
 
-Help Document🔗
+[Help Document🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/README_EN.md)
 
 ヘルプ文書🔗  
