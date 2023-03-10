@@ -97,3 +97,5 @@
 *   **A:** Well, that's a disaster. There's nothing I can do for you. So never forget the catalog password.
 *   **Q:** Can you add a certain feature or change a certain usage?
 *   **A:** Unless the software has a very basic bug, this is probably it. If you want to add or change something, please do it yourself. This is open source.
+*   **Q:** What kind of Japanese are you writing? It's just a bunch of nonsense.
+*   **A:** Actually, with the help of various AI translation tools, it's not difficult to write normal and correct Japanese. The difficulty lies in matching the style of using kanji that is particularly favored in Evangelion. I have tried my best.
