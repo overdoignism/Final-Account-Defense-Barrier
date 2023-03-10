@@ -1,7 +1,7 @@
 ## **Declaration**
 
 1.  This program is licensed under MIT License. It is a free and open source software, so the author does not assume any direct or indirect responsibility, please evaluate it yourself and use it after you can accept it.
-2.  The fonts used in the UI graphic of this program are "Zen Antique" and "DSEG Font Family (v0.46)," both licensed under SIL Open Font License v1.1.
+2.  The fonts used in the UI graphic of this program are "Zen Antique" and "DSEG Font Family (v0.46)" , both licensed under SIL Open Font License v1.1.
 
 ## Who is this program suitable for?
 
@@ -20,17 +20,17 @@
 
 *   Put the program in a prepared folder.
 *   Open the program and you will see an interface for entering a password. Think of a secure and memorable password, enter it twice, and click "Confirm" to get started.
-*   The password you enter here will become the encrypted “key seed” and directly correspond to a unique “Catalog”, which can manage multiple accounts.
+*   The password you enter here will become the encrypted "key seed" and directly correspond to a unique "Catalog", which can manage multiple accounts.
 *   To open this directory in the future, simply enter this password. Just type it in once.
 *   Similarly, if you want to add different groups of catalogs, just enter different passwords.
 *   It is also possible to choose a file instead of a password (use Open file). The file name is not important, but the contents of the file cannot be changed at all.
 
 ### Basic Operations
 
-*   Once you get into it, there is a list on the left side. At the top is "New Account," click it to add an account.
+*   Once you get into it, there is a list on the left side. At the top is "New Account", click it to add an account.
 *   Then enter your account information into the right column. If you don’t understand the meaning, you can let the mouse stay on it, and there will be an explanation.
 *   You don't need to fill in all the fields except the title. When you are done, click "Save" to finish adding your account and it will appear in the list.
-*   If you want to reorder, you can use the “Move Up/Down” button, and if you want to delete, click “Delete”.
+*   If you want to reorder, you can use the "Move Up/Down" button, and if you want to delete, click "Delete".
 *   To switch to another catalog, use the "Logout" button. To exit, click the "Finish" button.
 
 ### Advanced Operations
@@ -39,13 +39,22 @@
 *   "View" button: Allows you to view hidden information to prevent anyone from peeking.
 *   "Copy" button: Copies the selected information to the clipboard.
 *   "Transfer" button: You can transfer this account data to another catalog.
-*   You can set the name of the catalog in "Catalog Setting and Management."
+*   You can set the name of the catalog in "Catalog Setting and Management".
 
 ### More Advanced Operations
 
-*   You can set features like "Auto Hotkey," "Automatic Logout When Idle," and "Transfer or Delete All Catalogs" in "Catalog Setting and Management."
+*   You can set features like "Auto Hotkey", "Automatic Logout When Idle", and "Transfer or Delete All Catalogs" in "Catalog Setting and Management".
 *   If you rename the language file to Lang\_MOD.TXT, the interface will display in the corresponding language (Text message only; Graphic part will not change).
-*   You can use the shortcut parameter “NONOTICE” to hide the NOTICE at the bottom of the window. (Please read it once before hiding.)
+*   You can use the shortcut parameter "NONOTICE" to hide the NOTICE at the bottom of the window. (Please read it once before hiding.)
+
+### Backup operation
+
+*  Simply copy the main program along with the generated folders and files. You can choose to compress, save to a USB drive, or upload to the cloud.
+
+### Enhanced security operations
+
+*  On the the program stat, there is a "Secure Desktop" option. After selecting it and restart, the secure desktop function can be enabled. This function can also be set as a shortcut with the parameter "SECUREDESKTOP".
+*   If you select "RUN AS ADMIN" and then restart, you can raise the administrator privileges to make the program more secure.
 
 ## **About Security Technology**
 
