@@ -1,4 +1,4 @@
-## **Declaration**
+## **Claim**
 
 1.  This program is licensed under MIT License. It is a free and open source software, so the author does not assume any direct or indirect responsibility, please evaluate it yourself and use it after you can accept it.
 2.  The fonts used in the UI graphic of this program are "Zen Antique" and "DSEG Font Family (v0.46)" , both licensed under SIL Open Font License v1.1.
@@ -53,7 +53,7 @@
 
 ### Enhanced security operations
 
-*  On the the program stat, there is a "Secure Desktop" option. After selecting it and restart, the secure desktop function can be enabled. This function can also be set as a shortcut with the parameter "SECUREDESKTOP".
+*  On the the program start, there is a "Secure Desktop" option. After selecting it and restart, the secure desktop function can be enabled. This function can also be set as a shortcut with the parameter "SECUREDESKTOP".
 *   If you select "RUN AS ADMIN" and then restart, you can raise the administrator privileges to make the program more secure.
 
 ## **About Security Technology**
