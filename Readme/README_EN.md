@@ -89,7 +89,7 @@
 
 1.  IV Random values are not from data hashing, but are re-encrypted only after data modification.
 2.   Not guaranteed to work, especially on disks with special features such as compression enabled. In addition, the nature of SSDs also allows data to remain on the physical layer, and to be completely secure, full disk space rewriting (search for Wipe Free Space) is required.
-3.  This type of security measure is to defend against hackers or Trojan invasion. It works better with administrator privileges and will be more effective, **But it's just better than nothing. The most important thing is that the computer cannot be invaded.**
+3.  This type of security measure is to defend against hackers or Trojan invasion. It works better with administrator privileges. **But you should know that all this is just better than nothing and the most important thing is to ensure that your computer never be hacked.**
 4.  Users need to enable the "Security Policy" in Windows.
 
 ## **Q&A**
