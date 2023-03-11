@@ -1,5 +1,7 @@
 ## Final Account Defense Barrier 最終アカウント防御障壁 V0.9
 
+Last release: 0.9.2116.814A (2023/3/12)
+
 (繁中) 一個福音戰士風格的帳號密碼管理程式，基於Windows平台。  
 (English) An Evangelion style account management program, based on the Windows platform.  
 (日本語) Windowsプラットフォームに基づく、エヴァンゲリオン風のアカウント管理プログラム。  
