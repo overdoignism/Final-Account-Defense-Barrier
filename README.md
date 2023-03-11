@@ -18,3 +18,5 @@ Open source with MIT License
 [Help Document🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/README_EN.md)
 
 [ヘルプ文書🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/README_JP.md)
+
+![IMAGE](https://i.imgur.com/RkAzJ2u.jpg)
