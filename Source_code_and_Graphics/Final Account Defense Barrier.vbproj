@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B6FC5E91-467E-4978-92BF-563161119472}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Final_Account_Defense_Barrier.My.MyApplication</StartupObject>
+    <RootNamespace>Final_Account_Defense_Barrier</RootNamespace>
+    <AssemblyName>Final Account Defense Barrier</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Final Account Defense Barrier.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>true</Prefer32Bit>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Final Account Defense Barrier.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon_ALL.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DocumentationFile>Final Account Defense Barrier.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DocumentationFile>Final Account Defense Barrier.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>none</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.ProtectedData, Version=7.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.ProtectedData.7.0.1\lib\net462\System.Security.Cryptography.ProtectedData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Encode_Lib.vb" />
+    <Compile Include="FormConfig.Designer.vb">
+      <DependentUpon>FormConfig.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormConfig.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMIT.Designer.vb">
+      <DependentUpon>FormMIT.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormMIT.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSalt.Designer.vb">
+      <DependentUpon>FormSalt.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSalt.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Resource1.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource1.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WhyMSDoesNotDoHisJob.vb" />
+    <Compile Include="SmallPWDShow.Designer.vb">
+      <DependentUpon>SmallPWDShow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SmallPWDShow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MSGBOXXX.Designer.vb">
+      <DependentUpon>MSGBOXXX.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MSGBOXXX.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFileExplorer.Designer.vb">
+      <DependentUpon>FormFileExplorer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormFileExplorer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.vb">
+      <DependentUpon>FormMain.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.Designer.vb">
+      <DependentUpon>FormLogin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLogin.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module1.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SmallDecoderAES.Designer.vb">
+      <DependentUpon>SmallDecoderAES.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SmallDecoderAES.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SmallDecoderPass.Designer.vb">
+      <DependentUpon>SmallDecoderPass.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SmallDecoderPass.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SmallString.Designer.vb">
+      <DependentUpon>SmallString.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SmallString.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FormConfig.resx">
+      <DependentUpon>FormConfig.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFileExplorer.resx">
+      <DependentUpon>FormFileExplorer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMIT.resx">
+      <DependentUpon>FormMIT.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSalt.resx">
+      <DependentUpon>FormSalt.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource1.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource1.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallPWDShow.resx">
+      <DependentUpon>SmallPWDShow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MSGBOXXX.resx">
+      <DependentUpon>MSGBOXXX.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallDecoderAES.resx">
+      <DependentUpon>SmallDecoderAES.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallDecoderPass.resx">
+      <DependentUpon>SmallDecoderPass.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmallString.resx">
+      <DependentUpon>SmallString.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AllResource\SECURE DESKTOP ON.png" />
+    <None Include="AllResource\SECURE DESKTOP OFF.png" />
+    <None Include="AllResource\RUN AS ADMIN OFF.png" />
+    <None Include="AllResource\RUN AS ADMIN ON.png" />
+    <None Include="AllResource\PASSWORD SHOW.png" />
+    <None Include="AllResource\PASSWORD HIDE.png" />
+    <None Include="AllResource\caps_lock_off.png" />
+    <None Include="AllResource\caps_lock_on.png" />
+    <None Include="AllResource\button_RESTART_Off.png" />
+    <None Include="AllResource\button_RESTART_On.png" />
+    <None Include="AllResource\button_Cancel.png" />
+    <None Include="AllResource\button_Final.png" />
+    <None Include="AllResource\Title_NORMAL.png" />
+    <None Include="AllResource\USING_SYMBOL_OFF.png" />
+    <None Include="AllResource\USING_SYMBOL_ON.png" />
+    <None Include="AllResource\Title_Password.png" />
+    <None Include="AllResource\button_view.png" />
+    <None Include="AllResource\button_view_on.png" />
+    <None Include="AllResource\main.png" />
+    <None Include="AllResource\TOPSEC.png" />
+    <None Include="AllResource\button_copy_small.png" />
+    <None Include="AllResource\button_view_small.png" />
+    <None Include="AllResource\button_view_small_on.png" />
+    <None Include="AllResource\button_L_delete.png" />
+    <None Include="AllResource\button_L_fileInfo.png" />
+    <None Include="AllResource\button_L_moveDWN.png" />
+    <None Include="AllResource\button_L_moveUP.png" />
+    <None Include="AllResource\button_L_save.png" />
+    <None Include="AllResource\button_L_transKEY.png" />
+    <None Include="AllResource\button_L_delete_DI.png" />
+    <None Include="AllResource\button_L_fileInfo_DI.png" />
+    <None Include="AllResource\button_L_moveDWN_DI.png" />
+    <None Include="AllResource\button_L_moveUP_DI.png" />
+    <None Include="AllResource\button_L_save_DI.png" />
+    <None Include="AllResource\button_L_transKEY_DI.png" />
+    <None Include="AllResource\button_CATMAN.png" />
+    <None Include="AllResource\EPTSLOT_246.png" />
+    <None Include="AllResource\EPTSLOT_313.png" />
+    <None Include="AllResource\EPTSLOT_692.png" />
+    <None Include="AllResource\button_Launch.png" />
+    <None Include="AllResource\button_COPY.png" />
+    <None Include="AllResource\button_HELP.png" />
+    <None Include="AllResource\button_LOGOUT.png" />
+    <None Include="AllResource\DIGI_Y_-.png" />
+    <None Include="AllResource\DIGI_Y_0.png" />
+    <None Include="AllResource\DIGI_Y_1.png" />
+    <None Include="AllResource\DIGI_Y_2.png" />
+    <None Include="AllResource\DIGI_Y_3.png" />
+    <None Include="AllResource\DIGI_Y_4.png" />
+    <None Include="AllResource\DIGI_Y_5.png" />
+    <None Include="AllResource\DIGI_Y_6.png" />
+    <None Include="AllResource\DIGI_Y_7.png" />
+    <None Include="AllResource\DIGI_Y_8.png" />
+    <None Include="AllResource\DIGI_Y_9.png" />
+    <None Include="AllResource\TimerID_ACT.png" />
+    <None Include="AllResource\TimerID_INACT.png" />
+    <None Include="AllResource\Message_CRI.png" />
+    <None Include="AllResource\Message_CRI_TXTB.png" />
+    <None Include="AllResource\Message_VRF.png" />
+    <None Include="AllResource\Message_VRF_TXTB.png" />
+    <None Include="AllResource\Message_OK.png" />
+    <None Include="AllResource\Message_OK_TXTB.png" />
+    <None Include="AllResource\button_confirm_dis.png" />
+    <None Include="AllResource\button_confirm.png" />
+    <None Include="AllResource\settings.png" />
+    <None Include="AllResource\button_CAT_DEL.png" />
+    <None Include="AllResource\button_CAT_TRANS.png" />
+    <None Include="AllResource\salting_00.png" />
+    <None Include="AllResource\salting_01.png" />
+    <None Include="AllResource\salting_02.png" />
+    <None Include="AllResource\salting_03.png" />
+    <None Include="AllResource\salting_04.png" />
+    <None Include="AllResource\salting_05.png" />
+    <None Include="AllResource\salting_06.png" />
+    <None Include="AllResource\salting_07.png" />
+    <None Include="AllResource\salting_08.png" />
+    <None Include="AllResource\salting_09.png" />
+    <None Include="AllResource\salting_10.png" />
+    <None Include="AllResource\button_CATMAN_on.png" />
+    <None Include="AllResource\Title_LOGIN.png" />
+    <None Include="AllResource\File_expo.png" />
+    <None Include="AllResource\button_genpwd.png" />
+    <None Include="AllResource\mit_Btn.png" />
+    <None Include="AllResource\button_開啟檔案.png" />
+    <None Include="AllResource\button_OpenF.png" />
+    <None Include="AllResource\mit_lic.png" />
+    <Content Include="icon_ALL.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 與 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+</Project>
