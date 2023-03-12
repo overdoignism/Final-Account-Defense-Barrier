@@ -5,7 +5,7 @@
 
 ## Who is this program suitable for?
 
-*   Want to use the account password management program to manage some accounts and confidential information.
+*   Want to use the account password management program to manage some accounts, cryptocurrencies, and confidential information.
 *   Don't want to pay for it.
 *   Can't trust any cloud-based password service, Internet-connected manager, or non-open source manager.
 *   Worried that complex authentication mechanisms may go wrong, additional devices may fail.
