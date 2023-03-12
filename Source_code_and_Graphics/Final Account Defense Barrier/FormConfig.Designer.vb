@@ -204,7 +204,6 @@ Partial Class FormConfig
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FormConfig"
-        Me.Opacity = 0.93R
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.Text = "Settings"

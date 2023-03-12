@@ -39,6 +39,8 @@ Module Module1
     Public CAPon As New Bitmap(My.Resources.Resource1.caps_lock_on)
     Public CAPoff As New Bitmap(My.Resources.Resource1.caps_lock_off)
 
+    Public ALLOPACITY As Single = 1.0F
+
     Public Const MainWebURL As String = "https://github.com/overdoignism/Final-Account-Defense-Barrier"
 
     Public Const File_Limit As Long = 134217728
@@ -354,6 +356,7 @@ Module Module1
         End Select
 
         NeoMSGBOX.LabelMSG.Text = MessageStr
+        NeoMSGBOX.Opacity = ALLOPACITY
 
         MakeWindowsBlur(FirerForm, FFPicBox)
         ReturnDR = NeoMSGBOX.ShowDialog(FirerForm)
@@ -435,6 +438,7 @@ Module Module1
 
         Dim LIFW = New FormLogin
         LIFW.Text = TitleStr
+        LIFW.Opacity = ALLOPACITY
 
         Dim RunAAMode As Boolean
         Dim RunSDMode As Boolean

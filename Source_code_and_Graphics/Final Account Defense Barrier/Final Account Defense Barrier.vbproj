@@ -213,12 +213,6 @@
     <Compile Include="SmallDecoderPass.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SmallString.Designer.vb">
-      <DependentUpon>SmallString.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SmallString.vb">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormConfig.resx">
@@ -263,9 +257,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SmallDecoderPass.resx">
       <DependentUpon>SmallDecoderPass.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SmallString.resx">
-      <DependentUpon>SmallString.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -366,7 +357,6 @@
     <None Include="AllResource\File_expo.png" />
     <None Include="AllResource\button_genpwd.png" />
     <None Include="AllResource\mit_Btn.png" />
-    <None Include="AllResource\button_開啟檔案.png" />
     <None Include="AllResource\button_OpenF.png" />
     <None Include="AllResource\mit_lic.png" />
     <Content Include="icon_ALL.ico" />

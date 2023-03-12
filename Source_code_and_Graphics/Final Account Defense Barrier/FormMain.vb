@@ -57,7 +57,7 @@ Public Class FormMain
     Public WithEvents AutoCloseTimer As New Windows.Forms.Timer
 
     Dim version As Version = Reflection.Assembly.GetEntryAssembly().GetName().Version
-    Dim versionNumber As String = version.Major & "." & version.Minor & "." & Hex(version.Build) & "." & Hex(version.Revision)
+    Dim versionNumber As String = version.Major & "." & version.Minor & "." & version.Build & "." & version.Revision
 
     '0=New Account no edit, CurrentAccountPass = "" in init
     '1=Old File Read, not decrypt
@@ -82,6 +82,14 @@ Public Class FormMain
             End If
 
             If ArgStr.ToUpper = NONOTICEStr Then NoNotice = True
+
+            If ArgStr.ToUpper.StartsWith("OPACITY,") Then
+                Dim TMPSTR1() As String = ArgStr.Split(",")
+                If TMPSTR1.Length > 1 Then
+                    ALLOPACITY = Val(TMPSTR1(1)) / 100
+                    Me.Opacity = ALLOPACITY
+                End If
+            End If
 
         Next
 
@@ -179,6 +187,7 @@ Public Class FormMain
         '=================================
 
         Label_Act_Msg.Text = TextStrs(62)
+        LabelBy.Text = "▎ By overdoingism Lab."
         LABVER.Text = "▎ " + TextStrs(42) + " " + versionNumber
 
     End Sub
@@ -229,7 +238,7 @@ Public Class FormMain
             VG_Data_Done = True
             VG_Title_Done = True
             ReadingWorking = False
-            Label_Act_Msg.Text = TextStrs(26)
+            Label_Act_Msg.Text = TextStrs(27)
             Exit Sub
 
         Else
@@ -1416,6 +1425,7 @@ Public Class FormMain
 
         FormConfig.FormL = Me.Left + (Me.Width - FormConfig.Width) / 2
         FormConfig.FormT = Me.Top + (Me.Height - FormConfig.Height) / 2
+        FormConfig.Opacity = Me.Opacity
 
         MakeWindowsBlur(Me, PictureGray)
         Dim DR As DialogResult = FormConfig.ShowDialog(Me)

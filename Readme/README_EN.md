@@ -5,7 +5,7 @@
 
 ## Who is this program suitable for?
 
-*   Want to use the account password management program to manage some accounts, cryptocurrencies, and confidential information.
+*   Want to use the account password management program to manage some accounts and confidential information.
 *   Don't want to pay for it.
 *   Can't trust any cloud-based password service, Internet-connected manager, or non-open source manager.
 *   Worried that complex authentication mechanisms may go wrong, additional devices may fail.
@@ -45,7 +45,8 @@
 
 *   You can set features like "Auto Hotkey", "Automatic Logout When Idle", and "Transfer or Delete All Catalogs" in "Catalog Setting and Management".
 *   If you rename the language file to Lang\_MOD.TXT, the interface will display in the corresponding language (Text message only; Graphic part will not change).
-*   You can use the shortcut parameter "NONOTICE" to hide the NOTICE at the bottom of the window. (Please read it once before hiding.)
+*   You can use the command line parameter "NONOTICE" to hide the NOTICE at the bottom of the window. (Please read it once before hiding.)
+*   You can use the command line parameter "OPACITY,nn" to set the window opacity. (100 = opaque (default), and the initial version is fixed at 93.)
 
 ### Backup operation
 
@@ -65,19 +66,19 @@
 
 ### **About Encryption and Storage (Core Security Technology)**
 
-1.  The directory password is salted 2 million times with SHA256, which is equivalent to increasing the password by 3.5 digits.
-2.  The final archive is encrypted with AES256 CBC mode, PKCS7 padding, and a random IV (Note 1).
+1.  The catalog password is hash 2 million times with SHA256, which is equivalent to increasing the password by 3.5 digits. (Note 1)
+2.  The final archive is encrypted with AES256 CBC mode, PKCS7 padding, and a random IV (Note 2).
 3.  Random data of varying lengths is added to the archive to obfuscate the real data and password length.
 4.  Any file can be used as the password. The maximum size is 128MB.
-5.  Automatic zero-fill rewrite function for files (when saving/deleting) (Note 2).
+5.  Automatic zero-fill rewrite function for files (when saving/deleting) (Note 3).
 
-### **About Program Security Technology (Note 3)**
+### **About Program Security Technology (Note 4)**
 
 1.  DPAPI is used to protect sensitive data during runtime.
 2.  Memory leak cleaning (protects against approximately 95% of memory leaks).
 3.  Secure Desktop mode is available, which is resistant to keyboard and screen recorders (optional).
 4.  Clipboard monitoring and blocking technology is used (WM interception).
-5.  Memory Page Lock is used to prevent sensitive information from being swapped to the swap file (Note 4).
+5.  Memory Page Lock is used to prevent sensitive information from being swapped to the swap file (Note 5).
 6.  Windows executable security mitigation policies: ASLR/DEP/StrictHandle/ExtensionPoint/SignaturePolicy/ImageLoad/SideChannelIsolation.
 7.  Hybrid hotkey automatic input mode.
 
@@ -87,10 +88,11 @@
 
 ### Notes
 
-1.  IV Random values are not from data hashing, but are re-encrypted only after data modification.
-2.   Not guaranteed to work, especially on disks with special features such as compression enabled. In addition, the nature of SSDs also allows data to remain on the physical layer, and to be completely secure, full disk space rewriting (search for Wipe Free Space) is required.
-3.  This type of security measure is to defend against hackers or Trojan invasion. It works better with administrator privileges. **But you should know that all this is just better than nothing and the most important thing is to ensure that your computer never be hacked.**
-4.  Users need to enable the "Security Policy" in Windows.
+1.  This is not a standard salting method, it is not resistant to rainbow table attacks, and is only effective against brute-force guessing attacks. However, since this is an open-source program, the salting method is also public, so salting cannot resist rainbow tables. Choosing a strong, long password is the solution, or modifying the code to add a proprietary salting method.
+2.  IV Random values are not from data hashing, but are re-encrypted only after data modification.
+3.  Not guaranteed to work, especially on disks with special features such as compression enabled. In addition, the nature of SSDs also allows data to remain on the physical layer, and to be completely secure, full disk space rewriting (search for Wipe Free Space) is required.
+4.  This type of security measure is to defend against hackers or Trojan invasion. It works better with administrator privileges. **But you should know that all this is just better than nothing and the most important thing is to ensure that your computer never be hacked.**
+5.  Users need to enable the "Security Policy" in Windows.
 
 ## **Q&A**
 

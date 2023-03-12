@@ -33,6 +33,7 @@ Partial Class FormMain
         Me.TextBoxNote1 = New System.Windows.Forms.TextBox()
         Me.LabelCatalog = New System.Windows.Forms.Label()
         Me.LABVER = New System.Windows.Forms.Label()
+        Me.LabelBy = New System.Windows.Forms.Label()
         Me.PicTimerINACT = New System.Windows.Forms.PictureBox()
         Me.PicTimerACT = New System.Windows.Forms.PictureBox()
         Me.PicDIGI_4 = New System.Windows.Forms.PictureBox()
@@ -200,10 +201,22 @@ Partial Class FormMain
         Me.LABVER.BackColor = System.Drawing.Color.Black
         Me.LABVER.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LABVER.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LABVER.Location = New System.Drawing.Point(342, 613)
+        Me.LABVER.Location = New System.Drawing.Point(343, 634)
         Me.LABVER.Name = "LABVER"
-        Me.LABVER.Size = New System.Drawing.Size(197, 23)
+        Me.LABVER.Size = New System.Drawing.Size(197, 18)
         Me.LABVER.TabIndex = 119
+        Me.LABVER.Text = "?"
+        '
+        'LabelBy
+        '
+        Me.LabelBy.BackColor = System.Drawing.Color.Black
+        Me.LabelBy.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelBy.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.LabelBy.Location = New System.Drawing.Point(343, 616)
+        Me.LabelBy.Name = "LabelBy"
+        Me.LabelBy.Size = New System.Drawing.Size(197, 18)
+        Me.LabelBy.TabIndex = 120
+        Me.LabelBy.Text = "?"
         '
         'PicTimerINACT
         '
@@ -516,6 +529,7 @@ Partial Class FormMain
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(995, 698)
         Me.ControlBox = False
+        Me.Controls.Add(Me.LabelBy)
         Me.Controls.Add(Me.LABVER)
         Me.Controls.Add(Me.LabelCatalog)
         Me.Controls.Add(Me.PicTimerINACT)
@@ -559,7 +573,6 @@ Partial Class FormMain
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormMain"
-        Me.Opacity = 0.93R
         Me.Text = "Geek Account Manager v1.0"
         Me.TransparencyKey = System.Drawing.Color.Lime
         CType(Me.PicTimerINACT, System.ComponentModel.ISupportInitialize).EndInit()
@@ -633,4 +646,5 @@ Partial Class FormMain
     Friend WithEvents PictureGray As PictureBox
     Friend WithEvents LabelCatalog As Label
     Friend WithEvents LABVER As Label
+    Friend WithEvents LabelBy As Label
 End Class

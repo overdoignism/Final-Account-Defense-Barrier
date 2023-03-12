@@ -108,6 +108,7 @@ Public Class FormLogin
         t1.Start()
         t2.Start()
 
+        FSalt.Opacity = Me.Opacity
         FSalt.ShowDialog(Me)
 
         t1.Join()
@@ -360,6 +361,7 @@ Public Class FormLogin
             Dim FFE As New FormFileExplorer
 
             MakeWindowsBlur(Me, PictureGray)
+            FFE.Opacity = Me.Opacity
 
             If FFE.ShowDialog(Me) = DialogResult.OK Then
                 FFE.Close()
