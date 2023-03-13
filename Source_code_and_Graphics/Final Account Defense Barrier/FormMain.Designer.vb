@@ -34,6 +34,7 @@ Partial Class FormMain
         Me.LabelCatalog = New System.Windows.Forms.Label()
         Me.LABVER = New System.Windows.Forms.Label()
         Me.LabelBy = New System.Windows.Forms.Label()
+        Me.PictureWinMin = New System.Windows.Forms.PictureBox()
         Me.PicTimerINACT = New System.Windows.Forms.PictureBox()
         Me.PicTimerACT = New System.Windows.Forms.PictureBox()
         Me.PicDIGI_4 = New System.Windows.Forms.PictureBox()
@@ -62,6 +63,7 @@ Partial Class FormMain
         Me.PictureBoxPwd = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicTimerINACT, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicTimerACT, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicDIGI_4, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -164,12 +166,13 @@ Partial Class FormMain
         '
         'Label_Act_Msg
         '
+        Me.Label_Act_Msg.AutoEllipsis = True
         Me.Label_Act_Msg.BackColor = System.Drawing.Color.Black
-        Me.Label_Act_Msg.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_Act_Msg.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label_Act_Msg.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.Label_Act_Msg.Location = New System.Drawing.Point(26, 654)
+        Me.Label_Act_Msg.Location = New System.Drawing.Point(24, 654)
         Me.Label_Act_Msg.Name = "Label_Act_Msg"
-        Me.Label_Act_Msg.Size = New System.Drawing.Size(286, 19)
+        Me.Label_Act_Msg.Size = New System.Drawing.Size(291, 19)
         Me.Label_Act_Msg.TabIndex = 29
         Me.Label_Act_Msg.Text = "(none)"
         Me.Label_Act_Msg.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -199,24 +202,35 @@ Partial Class FormMain
         'LABVER
         '
         Me.LABVER.BackColor = System.Drawing.Color.Black
-        Me.LABVER.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LABVER.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LABVER.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.LABVER.Location = New System.Drawing.Point(343, 634)
         Me.LABVER.Name = "LABVER"
-        Me.LABVER.Size = New System.Drawing.Size(197, 18)
+        Me.LABVER.Size = New System.Drawing.Size(188, 18)
         Me.LABVER.TabIndex = 119
         Me.LABVER.Text = "?"
         '
         'LabelBy
         '
         Me.LabelBy.BackColor = System.Drawing.Color.Black
-        Me.LabelBy.Font = New System.Drawing.Font("Arial Narrow", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelBy.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelBy.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.LabelBy.Location = New System.Drawing.Point(343, 616)
         Me.LabelBy.Name = "LabelBy"
-        Me.LabelBy.Size = New System.Drawing.Size(197, 18)
+        Me.LabelBy.Size = New System.Drawing.Size(188, 18)
         Me.LabelBy.TabIndex = 120
         Me.LabelBy.Text = "?"
+        '
+        'PictureWinMin
+        '
+        Me.PictureWinMin.BackColor = System.Drawing.Color.Black
+        Me.PictureWinMin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureWinMin.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.WinMin
+        Me.PictureWinMin.Location = New System.Drawing.Point(141, 8)
+        Me.PictureWinMin.Name = "PictureWinMin"
+        Me.PictureWinMin.Size = New System.Drawing.Size(30, 26)
+        Me.PictureWinMin.TabIndex = 121
+        Me.PictureWinMin.TabStop = False
         '
         'PicTimerINACT
         '
@@ -290,7 +304,7 @@ Partial Class FormMain
         Me.ButtonRestart.BackColor = System.Drawing.Color.Black
         Me.ButtonRestart.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ButtonRestart.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_LOGOUT
-        Me.ButtonRestart.Location = New System.Drawing.Point(737, 620)
+        Me.ButtonRestart.Location = New System.Drawing.Point(741, 620)
         Me.ButtonRestart.Name = "ButtonRestart"
         Me.ButtonRestart.Size = New System.Drawing.Size(112, 61)
         Me.ButtonRestart.TabIndex = 110
@@ -301,7 +315,7 @@ Partial Class FormMain
         Me.ButtonHelp.BackColor = System.Drawing.Color.Black
         Me.ButtonHelp.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ButtonHelp.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_HELP
-        Me.ButtonHelp.Location = New System.Drawing.Point(601, 620)
+        Me.ButtonHelp.Location = New System.Drawing.Point(611, 620)
         Me.ButtonHelp.Name = "ButtonHelp"
         Me.ButtonHelp.Size = New System.Drawing.Size(112, 61)
         Me.ButtonHelp.TabIndex = 109
@@ -529,6 +543,7 @@ Partial Class FormMain
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(995, 698)
         Me.ControlBox = False
+        Me.Controls.Add(Me.PictureWinMin)
         Me.Controls.Add(Me.LabelBy)
         Me.Controls.Add(Me.LABVER)
         Me.Controls.Add(Me.LabelCatalog)
@@ -573,8 +588,9 @@ Partial Class FormMain
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormMain"
-        Me.Text = "Geek Account Manager v1.0"
+        Me.Text = "FADB"
         Me.TransparencyKey = System.Drawing.Color.Lime
+        CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PicTimerINACT, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PicTimerACT, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PicDIGI_4, System.ComponentModel.ISupportInitialize).EndInit()
@@ -647,4 +663,5 @@ Partial Class FormMain
     Friend WithEvents LabelCatalog As Label
     Friend WithEvents LABVER As Label
     Friend WithEvents LabelBy As Label
+    Friend WithEvents PictureWinMin As PictureBox
 End Class

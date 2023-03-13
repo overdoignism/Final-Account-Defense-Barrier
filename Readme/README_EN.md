@@ -21,7 +21,7 @@
 *   Put the program in a prepared folder.
 *   Open the program and you will see an interface for entering a password. Think of a secure and memorable password, enter it twice, and click "Confirm" to get started.
 *   The password you enter here will become the encrypted "key seed" and directly correspond to a unique "Catalog", which can manage multiple accounts.
-*   To open this directory in the future, simply enter this password. Just type it in once.
+*   To open this catalog in the future, simply enter this password. Just type it in once.
 *   Similarly, if you want to add different groups of catalogs, just enter different passwords.
 *   It is also possible to choose a file instead of a password (use Open file). The file name is not important, but the contents of the file cannot be changed at all.
 
@@ -55,7 +55,15 @@
 ### Enhanced security operations
 
 *  On the the program start, there is a "Secure Desktop" option. After selecting it and restart, the secure desktop function can be enabled. This function can also be set as a shortcut with the parameter "SECUREDESKTOP".
-*   If you select "RUN AS ADMIN" and then restart, you can raise the administrator privileges to make the program more secure.
+*  If you select "RUN AS ADMIN" and then restart, you can raise the administrator privileges to make the program more secure.
+*  You can set the salt by using the command-line parameter SALT,xx.. ( The login form will display "SALT".)
+
+### Command line parameter list
+
+1. "SECUREDESKTOP" to enable secure desktop.
+2. "NONOTICE" turns off NOTICE under the login window.
+3. "OPACITY,nn" sets the opacity of the window (100 = opaque (default)).
+4. "SALT,xx..." Set salt, use any text except space and comma.
 
 ## **About Security Technology**
 
@@ -71,14 +79,15 @@
 3.  Random data of varying lengths is added to the archive to obfuscate the real data and password length.
 4.  Any file can be used as the password. The maximum size is 128MB.
 5.  Automatic zero-fill rewrite function for files (when saving/deleting) (Note 3).
+6.  You can use salt (optional) (Note 4).
 
-### **About Program Security Technology (Note 4)**
+### **About Program Security Technology (Note 5)**
 
 1.  DPAPI is used to protect sensitive data during runtime.
 2.  Memory leak cleaning (protects against approximately 95% of memory leaks).
 3.  Secure Desktop mode is available, which is resistant to keyboard and screen recorders (optional).
 4.  Clipboard monitoring and blocking technology is used (WM interception).
-5.  Memory Page Lock is used to prevent sensitive information from being swapped to the swap file (Note 5).
+5.  Memory Page Lock is used to prevent sensitive information from being swapped to the swap file (Note 6).
 6.  Windows executable security mitigation policies: ASLR/DEP/StrictHandle/ExtensionPoint/SignaturePolicy/ImageLoad/SideChannelIsolation.
 7.  Hybrid hotkey automatic input mode.
 
@@ -88,11 +97,12 @@
 
 ### Notes
 
-1.  This is not a standard salting method, it is not resistant to rainbow table attacks, and is only effective against brute-force guessing attacks. However, since this is an open-source program, the salting method is also public, so salting cannot resist rainbow tables. Choosing a strong, long password is the solution, or modifying the code to add a proprietary salting method.
+1.  This is KDF, and is only effective against brute-force guessing attacks. To resist rainbow table attacks, salting is necessary.
 2.  IV Random values are not from data hashing, but are re-encrypted only after data modification.
 3.  Not guaranteed to work, especially on disks with special features such as compression enabled. In addition, the nature of SSDs also allows data to remain on the physical layer, and to be completely secure, full disk space rewriting (search for Wipe Free Space) is required.
-4.  This type of security measure is to defend against hackers or Trojan invasion. It works better with administrator privileges. **But you should know that all this is just better than nothing and the most important thing is to ensure that your computer never be hacked.**
-5.  Users need to enable the "Security Policy" in Windows.
+4.  As this is an open-source program, a fixed salting method is meaningless and must be determined by the user. In addition, different salting methods cannot be transfer between catalogs, so please be aware of this.
+5.  This type of security measure is to defend against hackers or Trojan invasion. It works better with administrator privileges. **But you should know that all this is just better than nothing and the most important thing is to ensure that your computer never be hacked.**
+6.  Users need to enable the "Security Policy" in Windows.
 
 ## **Q&A**
 
@@ -104,9 +114,11 @@
 *   **A:** I am not familiar with mobile app development and have no need for it, so there won't be one.
 *   **Q:** The online virus scanning said there are viruses?
 *   **A:** Because I used some security techniques that are less commonly used in ordinary software, being misjudged is inevitable. In any case, downloading from the correct website URL, checking the code, compiling it yourself, is the safest and most reliable.
-*   **Q:** What should I do if I forget the directory password?
-*   **A:** Well, that's a disaster. There's nothing I can do for you. So never forget the catalog password.
+*   **Q:** What should I do if I forget the catalog password / salt?
+*   **A:** Well, that's a disaster. There's nothing I can do for you. So never forget the catalog password / salt.
 *   **Q:** Can you add a certain feature or change a certain usage?
 *   **A:** Unless the software has a very basic bug, this is probably it. If you want to add or change something, please do it yourself. This is open source.
 *   **Q:** What kind of Japanese are you writing? It's just a bunch of nonsense.
 *   **A:** Actually, with the help of various AI translation tools, it's not difficult to write normal and correct Japanese. The difficulty lies in matching the style of using kanji that is particularly favored in Evangelion. I have tried my best.
+*   **Q:** Q: Why can salting only be done through command line parameters and not in the password input interface?
+*   **A:** A: "Salting" can be thought of as an additional extension to the password. If you have to manually enter the salt each time, it's better to just make the password longer.

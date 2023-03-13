@@ -23,13 +23,13 @@ Partial Class MSGBOXXX
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TextBoxDELETE = New System.Windows.Forms.TextBox()
+        Me.MSGHEAD = New System.Windows.Forms.Label()
         Me.ButtonCri = New System.Windows.Forms.PictureBox()
         Me.ButtonOK = New System.Windows.Forms.PictureBox()
         Me.ButtonCancel = New System.Windows.Forms.PictureBox()
         Me.ButtonYes = New System.Windows.Forms.PictureBox()
         Me.LabelMSG = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.MSGHEAD = New System.Windows.Forms.Label()
         CType(Me.ButtonCri, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -48,6 +48,17 @@ Partial Class MSGBOXXX
         Me.TextBoxDELETE.TabIndex = 33
         Me.TextBoxDELETE.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.TextBoxDELETE.Visible = False
+        '
+        'MSGHEAD
+        '
+        Me.MSGHEAD.BackColor = System.Drawing.Color.Black
+        Me.MSGHEAD.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.MSGHEAD.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.MSGHEAD.Location = New System.Drawing.Point(255, 50)
+        Me.MSGHEAD.Name = "MSGHEAD"
+        Me.MSGHEAD.Size = New System.Drawing.Size(197, 23)
+        Me.MSGHEAD.TabIndex = 92
+        Me.MSGHEAD.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ButtonCri
         '
@@ -120,17 +131,6 @@ Partial Class MSGBOXXX
         Me.PictureBox1.Size = New System.Drawing.Size(659, 409)
         Me.PictureBox1.TabIndex = 89
         Me.PictureBox1.TabStop = False
-        '
-        'MSGHEAD
-        '
-        Me.MSGHEAD.BackColor = System.Drawing.Color.Black
-        Me.MSGHEAD.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.MSGHEAD.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.MSGHEAD.Location = New System.Drawing.Point(255, 50)
-        Me.MSGHEAD.Name = "MSGHEAD"
-        Me.MSGHEAD.Size = New System.Drawing.Size(197, 23)
-        Me.MSGHEAD.TabIndex = 92
-        Me.MSGHEAD.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'MSGBOXXX
         '

@@ -8,9 +8,13 @@ Imports System.Security.Principal
 Public Class FormLogin
 
     Public FormL, FormT, FormW, FormH As Integer
+
     Public This_Time_Key() As Byte
     Public This_Time_DIP() As Byte
+    Public This_Time_Salt() As Byte
+
     Public This_Time_Dir As String
+
     Public SecureDesktopMode As Boolean
     Private SecondSHA256() As Byte
     Dim timerA As New Timer()
@@ -42,6 +46,115 @@ Public Class FormLogin
 
     Private Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Integer, ByVal dwExtraInfo As Integer)
 
+    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        ClearTextBox(TextBoxPwd)
+        ClearTextBox(TextBoxPwdVerify)
+
+        Select Case WorkMode
+            Case 0 ' Login Mode
+
+                Me.ButtonCancel.Image = Me.BT_FIN
+
+                Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
+                ToolTip1.SetToolTip(TextBoxPwd, TextStrs(3))
+                ToolTip1.SetToolTip(TextBoxPwdVerify, TextStrs(4))
+                ToolTip1.InitialDelay = 1
+
+                Dim RAAMode As Boolean = New WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)
+                PictureBoxRUNAS.Enabled = Not RAAMode
+                If RAAMode Then PictureBoxRUNAS.Image = RUNASOn
+                If This_Time_Salt IsNot Nothing Then PictureSalt.Visible = True
+                If OSver < 62 Then PicturePMP.Image = New Bitmap(My.Resources.Resource1.PMP_OFF)
+                Me.PicturePMP.Visible = True
+
+            Case 1 ' Non Loging Mode
+                Me.PictureBoxSD.Visible = False
+                Me.PictureBoxRUNAS.Visible = False
+                Me.PictureBoxMIT.Visible = False
+                Me.Button_Restart.Visible = False
+                Me.ButtonHelp.Visible = False
+                Me.PictureWinMin.Visible = False
+                Me.ButtonCancel.Image = Me.BT_CANCEL
+
+                Me.PictureBoxLogin.Image = New Bitmap(My.Resources.Resource1.Title_NORMAL)
+                Me.Height = 346
+                Me.PicCAP1.Top -= 201
+                Me.ButtonOK.Top -= 201
+                Me.ButtonFileOpen.Top -= 201
+                Me.ButtonViewPass.Top -= 201
+                Me.TextBoxPwd.Top -= 201
+                Me.TextBoxPwdVerify.Top -= 201
+                Me.ButtonCancel.Top -= 201
+                Me.PictureSalt.Top -= 201
+                If This_Time_Salt IsNot Nothing Then PictureSalt.Visible = True
+
+            Case 2 ' Password Mode
+                Me.PictureBoxSD.Visible = False
+                Me.PictureBoxRUNAS.Visible = False
+                Me.PictureBoxMIT.Visible = False
+                Me.Button_Restart.Visible = False
+                Me.ButtonHelp.Visible = False
+                Me.ButtonFileOpen.Visible = False
+                Me.PictureWinMin.Visible = False
+                Me.ButtonCancel.Image = Me.BT_CANCEL
+
+                Me.PictureBoxLogin.Image = New Bitmap(My.Resources.Resource1.Title_Password)
+                Me.Height = 346
+                Me.PicCAP1.Top -= 201
+                Me.ButtonOK.Top -= 201
+                Me.ButtonViewPass.Top -= 201
+                Me.TextBoxPwd.Top -= 201
+                Me.TextBoxPwdVerify.Top -= 201
+
+                ButtonCancel.Top = 265
+                ButtonCancel.Left = 148
+
+                PictureBoxGenPwd.Visible = True
+                PictureBoxGenPwd.Top = 265
+                PictureBoxGenPwd.Left = 277
+
+                PictureBoxGPUS.Left = 408
+                PictureBoxGPUS.Top = 267
+                PictureBoxGPUS.Visible = True
+
+                Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
+                ToolTip1.SetToolTip(TextBoxPwd, TextStrs(34))
+                ToolTip1.SetToolTip(TextBoxPwdVerify, TextStrs(35))
+
+                '0=New Account, CurrentAccountPass = "" in init
+                '1=Old File Read, not decrypt
+                '2=Old File Read, decrypted, CurrentAccountPass usable, Not edit
+                '3=Edited
+
+                Select Case PwdState
+                    Case 0, 2, 3
+                        TextBoxPwd.Text = System.Text.Encoding.UTF8.GetString(
+                            Security.Cryptography.ProtectedData.Unprotect(PassByte, Nothing, DataProtectionScope.CurrentUser))
+                        TextBoxPwdVerify.Text = TextBoxPwd.Text
+                    Case 1
+                        MsgBox("It should be mistake.")
+                        Me.DialogResult = DialogResult.OK
+                End Select
+
+        End Select
+
+        If SecureDesktopMode = True Then
+            Me.CenterToScreen()
+            Me.PictureWinMin.Visible = False
+            PictureBoxSD.Image = SDOn
+        Else
+            Me.StartPosition = FormStartPosition.Manual
+            Me.Left = FormL + (FormW - Me.Width) / 2
+            Me.Top = FormT + (FormH - Me.Height) / 2
+        End If
+
+        timerA.Interval = 100
+        timerA.Enabled = True
+        AddHandler timerA.Tick, AddressOf Timer1_Tick
+
+    End Sub
+
     Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonOK.Click
 
         Select Case WorkMode
@@ -64,7 +177,6 @@ Public Class FormLogin
                 Me.DialogResult = DialogResult.OK
         End Select
 
-
     End Sub
 
     Private Sub SecondSHA256Sub(ByRef Second_SHA256() As Byte)
@@ -86,7 +198,7 @@ Public Class FormLogin
     Private Sub GoNext(ByRef BigByte() As Byte, ItsaFile As Boolean)
 
         '=========
-        Dim FSalt As New FormSalt
+        Dim FSalt As New FormHASH
         MakeWindowsBlur(Me, PictureGray)
         Me.Enabled = False
         My.Application.DoEvents()
@@ -101,6 +213,11 @@ Public Class FormLogin
 
         SecondSHA256 = Password_SHA256_As_Key.Clone
         Array.Reverse(SecondSHA256)
+
+        If This_Time_Salt IsNot Nothing Then
+            Array.Resize(SecondSHA256, SecondSHA256.Length + This_Time_Salt.Length)
+            Array.Copy(This_Time_Salt, 0, SecondSHA256, SecondSHA256.Length - This_Time_Salt.Length, This_Time_Salt.Length)
+        End If
 
         'Dim PB_Value As Integer
         Dim t1 As New Threading.Thread(Sub() SecondSHA256Sub(SecondSHA256))
@@ -201,106 +318,6 @@ Public Class FormLogin
 
     End Sub
 
-    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        ClearTextBox(TextBoxPwd)
-        ClearTextBox(TextBoxPwdVerify)
-
-        Select Case WorkMode
-            Case 0 ' Login Mode
-
-                Me.ButtonCancel.Image = Me.BT_FIN
-
-                Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
-                ToolTip1.SetToolTip(TextBoxPwd, TextStrs(3))
-                ToolTip1.SetToolTip(TextBoxPwdVerify, TextStrs(4))
-                ToolTip1.InitialDelay = 1
-
-                Dim RAAMode As Boolean = New WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)
-                PictureBoxRUNAS.Enabled = Not RAAMode
-                If RAAMode Then PictureBoxRUNAS.Image = RUNASOn
-
-            Case 1 ' Non Loging Mode
-                Me.PictureBoxSD.Visible = False
-                Me.PictureBoxRUNAS.Visible = False
-                Me.PictureBoxMIT.Visible = False
-                Me.Button_Restart.Visible = False
-                Me.ButtonHelp.Visible = False
-                Me.ButtonCancel.Image = Me.BT_CANCEL
-
-                Me.PictureBoxLogin.Image = New Bitmap(My.Resources.Resource1.Title_NORMAL)
-                Me.Height = 346
-                Me.PicCAP1.Top -= 201
-                Me.ButtonOK.Top -= 201
-                Me.ButtonFileOpen.Top -= 201
-                Me.ButtonViewPass.Top -= 201
-                Me.TextBoxPwd.Top -= 201
-                Me.TextBoxPwdVerify.Top -= 201
-                Me.ButtonCancel.Top -= 201
-            Case 2 ' Password Mode
-                Me.PictureBoxSD.Visible = False
-                Me.PictureBoxRUNAS.Visible = False
-                Me.PictureBoxMIT.Visible = False
-                Me.Button_Restart.Visible = False
-                Me.ButtonHelp.Visible = False
-                Me.ButtonFileOpen.Visible = False
-                Me.ButtonCancel.Image = Me.BT_CANCEL
-
-                Me.PictureBoxLogin.Image = New Bitmap(My.Resources.Resource1.Title_Password)
-                Me.Height = 346
-                Me.PicCAP1.Top -= 201
-                Me.ButtonOK.Top -= 201
-                Me.ButtonViewPass.Top -= 201
-                Me.TextBoxPwd.Top -= 201
-                Me.TextBoxPwdVerify.Top -= 201
-
-                ButtonCancel.Top = 265
-                ButtonCancel.Left = 148
-
-                PictureBoxGenPwd.Visible = True
-                PictureBoxGenPwd.Top = 265
-                PictureBoxGenPwd.Left = 277
-
-                PictureBoxGPUS.Left = 408
-                PictureBoxGPUS.Top = 267
-                PictureBoxGPUS.Visible = True
-
-                Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
-                ToolTip1.SetToolTip(TextBoxPwd, TextStrs(34))
-                ToolTip1.SetToolTip(TextBoxPwdVerify, TextStrs(35))
-
-                '0=New Account, CurrentAccountPass = "" in init
-                '1=Old File Read, not decrypt
-                '2=Old File Read, decrypted, CurrentAccountPass usable, Not edit
-                '3=Edited
-
-                Select Case PwdState
-                    Case 0, 2, 3
-                        TextBoxPwd.Text = System.Text.Encoding.UTF8.GetString(
-                            Security.Cryptography.ProtectedData.Unprotect(PassByte, Nothing, DataProtectionScope.CurrentUser))
-                        TextBoxPwdVerify.Text = TextBoxPwd.Text
-                    Case 1
-                        MsgBox("It should be mistake.")
-                        Me.DialogResult = DialogResult.OK
-                End Select
-
-        End Select
-
-        If SecureDesktopMode = True Then
-            Me.CenterToScreen()
-            PictureBoxSD.Image = SDOn
-        Else
-            Me.StartPosition = FormStartPosition.Manual
-            Me.Left = FormL + (FormW - Me.Width) / 2
-            Me.Top = FormT + (FormH - Me.Height) / 2
-        End If
-
-        timerA.Interval = 100
-        timerA.Enabled = True
-        AddHandler timerA.Tick, AddressOf Timer1_Tick
-
-    End Sub
-
     Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
         Me.DialogResult = DialogResult.Cancel
     End Sub
@@ -329,7 +346,6 @@ Public Class FormLogin
             Catch ex As Exception
             End Try
         End If
-
 
     End Sub
 
@@ -456,6 +472,10 @@ Public Class FormLogin
         Dim bmp As New Bitmap(Me.Width, Me.Height)
         Me.DrawToBitmap(bmp, New Rectangle(0, 0, Me.Width, Me.Height))
         PictureGray.Image = bmp
+    End Sub
+
+    Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
+        Me.WindowState = FormWindowState.Minimized
     End Sub
 
     Private Sub PictureBoxLogin_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBoxLogin.MouseDown

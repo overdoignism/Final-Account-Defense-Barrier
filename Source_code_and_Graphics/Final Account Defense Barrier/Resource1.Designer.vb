@@ -567,6 +567,116 @@ Namespace My.Resources
         '''<summary>
         '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         '''</summary>
+        Friend Shared ReadOnly Property hash_00() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_00", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_01() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_01", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_02() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_02", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_03() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_03", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_04() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_04", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_05() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_05", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_06() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_06", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_07() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_07", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_08() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_08", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_09() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_09", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property hash_10() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("hash_10", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
         Friend Shared ReadOnly Property main() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("main", resourceCulture)
@@ -677,6 +787,26 @@ Namespace My.Resources
         '''<summary>
         '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         '''</summary>
+        Friend Shared ReadOnly Property PMP_OFF() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PMP_OFF", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property PMP_ON() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PMP_ON", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
         Friend Shared ReadOnly Property RUN_AS_ADMIN_OFF() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("RUN_AS_ADMIN_OFF", resourceCulture)
@@ -697,109 +827,9 @@ Namespace My.Resources
         '''<summary>
         '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         '''</summary>
-        Friend Shared ReadOnly Property salting_00() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property SALT_ADD() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("salting_00", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_01() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_01", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_02() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_02", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_03() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_03", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_04() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_04", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_05() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_05", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_06() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_06", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_07() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_07", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_08() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_08", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_09() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_09", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property salting_10() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("salting_10", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("SALT_ADD", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -910,6 +940,16 @@ Namespace My.Resources
         Friend Shared ReadOnly Property USING_SYMBOL_ON() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("USING_SYMBOL_ON", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property WinMin() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("WinMin", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

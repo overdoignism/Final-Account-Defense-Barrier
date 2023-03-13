@@ -40,26 +40,26 @@ Partial Class FormFileExplorer
         '
         Me.ListBoxDrivers.BackColor = System.Drawing.Color.Black
         Me.ListBoxDrivers.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.ListBoxDrivers.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ListBoxDrivers.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListBoxDrivers.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.ListBoxDrivers.FormattingEnabled = True
-        Me.ListBoxDrivers.ItemHeight = 20
-        Me.ListBoxDrivers.Location = New System.Drawing.Point(24, 165)
+        Me.ListBoxDrivers.ItemHeight = 18
+        Me.ListBoxDrivers.Location = New System.Drawing.Point(24, 167)
         Me.ListBoxDrivers.Name = "ListBoxDrivers"
-        Me.ListBoxDrivers.Size = New System.Drawing.Size(221, 160)
+        Me.ListBoxDrivers.Size = New System.Drawing.Size(221, 144)
         Me.ListBoxDrivers.TabIndex = 0
         '
         'ListBoxFiles
         '
         Me.ListBoxFiles.BackColor = System.Drawing.Color.Black
         Me.ListBoxFiles.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.ListBoxFiles.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ListBoxFiles.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListBoxFiles.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.ListBoxFiles.FormattingEnabled = True
-        Me.ListBoxFiles.ItemHeight = 20
-        Me.ListBoxFiles.Location = New System.Drawing.Point(272, 165)
+        Me.ListBoxFiles.ItemHeight = 18
+        Me.ListBoxFiles.Location = New System.Drawing.Point(273, 167)
         Me.ListBoxFiles.Name = "ListBoxFiles"
-        Me.ListBoxFiles.Size = New System.Drawing.Size(604, 340)
+        Me.ListBoxFiles.Size = New System.Drawing.Size(604, 324)
         Me.ListBoxFiles.TabIndex = 3
         '
         'ButtonCancel
@@ -104,10 +104,11 @@ Partial Class FormFileExplorer
         '
         'LabelPath
         '
+        Me.LabelPath.AutoEllipsis = True
         Me.LabelPath.BackColor = System.Drawing.Color.Black
-        Me.LabelPath.Font = New System.Drawing.Font("Arial Narrow", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelPath.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelPath.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LabelPath.Location = New System.Drawing.Point(193, 64)
+        Me.LabelPath.Location = New System.Drawing.Point(193, 65)
         Me.LabelPath.Name = "LabelPath"
         Me.LabelPath.Size = New System.Drawing.Size(683, 19)
         Me.LabelPath.TabIndex = 119

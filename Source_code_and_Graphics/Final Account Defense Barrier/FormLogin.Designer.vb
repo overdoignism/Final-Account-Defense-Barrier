@@ -25,6 +25,9 @@ Partial Class FormLogin
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormLogin))
         Me.TextBoxPwd = New System.Windows.Forms.TextBox()
         Me.TextBoxPwdVerify = New System.Windows.Forms.TextBox()
+        Me.PictureSalt = New System.Windows.Forms.PictureBox()
+        Me.PicturePMP = New System.Windows.Forms.PictureBox()
+        Me.PictureWinMin = New System.Windows.Forms.PictureBox()
         Me.PictureBoxGPUS = New System.Windows.Forms.PictureBox()
         Me.PictureBoxGenPwd = New System.Windows.Forms.PictureBox()
         Me.PictureBoxMIT = New System.Windows.Forms.PictureBox()
@@ -39,6 +42,9 @@ Partial Class FormLogin
         Me.PicCAP1 = New System.Windows.Forms.PictureBox()
         Me.PictureBoxLogin = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureSalt, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PicturePMP, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxGPUS, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxGenPwd, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxMIT, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,6 +85,41 @@ Partial Class FormLogin
         Me.TextBoxPwdVerify.Size = New System.Drawing.Size(499, 22)
         Me.TextBoxPwdVerify.TabIndex = 2
         Me.TextBoxPwdVerify.UseSystemPasswordChar = True
+        '
+        'PictureSalt
+        '
+        Me.PictureSalt.BackColor = System.Drawing.Color.Black
+        Me.PictureSalt.Cursor = System.Windows.Forms.Cursors.Default
+        Me.PictureSalt.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SALT_ADD
+        Me.PictureSalt.Location = New System.Drawing.Point(175, 247)
+        Me.PictureSalt.Name = "PictureSalt"
+        Me.PictureSalt.Size = New System.Drawing.Size(38, 32)
+        Me.PictureSalt.TabIndex = 124
+        Me.PictureSalt.TabStop = False
+        Me.PictureSalt.Visible = False
+        '
+        'PicturePMP
+        '
+        Me.PicturePMP.BackColor = System.Drawing.Color.Black
+        Me.PicturePMP.Cursor = System.Windows.Forms.Cursors.Default
+        Me.PicturePMP.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.PMP_ON
+        Me.PicturePMP.Location = New System.Drawing.Point(357, 42)
+        Me.PicturePMP.Name = "PicturePMP"
+        Me.PicturePMP.Size = New System.Drawing.Size(168, 22)
+        Me.PicturePMP.TabIndex = 123
+        Me.PicturePMP.TabStop = False
+        Me.PicturePMP.Visible = False
+        '
+        'PictureWinMin
+        '
+        Me.PictureWinMin.BackColor = System.Drawing.Color.Black
+        Me.PictureWinMin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureWinMin.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.WinMin
+        Me.PictureWinMin.Location = New System.Drawing.Point(141, 8)
+        Me.PictureWinMin.Name = "PictureWinMin"
+        Me.PictureWinMin.Size = New System.Drawing.Size(30, 26)
+        Me.PictureWinMin.TabIndex = 122
+        Me.PictureWinMin.TabStop = False
         '
         'PictureBoxGPUS
         '
@@ -239,6 +280,9 @@ Partial Class FormLogin
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(538, 717)
         Me.ControlBox = False
+        Me.Controls.Add(Me.PictureSalt)
+        Me.Controls.Add(Me.PicturePMP)
+        Me.Controls.Add(Me.PictureWinMin)
         Me.Controls.Add(Me.PictureBoxGPUS)
         Me.Controls.Add(Me.PictureBoxGenPwd)
         Me.Controls.Add(Me.PictureBoxMIT)
@@ -266,6 +310,9 @@ Partial Class FormLogin
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Login"
         Me.TransparencyKey = System.Drawing.Color.Lime
+        CType(Me.PictureSalt, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PicturePMP, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxGPUS, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxGenPwd, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxMIT, System.ComponentModel.ISupportInitialize).EndInit()
@@ -301,4 +348,7 @@ Partial Class FormLogin
     Friend WithEvents PictureBoxGenPwd As PictureBox
     Friend WithEvents PictureBoxGPUS As PictureBox
     Friend WithEvents PictureGray As PictureBox
+    Friend WithEvents PictureWinMin As PictureBox
+    Friend WithEvents PicturePMP As PictureBox
+    Friend WithEvents PictureSalt As PictureBox
 End Class

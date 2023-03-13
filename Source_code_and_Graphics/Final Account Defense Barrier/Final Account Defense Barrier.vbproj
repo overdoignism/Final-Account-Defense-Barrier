@@ -141,10 +141,10 @@
     <Compile Include="FormMIT.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormSalt.Designer.vb">
-      <DependentUpon>FormSalt.vb</DependentUpon>
+    <Compile Include="FormHASH.Designer.vb">
+      <DependentUpon>FormHASH.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormSalt.vb">
+    <Compile Include="FormHASH.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Resource1.Designer.vb">
@@ -231,14 +231,14 @@
     <EmbeddedResource Include="FormMIT.resx">
       <DependentUpon>FormMIT.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormSalt.resx">
-      <DependentUpon>FormSalt.vb</DependentUpon>
+    <EmbeddedResource Include="FormHASH.resx">
+      <DependentUpon>FormHASH.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource1.resx">
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resource1.Designer.vb</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resource1.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SmallPWDShow.resx">
       <DependentUpon>SmallPWDShow.vb</DependentUpon>
@@ -341,17 +341,17 @@
     <None Include="AllResource\settings.png" />
     <None Include="AllResource\button_CAT_DEL.png" />
     <None Include="AllResource\button_CAT_TRANS.png" />
-    <None Include="AllResource\salting_00.png" />
-    <None Include="AllResource\salting_01.png" />
-    <None Include="AllResource\salting_02.png" />
-    <None Include="AllResource\salting_03.png" />
-    <None Include="AllResource\salting_04.png" />
-    <None Include="AllResource\salting_05.png" />
-    <None Include="AllResource\salting_06.png" />
-    <None Include="AllResource\salting_07.png" />
-    <None Include="AllResource\salting_08.png" />
-    <None Include="AllResource\salting_09.png" />
-    <None Include="AllResource\salting_10.png" />
+    <None Include="AllResource\hash_00.png" />
+    <None Include="AllResource\hash_01.png" />
+    <None Include="AllResource\hash_02.png" />
+    <None Include="AllResource\hash_03.png" />
+    <None Include="AllResource\hash_04.png" />
+    <None Include="AllResource\hash_05.png" />
+    <None Include="AllResource\hash_06.png" />
+    <None Include="AllResource\hash_07.png" />
+    <None Include="AllResource\hash_08.png" />
+    <None Include="AllResource\hash_09.png" />
+    <None Include="AllResource\hash_10.png" />
     <None Include="AllResource\button_CATMAN_on.png" />
     <None Include="AllResource\Title_LOGIN.png" />
     <None Include="AllResource\File_expo.png" />
@@ -359,6 +359,10 @@
     <None Include="AllResource\mit_Btn.png" />
     <None Include="AllResource\button_OpenF.png" />
     <None Include="AllResource\mit_lic.png" />
+    <None Include="AllResource\WinMin.png" />
+    <None Include="AllResource\PMP_OFF.png" />
+    <None Include="AllResource\PMP_ON.png" />
+    <None Include="AllResource\SALT_ADD.png" />
     <Content Include="icon_ALL.ico" />
   </ItemGroup>
   <ItemGroup>

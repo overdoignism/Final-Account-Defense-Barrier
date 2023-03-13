@@ -8,6 +8,8 @@ Imports System.Threading
 
 Public Class FormMain
 
+    Dim TheSalt() As Byte
+
     Dim NowProcFile As String
     Dim NowDataStringCpt As String
     Dim NowTitleStringCpt As String
@@ -67,35 +69,6 @@ Public Class FormMain
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        SPMP_Set()
-        SeLock()
-        ProcessPriorityUp()
-
-        Dim Arguments() As String = Environment.GetCommandLineArgs()
-
-        For Each ArgStr As String In Arguments
-
-            If ArgStr.ToUpper = SDesktopArgu Then
-                SecureDesktop = True
-                SeuDeskName = Security.Cryptography.ProtectedData.Protect(
-                    System.Text.Encoding.Unicode.GetBytes(Random_Strs(7, 9, 0)), Nothing, DataProtectionScope.CurrentUser)
-            End If
-
-            If ArgStr.ToUpper = NONOTICEStr Then NoNotice = True
-
-            If ArgStr.ToUpper.StartsWith("OPACITY,") Then
-                Dim TMPSTR1() As String = ArgStr.Split(",")
-                If TMPSTR1.Length > 1 Then
-                    ALLOPACITY = Val(TMPSTR1(1)) / 100
-                    Me.Opacity = ALLOPACITY
-                End If
-            End If
-
-        Next
-
-        'NoNotice = True 'for test
-        'SecureDesktop = True 'for test
-
         Try
             If My.Computer.FileSystem.FileExists("Lang_MOD.TXT") Then
                 If My.Computer.FileSystem.GetFileInfo("Lang_MOD.TXT").Length <= 51200 Then
@@ -116,12 +89,67 @@ Public Class FormMain
         Catch ex As Exception
         End Try
 
+        Me.CenterToScreen()
+
+        Dim osVersion As OperatingSystem = Environment.OSVersion
+        OSver = (osVersion.Version.Major * 10) + osVersion.Version.Minor
+
+        If OSver >= 62 Then
+            SPMP_Set()
+        Else
+            MSGBOXNEW(TextStrs(63), MsgBoxStyle.Critical, TextStrs(9), Me, PictureGray)
+        End If
+
+        SeLock()
+        ProcessPriorityUp()
+
+        '===================== Arguments
+
+        Dim Arguments() As String = Environment.GetCommandLineArgs()
+
+        For Each ArgStr As String In Arguments
+
+            If ArgStr.Length <= 100 Then
+
+                If ArgStr.ToUpper = SDesktopArgu Then
+                    SecureDesktop = True
+                    SeuDeskName = Security.Cryptography.ProtectedData.Protect(
+                        System.Text.Encoding.Unicode.GetBytes(Random_Strs(7, 9, 0)), Nothing, DataProtectionScope.CurrentUser)
+                End If
+
+                If ArgStr.ToUpper = NONOTICEStr Then NoNotice = True
+
+                If ArgStr.ToUpper.StartsWith("OPACITY,") Then
+                    Dim TMPSTR1() As String = ArgStr.Split(",")
+                    If TMPSTR1.Length > 1 Then
+                        ALLOPACITY = Val(TMPSTR1(1)) / 100
+                        Me.Opacity = ALLOPACITY
+                    End If
+                End If
+
+                If ArgStr.ToUpper.StartsWith("SALT,") Then
+                    Dim TMPSTR1() As String = ArgStr.Split(",")
+                    If TMPSTR1.Length > 1 Then
+                        Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
+                        TheSalt = SHA256_Worker.ComputeHash(System.Text.Encoding.Unicode.GetBytes(TMPSTR1(1)))
+                    End If
+                End If
+
+            End If
+
+        Next
+
+        '===============================================
+
+        'NoNotice = True 'for test
+        'SecureDesktop = True 'for test
+
         Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
 
-        Me.SetStyle(ControlStyles.UserPaint, True)
-        Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-        Me.SetStyle(ControlStyles.DoubleBuffer, True)
-        Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+        'Me.SetStyle(ControlStyles.UserPaint, True)
+        'Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        'Me.SetStyle(ControlStyles.DoubleBuffer, True)
+        'Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
         '============= Load text
         ToolTip1.SetToolTip(TextBoxTitle, TextStrs(31))
@@ -150,15 +178,14 @@ Public Class FormMain
         '===========================
 
         '================================Login stage=====
-        Me.CenterToScreen()
         discontinue = False
 
         Dim TmpDR As DialogResult
 
         If SecureDesktop Then
-            TmpDR = LogInFormWork(TextStrs(59), DirName, AES_KEY_Protected, DERIVED_IDT_Protected, 0, Nothing, NoNotice, PictureGray)
+            TmpDR = LogInFormWork(TextStrs(59), DirName, AES_KEY_Protected, DERIVED_IDT_Protected, 0, Nothing, NoNotice, PictureGray, TheSalt)
         Else
-            TmpDR = LogInFormWork(TextStrs(59), DirName, AES_KEY_Protected, DERIVED_IDT_Protected, 0, Nothing, NoNotice, PictureGray, Me)
+            TmpDR = LogInFormWork(TextStrs(59), DirName, AES_KEY_Protected, DERIVED_IDT_Protected, 0, Nothing, NoNotice, PictureGray, TheSalt, Me)
         End If
 
         If TmpDR <> DialogResult.OK Then End_Program()
@@ -478,7 +505,6 @@ Public Class FormMain
         ListBox1.Items.Clear()
         ListBox1.Items.Add(TextStrs(27))
 
-
         ReDim FilesList1(0)
         Dim IDX01 As Integer = 1
         Dim IOreader1 As IO.StreamReader
@@ -573,15 +599,13 @@ Public Class FormMain
         End If
     End Sub
 
-    Private Function Delete_ACC_File(What_file As String, Ask_String As String, continuous_mode As Boolean) As Boolean
+    Private Function Delete_ACC_File(What_file As String, Ask_String As String, continuous_mode As Boolean) As Integer
 
         Dim OLDidx As Integer = ListBox1.SelectedIndex
-        Delete_ACC_File = False
+        Delete_ACC_File = 0
 
         If continuous_mode OrElse (MSGBOXNEW(Ask_String.Replace("$$$", TextBoxTitle.Text), MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok) Then
-
             Try
-
                 Dim OverWriteByte(My.Computer.FileSystem.GetFileInfo(What_file).Length - 1) As Byte
                 System.IO.File.WriteAllBytes(What_file, OverWriteByte)
                 My.Computer.FileSystem.DeleteFile(What_file)
@@ -591,11 +615,10 @@ Public Class FormMain
                 If OLDidx >= 1 Then ListBox1.SelectedIndex = OLDidx - 1
 
             Catch ex As Exception
-
-                Delete_ACC_File = True
-
+                Delete_ACC_File = 2
             End Try
-
+        Else
+            Delete_ACC_File = 1
         End If
 
     End Function
@@ -610,9 +633,9 @@ Public Class FormMain
         Dim TmpDR As DialogResult
 
         If SecureDesktop Then
-            TmpDR = LogInFormWork(TextStrs(6), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 1, Nothing, Nothing, PictureGray)
+            TmpDR = LogInFormWork(TextStrs(69), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 1, Nothing, Nothing, PictureGray, TheSalt)
         Else
-            TmpDR = LogInFormWork(TextStrs(6), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 1, Nothing, Nothing, PictureGray, Me)
+            TmpDR = LogInFormWork(TextStrs(69), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 1, Nothing, Nothing, PictureGray, TheSalt, Me)
         End If
 
         If TmpDR = DialogResult.OK Then
@@ -1154,9 +1177,9 @@ Public Class FormMain
         GetPass()
 
         If SecureDesktop Then
-            NowPassStatue = LogInFormWork(TextStrs(72), Nothing, CurrentAccountPass, Nothing, 2, NowPassStatue, Nothing, PictureGray)
+            NowPassStatue = LogInFormWork(TextStrs(72), Nothing, CurrentAccountPass, Nothing, 2, NowPassStatue, Nothing, PictureGray, TheSalt)
         Else
-            NowPassStatue = LogInFormWork(TextStrs(72), Nothing, CurrentAccountPass, Nothing, 2, NowPassStatue, Nothing, PictureGray, Me)
+            NowPassStatue = LogInFormWork(TextStrs(72), Nothing, CurrentAccountPass, Nothing, 2, NowPassStatue, Nothing, PictureGray, TheSalt, Me)
         End If
 
         Exe_Fill_Trash()
@@ -1268,12 +1291,14 @@ Public Class FormMain
 
         Dim NowDeleteAccName As String = TextBoxTitle.Text
 
-        If Not Delete_ACC_File(NowProcFile, TextStrs(8), False) Then
-            Label_Act_Msg.Text = Replace(TextStrs(40), "$$$", NowDeleteAccName)
-        Else
-            Label_Act_Msg.Text = TextStrs(67)
-            MSGBOXNEW(TextStrs(48), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
-        End If
+        Select Case Delete_ACC_File(NowProcFile, TextStrs(8), False)
+            Case 0
+                Label_Act_Msg.Text = Replace(TextStrs(40), "$$$", NowDeleteAccName)
+            Case 1
+            Case 2
+                Label_Act_Msg.Text = TextStrs(67)
+                MSGBOXNEW(TextStrs(48), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+        End Select
 
     End Sub
 
@@ -1335,9 +1360,9 @@ Public Class FormMain
         Dim TmpDR As DialogResult
 
         If SecureDesktop Then
-            TmpDR = LogInFormWork(TextStrs(6), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 1, Nothing, Nothing, PictureGray)
+            TmpDR = LogInFormWork(TextStrs(69), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 1, Nothing, Nothing, PictureGray, TheSalt)
         Else
-            TmpDR = LogInFormWork(TextStrs(6), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 1, Nothing, Nothing, PictureGray, Me)
+            TmpDR = LogInFormWork(TextStrs(69), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 1, Nothing, Nothing, PictureGray, TheSalt, Me)
         End If
 
         If TmpDR = DialogResult.OK Then
@@ -1352,7 +1377,12 @@ Public Class FormMain
                 VG_Title_Done = True
 
                 ErrFlag = WriteFile(Filename2, AESKeyCurrent, DERIVED_IDT_Current)
-                If Not ErrFlag Then ErrFlag = Delete_ACC_File(NowProcFile, TextStrs(7) + vbCrLf + vbCrLf + TextStrs(8), False)
+                If Not ErrFlag Then
+                    Select Case Delete_ACC_File(NowProcFile, TextStrs(7) + vbCrLf + vbCrLf + TextStrs(8), False)
+                        Case 2
+                            ErrFlag = True
+                    End Select
+                End If
 
                 If Not ErrFlag Then
                     Label_Act_Msg.Text = Replace(TextStrs(41), "$$$", NowTransAccName)
@@ -1503,6 +1533,10 @@ Public Class FormMain
 
     Private Sub PictureBoxCATMAN_MouseLeave(sender As Object, e As EventArgs) Handles PictureBoxCATMAN.MouseLeave
         PictureBoxCATMAN.Image = BTN_CATMAN
+    End Sub
+
+    Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
+        Me.WindowState = FormWindowState.Minimized
     End Sub
 
 

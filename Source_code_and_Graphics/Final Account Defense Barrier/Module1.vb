@@ -40,9 +40,9 @@ Module Module1
     Public CAPoff As New Bitmap(My.Resources.Resource1.caps_lock_off)
 
     Public ALLOPACITY As Single = 1.0F
+    Public OSver As Integer
 
     Public Const MainWebURL As String = "https://github.com/overdoignism/Final-Account-Defense-Barrier"
-
     Public Const File_Limit As Long = 134217728
 
     Public SCutChar() As String = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G",
@@ -66,7 +66,7 @@ Module Module1
         "Confirm",
         "Do you want to delete this catalog ""$$$"" ?",'10
         "It will transform ""$$$"" to other catalog.",
-        "You need to input the target key in the next step.",
+        "You need to input the target catalog password in the next step.",
         "Do you want update this account ""$$$"" ?", '13
         "It will transform catalog ""$$$"" to other one.",
         "Please confirm by entering ""DELETE"" in the text box.",
@@ -117,13 +117,13 @@ Module Module1
         "Settings",
         "File Explorer",
         "Catalog loaded.",
-        "--", '63
+        "The Windows version is too low to enable" + vbCrLf + vbCrLf + """Process Mitigation Policy"" security measures." + vbCrLf + vbCrLf + "At least Windows 8 or Windows Server 2012 or later versions are required." + vbCrLf + vbCrLf + "(It is recommended to use Windows 10 version 20H2 or later)",
         "Some files or directory could not be deleted." + vbCrLf + vbCrLf + "Please check if you have appropriate permissions.",
         "The file is inaccessible." + vbCrLf + vbCrLf + "Maybe permissions insufficient, or corruption / misplacement.",
         "File write failed." + vbCrLf + vbCrLf + "Insufficient access rights or disk error.",
         "(Some error happend)",'67
         "Account ""$$$"" opened.",'68
-        "--", '69
+        "Catalog password input", '69
         "--",
         "Generator don't use symbols", '71
         "Account Password Input",
@@ -431,7 +431,7 @@ Module Module1
 
     Public Function LogInFormWork(TitleStr As String, ByRef ThisTimeDir As String, ByRef ThisTimeKey() As Byte,
                                   ByRef ThisTimeDIP() As Byte, WorkMode As Integer, PwdState As Integer,
-                                  NoNotice As Boolean, ByRef FFPicBox As PictureBox, Optional ByRef FirerForm As FormMain = Nothing) As DialogResult
+                                  NoNotice As Boolean, ByRef FFPicBox As PictureBox, ByRef WorkSalt() As Byte, Optional ByRef FirerForm As FormMain = Nothing) As DialogResult
 
         LogInFormWork = DialogResult.Cancel
         Dim LIFWRtn As DialogResult = DialogResult.Cancel
@@ -444,6 +444,7 @@ Module Module1
         Dim RunSDMode As Boolean
 
         LIFW.WorkMode = WorkMode
+        LIFW.This_Time_Salt = WorkSalt
 
         Select Case WorkMode
             Case 0 '0=Start mode 

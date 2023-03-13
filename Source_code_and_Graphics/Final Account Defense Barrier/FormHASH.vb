@@ -2,12 +2,12 @@
 'Copyright (c) 2023 overdoingism Labs.
 'https://github.com/overdoignism/Final-Account-Defense-Barrier
 
-Public Class FormSalt
+Public Class FormHASH
 
-    Public PROG_10() As Bitmap = {My.Resources.Resource1.salting_01,
-    My.Resources.Resource1.salting_02, My.Resources.Resource1.salting_03, My.Resources.Resource1.salting_04,
-    My.Resources.Resource1.salting_05, My.Resources.Resource1.salting_06, My.Resources.Resource1.salting_07,
-    My.Resources.Resource1.salting_08, My.Resources.Resource1.salting_09, My.Resources.Resource1.salting_10}
+    Public PROG_10() As Bitmap = {My.Resources.Resource1.hash_01,
+    My.Resources.Resource1.hash_02, My.Resources.Resource1.hash_03, My.Resources.Resource1.hash_04,
+    My.Resources.Resource1.hash_05, My.Resources.Resource1.hash_06, My.Resources.Resource1.hash_07,
+    My.Resources.Resource1.hash_08, My.Resources.Resource1.hash_09, My.Resources.Resource1.hash_10}
 
     Public Progass10 As Integer
 

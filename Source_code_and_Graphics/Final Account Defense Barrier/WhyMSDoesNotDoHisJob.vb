@@ -38,7 +38,7 @@ Module SPMP
         Suc1 = SetProcessMitigationPolicy(3, ptr1, 4)
         Marshal.FreeHGlobal(ptr1)
 
-        'Set ProcessSystemCallDisablePolicy with all = 4 (Media Read only protect)
+        'Set ProcessSystemCallDisablePolicy with all = 4 (Media Read only protect error)
         'Set ProcessMitigationOptionsMask = 5 (Not to use)
 
         'Set ProcessExtensionPointDisablePolicy = 6
@@ -75,7 +75,7 @@ Module SPMP
         'Set ProcessPayloadRestrictionPolicy =12 (??? undocument? 87error)
         'Set ProcessChildProcessPolicy = 13 (make restart fail)
 
-        'Set ProcessSideChannelIsolationPolicy = 14 
+        'Set ProcessSideChannelIsolationPolicy = 14 (Win10 1809)
         sp = &B1111 'bit 5 cant use
         Dim ptr8 As IntPtr = Marshal.AllocHGlobal(4)
         Marshal.StructureToPtr(sp, ptr8, False)
