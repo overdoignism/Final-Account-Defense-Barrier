@@ -19,7 +19,9 @@ Public Class SmallDecoderPass
         TextBoxPWDStr.Text = System.Text.Encoding.UTF8.GetString(Security.Cryptography.ProtectedData.Unprotect(InputByte, Nothing, DataProtectionScope.CurrentUser))
 
         If Workmode = 1 Then
-            My.Computer.Clipboard.SetText(TextBoxPWDStr.Text)
+            If TextBoxPWDStr.Text <> "" Then
+                My.Computer.Clipboard.SetText(TextBoxPWDStr.Text)
+            End If
         End If
 
         For idx01 As Integer = 0 To 8192
