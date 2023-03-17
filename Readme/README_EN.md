@@ -2,6 +2,7 @@
 
 1.  This program is licensed under MIT License. It is a free and open source software, so the author does not assume any direct or indirect responsibility, please evaluate it yourself and use it after you can accept it.
 2.  The fonts used in the UI graphic of this program are "Zen Antique" and "DSEG Font Family (v0.46)" , both licensed under SIL Open Font License v1.1.
+3.  Special thanks to Keepass for providing the security concept, and to ChatGPT for providing some of the code.
 
 ## Who is this program suitable for?
 
@@ -47,6 +48,11 @@
 *   If you rename the language file to Lang\_MOD.TXT, the interface will display in the corresponding language (Text message only; Graphic part will not change).
 *   You can use the command line parameter "NONOTICE" to hide the NOTICE at the bottom of the window. (Please read it once before hiding.)
 *   You can use the command line parameter "OPACITY,nn" to set the window opacity. (100 = opaque (default), and the initial version is fixed at 93.)
+
+### Cryptocurrency related Operations
+
+*   No validation is required when using BIP39 passphrase, as it is automatically verified.
+*   Before save, certain errors in cryptocurrency addresses will be automatically detected. Currently, BTC (TRX, Doge, LTC), ETH and compatible coins are supported.
 
 ### Backup operation
 

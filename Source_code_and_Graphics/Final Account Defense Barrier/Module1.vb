@@ -13,8 +13,15 @@ Module Module1
         Public FileIsBad As Boolean
     End Structure
 
+    Public Structure BIP39Str
+        Public BIP39Word() As String
+    End Structure
+
+    Public BIP39_Word(9) As BIP39Str
+
     Public AES_KEY_Protected() As Byte
     Public DERIVED_IDT_Protected() As Byte
+    Public UIMode As Integer = 0
 
     Public DirName As String
     Public CAT_setting_Str() As String
@@ -41,6 +48,7 @@ Module Module1
 
     Public ALLOPACITY As Single = 1.0F
     Public OSver As Integer
+
 
     Public Const MainWebURL As String = "https://github.com/overdoignism/Final-Account-Defense-Barrier"
     Public Const File_Limit As Long = 134217728
@@ -88,8 +96,8 @@ Module Module1
         "Title. This field is required.",'31
         "URL or program path.",
         "Username or cryptocurrency address.",
-        "Password or cryptocurrency private key / mnemonic phrase.",
-        "Password verification to prevent typos.",
+        "Input password, private key or passphrase.",
+        "The validation to prevent typos. (Omit when using BIP39)",
         "Registed e-mail or cell phone number.",
         "Note 2. For invisible message.",
         "Filename:",'38 
@@ -136,10 +144,17 @@ Module Module1
          "30 min", '79
          "Current folder:",
          "Hotkey ($$$) registration failed: possible conflict with existing hotkeys." + vbCrLf + vbCrLf + "Please avoid using the same hotkey and reconfigure.",
-         "The password validation mismatch."
+         "The validation string is mismatched.",
+         "The validation string is empty and the input doesn't pass the BIP39 rule." + vbCrLf + vbCrLf + "If you're using BIP39, the problem could be:" + vbCrLf + vbCrLf, '83
+         "Incorrect format or word count." + vbCrLf + vbCrLf + "An unknown word appeared. Maybe a typo." + vbCrLf + vbCrLf + "Bad checksum, probably in the wrong order.",
+         "Detected an invaild $$$ (or its compatible coin) address, this may caused by:" + vbCrLf + vbCrLf,'85
+         "Typo, case error, order error." + vbCrLf + vbCrLf + "Length too logn or too short, or copy-paste miss." + vbCrLf + vbCrLf + "Misjudgment. It's not a $$$ address." + vbCrLf + vbCrLf,
+         "Do you want to continue or cancel?" '87
     }
     '"By Random Generator",
     '"By SHA512of128 (x1024)" '70
+
+    Public CoinList() As String = {"-", "BTC", "TRX", "Doge", "LTC", "ETH", "BTC"}
 
     Public HotKeyID1 As Integer = 1100
     Public HotKeyID2 As Integer = 2100
@@ -238,6 +253,17 @@ Module Module1
         If Input_Bytes IsNot Nothing Then
             For IDX01 As Integer = 0 To UBound(Input_Bytes)
                 Input_Bytes(IDX01) = 0
+            Next
+
+        End If
+
+    End Sub
+
+    Public Sub WipeUINT(ByRef Input_Uint() As UInteger)
+
+        If Input_Uint IsNot Nothing Then
+            For IDX01 As Integer = 0 To UBound(Input_Uint)
+                Input_Uint(IDX01) = 0
             Next
 
         End If
@@ -457,7 +483,6 @@ Module Module1
                 LIFW.PwdState = PwdState
         End Select
 
-
         If FirerForm Is Nothing Then
 
             Dim Old_hDesktop As IntPtr = GetThreadDesktop(GetCurrentThreadId())
@@ -572,7 +597,7 @@ Module Module1
     Public Function Get_RangeRnd_ByRNG(minValue As Long, maxValue As Long) As Long
 
         ' 產生一個隨機數產生器
-        Dim rng As New RNGCryptoServiceProvider()
+        Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
 
         ' 產生一個 4 bytes 的隨機數字範圍 (0 ~ 4294967295)
         Dim randomBytes(3) As Byte
@@ -586,11 +611,11 @@ Module Module1
 
     Public Sub Exe_Fill_Trash(Optional BigNum As Integer = 1)
         Dim FillTrash() As String
-        Dim Big2 As Integer = 32767 * BigNum
+        Dim Big2 As Integer = 8 * BigNum
 
-        For idx01 As Integer = 0 To Big2
+        For idx01 As Integer = 0 To 32767
             ReDim Preserve FillTrash(idx01)
-            FillTrash(idx01) = New String("x", 8)
+            FillTrash(idx01) = New String("x", Big2)
         Next
     End Sub
 
@@ -656,6 +681,21 @@ Module Module1
         WhatImgToPut.Visible = False
         WhatImgToPut.SendToBack()
         My.Application.DoEvents()
+    End Sub
+
+    Public Sub Load_BIP39_Word()
+
+        BIP39_Word(0).BIP39Word = My.Resources.Resource1.BIP39_ENG.Split(",")
+        BIP39_Word(1).BIP39Word = My.Resources.Resource1.BIP39_CZ.Split(",")
+        BIP39_Word(2).BIP39Word = My.Resources.Resource1.BIP39_FR.Split(",")
+        BIP39_Word(3).BIP39Word = My.Resources.Resource1.BIP39_ITA.Split(",")
+        BIP39_Word(4).BIP39Word = My.Resources.Resource1.BIP39_JP.Split(",")
+        BIP39_Word(5).BIP39Word = My.Resources.Resource1.BIP39_KOR.Split(",")
+        BIP39_Word(6).BIP39Word = My.Resources.Resource1.BIP39_POR.Split(",")
+        BIP39_Word(7).BIP39Word = My.Resources.Resource1.BIP39_SPA.Split(",")
+        BIP39_Word(8).BIP39Word = My.Resources.Resource1.BIP39_ZHCN.Split(",")
+        BIP39_Word(9).BIP39Word = My.Resources.Resource1.BIP39_ZHTW.Split(",")
+
     End Sub
 
 End Module

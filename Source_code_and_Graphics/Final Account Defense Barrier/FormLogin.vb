@@ -34,14 +34,8 @@ Public Class FormLogin
     Dim RUNASOff As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_OFF)
     Public IsUseRUNAS As Boolean
 
-    Dim RESTART_NOR As New Bitmap(My.Resources.Resource1.button_RESTART_Off)
-    Dim RESTART_HOV As New Bitmap(My.Resources.Resource1.button_RESTART_On)
-
-    Dim BT_FIN As New Bitmap(My.Resources.Resource1.button_Final)
     Dim BT_CANCEL As New Bitmap(My.Resources.Resource1.button_Cancel)
 
-    Dim US_ON As New Bitmap(My.Resources.Resource1.USING_SYMBOL_ON)
-    Dim US_OFF As New Bitmap(My.Resources.Resource1.USING_SYMBOL_OFF)
     Dim GP_Use_Symbol As Boolean = True
 
     Private Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Integer, ByVal dwExtraInfo As Integer)
@@ -54,7 +48,7 @@ Public Class FormLogin
         Select Case WorkMode
             Case 0 ' Login Mode
 
-                Me.ButtonCancel.Image = Me.BT_FIN
+                Me.ButtonCancel.Image = My.Resources.Resource1.button_Final
 
                 Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
                 ToolTip1.SetToolTip(TextBoxPwd, TextStrs(3))
@@ -64,9 +58,10 @@ Public Class FormLogin
                 Dim RAAMode As Boolean = New WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)
                 PictureBoxRUNAS.Enabled = Not RAAMode
                 If RAAMode Then PictureBoxRUNAS.Image = RUNASOn
-                If This_Time_Salt IsNot Nothing Then PictureSalt.Visible = True
+                If This_Time_Salt IsNot Nothing Then PictureSalt.Image = My.Resources.Resource1.SALT_ADD
                 If OSver < 62 Then PicturePMP.Image = New Bitmap(My.Resources.Resource1.PMP_OFF)
                 Me.PicturePMP.Visible = True
+                Me.PictureSalt.Visible = True
 
             Case 1 ' Non Loging Mode
                 Me.PictureBoxSD.Visible = False
@@ -161,9 +156,27 @@ Public Class FormLogin
             Case 0, 1
                 GoNext(System.Text.Encoding.Unicode.GetBytes(TextBoxPwd.Text), False)
             Case 2
-                If TextBoxPwd.Text <> TextBoxPwdVerify.Text Then
-                    MSGBOXNEW(TextStrs(82), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
-                    Exit Sub
+
+                If String.CompareOrdinal(TextBoxPwd.Text, TextBoxPwdVerify.Text) <> 0 Then
+                    If TextBoxPwdVerify.Text = "" Then
+
+                        Select Case CheckBIP39(TextBoxPwd.Text)
+                            Case 0
+                            Case 1
+                                MSGBOXNEW(TextStrs(83) + TextStrs(84), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                                Exit Sub
+                            Case 2
+                                MSGBOXNEW(TextStrs(83) + TextStrs(85), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                                Exit Sub
+                            Case 3
+                                MSGBOXNEW(TextStrs(83) + TextStrs(86), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                                Exit Sub
+                        End Select
+
+                    Else
+                        MSGBOXNEW(TextStrs(82), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                        Exit Sub
+                    End If
                 End If
 
                 PassByte = Security.Cryptography.ProtectedData.Protect(
@@ -175,6 +188,7 @@ Public Class FormLogin
                 ClearTextBox(TextBoxPwdVerify)
 
                 Me.DialogResult = DialogResult.OK
+
         End Select
 
     End Sub
@@ -450,19 +464,19 @@ Public Class FormLogin
 
     Private Sub PictureBoxGPUS_Click(sender As Object, e As EventArgs) Handles PictureBoxGPUS.Click
         If Not GP_Use_Symbol Then
-            PictureBoxGPUS.Image = US_ON
+            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_ON
         Else
-            PictureBoxGPUS.Image = US_OFF
+            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_OFF
         End If
         GP_Use_Symbol = Not GP_Use_Symbol
     End Sub
 
     Private Sub Button_Restart_MouseHover(sender As Object, e As EventArgs) Handles Button_Restart.MouseHover
-        Button_Restart.Image = RESTART_HOV
+        Button_Restart.Image = My.Resources.Resource1.button_RESTART_On
     End Sub
 
     Private Sub Button_Restart_MouseLeave(sender As Object, e As EventArgs) Handles Button_Restart.MouseLeave
-        Button_Restart.Image = RESTART_NOR
+        Button_Restart.Image = My.Resources.Resource1.button_RESTART_Off
     End Sub
 
     Private lastLocation As Point
@@ -495,5 +509,91 @@ Public Class FormLogin
         ' 當滑鼠左鍵釋放時，重設 isMouseDown 變數
         isMouseDown = False
     End Sub
+
+    Public Function CheckBIP39(ByRef BIP39Str As String) As Integer
+
+        Dim LotInt() As UInteger
+
+        Dim PassLevel As Integer = 0
+        'PassLevel 0 : Pass
+        'PassLevel 1 : Length not match
+        'PassLevel 2 : Word not in list
+        'PassLevel 3 : CheckSum error
+
+        Dim WorkStr() As String = BIP39Str.Split(" ")
+        If WorkStr.Length Mod 3 <> 0 Then PassLevel = 1
+        If WorkStr.Length > 24 Then PassLevel = 1
+
+        If PassLevel = 1 Then 'Why Japanese word make trouble
+            PassLevel = 0
+            WorkStr = BIP39Str.Split("　")
+            If WorkStr.Length Mod 3 <> 0 Then PassLevel = 1
+            If WorkStr.Length > 24 Then PassLevel = 1
+        End If
+
+        If PassLevel = 0 Then
+
+            For IDX01 As Integer = 0 To WorkStr.Length - 1
+
+                ReDim Preserve LotInt(IDX01)
+                PassLevel = 2
+
+                For IDX02 As Integer = 0 To 9
+                    For IDX03 As Integer = 0 To 2047
+                        If String.CompareOrdinal(WorkStr(IDX01), BIP39_Word(IDX02).BIP39Word(IDX03)) = 0 Then
+                            LotInt(IDX01) = IDX03
+                            PassLevel = 0
+                            Exit For
+                        End If
+                    Next
+                    If PassLevel = 0 Then Exit For
+                Next
+                If PassLevel = 2 Then Exit For
+            Next
+
+        End If
+
+        If PassLevel = 0 Then
+
+            Dim LastDigi As UInteger
+            Dim CheckSumVal As Byte
+            Dim TheBIP39Tmp As UInteger
+            Dim TBIP39IDX As Integer = 0
+            Dim TmpBytes() As Byte
+            Dim TheBIP39Bytes(((WorkStr.Length / 3) * 4) - 1) As Byte
+
+            For IDX01 As Integer = 0 To WorkStr.Length - 1 Step 3
+
+                TheBIP39Tmp = (LastDigi << (32 - TBIP39IDX))
+                TheBIP39Tmp += (LotInt(IDX01) << (21 - TBIP39IDX))
+                TheBIP39Tmp += (LotInt(IDX01 + 1) << (10 - TBIP39IDX))
+                TheBIP39Tmp += (LotInt(IDX01 + 2) >> (1 + TBIP39IDX))
+
+                LastDigi = LotInt(IDX01 + 2) Mod (2 ^ (TBIP39IDX + 1))
+
+                TmpBytes = BitConverter.GetBytes(TheBIP39Tmp)
+                Array.Reverse(TmpBytes)
+                Array.Copy(TmpBytes, 0, TheBIP39Bytes, TBIP39IDX * 4, 4)
+                TBIP39IDX += 1
+
+            Next
+
+            Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
+            CheckSumVal = SHA256_Worker.ComputeHash(TheBIP39Bytes)(0) >> (8 - TBIP39IDX)
+            SHA256_Worker.Dispose()
+
+            If LastDigi <> CheckSumVal Then PassLevel = 3
+
+            'TextBox3.Text = ByteIn_StringOut(TheBIP39Bytes)
+            'TextBox4.Text = Str(LastDigi) + " - " + Str(CheckSumVal)
+
+        End If
+
+        ReDim WorkStr(0)
+        WipeUINT(LotInt)
+
+        Return PassLevel
+
+    End Function
 
 End Class

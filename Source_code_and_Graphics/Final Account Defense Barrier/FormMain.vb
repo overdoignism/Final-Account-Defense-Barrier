@@ -22,6 +22,7 @@ Public Class FormMain
 
     Private VG_Data_Done As Boolean = False
     Private VG_Title_Done As Boolean = False
+    Private VG_CCC_Done As Boolean = False
     Private FillTrash() As String
 
     Public SecureDesktop As Boolean = False
@@ -38,7 +39,6 @@ Public Class FormMain
     Dim LBTN_MoveD_En As New Bitmap(My.Resources.Resource1.button_L_moveDWN)
     Dim LBTN_TKey_En As New Bitmap(My.Resources.Resource1.button_L_transKEY)
     Dim LBTN_FInfo_En As New Bitmap(My.Resources.Resource1.button_L_fileInfo)
-
     Dim LBTN_Save_Di As New Bitmap(My.Resources.Resource1.button_L_save_DI)
     Dim LBTN_Del_Di As New Bitmap(My.Resources.Resource1.button_L_delete_DI)
     Dim LBTN_MoveU_Di As New Bitmap(My.Resources.Resource1.button_L_moveUP_DI)
@@ -52,9 +52,6 @@ Public Class FormMain
     My.Resources.Resource1.DIGI_Y_8, My.Resources.Resource1.DIGI_Y_9}
 
     Public DIGI_NUM_N As New Bitmap(My.Resources.Resource1.DIGI_Y__)
-
-    Dim BTN_CATMAN As New Bitmap(My.Resources.Resource1.button_CATMAN)
-    Dim BTN_CATMAN_On As New Bitmap(My.Resources.Resource1.button_CATMAN_on)
 
     Public WithEvents AutoCloseTimer As New Windows.Forms.Timer
 
@@ -143,6 +140,8 @@ Public Class FormMain
 
         'NoNotice = True 'for test
         'SecureDesktop = True 'for test
+
+        Load_BIP39_Word()
 
         Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
 
@@ -248,6 +247,7 @@ Public Class FormMain
         ButtonSave.Image = LBTN_Save_Di
         ButtonDelete.Enabled = False
         ButtonDelete.Image = LBTN_Del_Di
+        VG_CCC_Done = False
 
         TextBoxNote2Hid.UseSystemPasswordChar = True
         ButtonViewNote.Image = BTN_ViewHidden
@@ -594,9 +594,14 @@ Public Class FormMain
     End Sub
 
     Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextBoxNameAddr.TextChanged
-        If InStr(TextBoxNameAddr.Text, "@") > 0 And InStr(TextBoxNameAddr.Text, ".") > 0 Then
-            TextBoxRegMailPhone.Text = TextBoxNameAddr.Text
+
+        If Not ReadingWorking Then
+            VG_CCC_Done = True
+            If InStr(TextBoxNameAddr.Text, "@") > 0 And InStr(TextBoxNameAddr.Text, ".") > 0 Then
+                TextBoxRegMailPhone.Text = TextBoxNameAddr.Text
+            End If
         End If
+
     End Sub
 
     Private Function Delete_ACC_File(What_file As String, Ask_String As String, continuous_mode As Boolean) As Integer
@@ -1182,7 +1187,9 @@ Public Class FormMain
             NowPassStatue = LogInFormWork(TextStrs(72), Nothing, CurrentAccountPass, Nothing, 2, NowPassStatue, Nothing, PictureGray, TheSalt, Me)
         End If
 
-        Exe_Fill_Trash()
+        FullGC()
+        Exe_Fill_Trash(0.5)
+        Exe_Fill_Trash(1)
         FullGC()
 
         If NowPassStatue >= 3 Then
@@ -1245,8 +1252,22 @@ Public Class FormMain
 
         Dim NowSaveAccName As String = TextBoxTitle.Text
 
+        If (TextBoxNameAddr.Text.Length > 20) And VG_CCC_Done Then
+            Dim CCC As New CryptoCurrencyChk
+            CCC.DetectCurrency(TextBoxNameAddr.Text)
+            If CCC.DetectState = 1 Then
+                Dim WorkStr As String = (TextStrs(85) + TextStrs(86) + TextStrs(87)).Replace("$$$", CoinList(CCC.DetectType))
+                If MSGBOXNEW(WorkStr, MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Cancel Then
+                    Exit Sub
+                End If
+            End If
+            CCC.Dispose()
+        End If
+
         If NowProcFile = "" Then
-            If MSGBOXNEW(TextStrs(51).Replace("$$$", TextBoxTitle.Text), MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok Then
+            If MSGBOXNEW(TextStrs(51).Replace("$$$", TextBoxTitle.Text), MsgBoxStyle.OkCancel,
+                         TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok Then
+
                 Dim Filename2 As String = Get_New_ACC_Filename(DirName)
 
                 If Not WriteFile(Filename2, AES_KEY_Protected, DERIVED_IDT_Protected) Then
@@ -1528,11 +1549,11 @@ Public Class FormMain
     End Sub
 
     Private Sub PictureBoxCATMAN_MouseHover(sender As Object, e As EventArgs) Handles PictureBoxCATMAN.MouseHover
-        PictureBoxCATMAN.Image = BTN_CATMAN_On
+        PictureBoxCATMAN.Image = My.Resources.Resource1.button_CATMAN_on
     End Sub
 
     Private Sub PictureBoxCATMAN_MouseLeave(sender As Object, e As EventArgs) Handles PictureBoxCATMAN.MouseLeave
-        PictureBoxCATMAN.Image = BTN_CATMAN
+        PictureBoxCATMAN.Image = My.Resources.Resource1.button_CATMAN
     End Sub
 
     Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click

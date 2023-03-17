@@ -90,7 +90,7 @@ Partial Class FormLogin
         '
         Me.PictureSalt.BackColor = System.Drawing.Color.Black
         Me.PictureSalt.Cursor = System.Windows.Forms.Cursors.Default
-        Me.PictureSalt.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SALT_ADD
+        Me.PictureSalt.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SALT_NO
         Me.PictureSalt.Location = New System.Drawing.Point(175, 247)
         Me.PictureSalt.Name = "PictureSalt"
         Me.PictureSalt.Size = New System.Drawing.Size(38, 32)
