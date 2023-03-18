@@ -1192,7 +1192,7 @@ Public Class FormMain
         Exe_Fill_Trash(1)
         FullGC()
 
-        If NowPassStatue >= 3 Then
+        If (NowPassStatue >= 3) And (TextBoxTitle.Text <> "") Then
             ButtonSave.Enabled = True
             ButtonSave.Image = LBTN_Save_En
         End If
@@ -1256,7 +1256,7 @@ Public Class FormMain
             Dim CCC As New CryptoCurrencyChk
             CCC.DetectCurrency(TextBoxNameAddr.Text)
             If CCC.DetectState = 1 Then
-                Dim WorkStr As String = (TextStrs(85) + TextStrs(86) + TextStrs(87)).Replace("$$$", CoinList(CCC.DetectType))
+                Dim WorkStr As String = (TextStrs(87) + TextStrs(88) + TextStrs(89)).Replace("$$$", CoinList(CCC.DetectType))
                 If MSGBOXNEW(WorkStr, MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Cancel Then
                     Exit Sub
                 End If
@@ -1368,8 +1368,8 @@ Public Class FormMain
 
     Private Sub ButtonTransCatalog_Click(sender As Object, e As EventArgs) Handles ButtonTransCatalog.Click
 
-        If MSGBOXNEW(TextStrs(11).Replace("$$$", TextBoxTitle.Text) + vbCrLf + vbCrLf + TextStrs(12),
-                     MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Cancel Then Exit Sub
+        MSGBOXNEW(TextStrs(11).Replace("$$$", TextBoxTitle.Text) + vbCrLf + vbCrLf + TextStrs(12),
+                     MsgBoxStyle.OkOnly, TextStrs(9), Me, PictureGray)
 
         Dim NowTransAccName As String = TextBoxTitle.Text
 
@@ -1559,8 +1559,6 @@ Public Class FormMain
     Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
-
-
 
     'For Textbox lighton
 

@@ -65,6 +65,7 @@ Partial Class FormLogin
         '
         Me.TextBoxPwd.BackColor = System.Drawing.Color.FromArgb(CType(CType(44, Byte), Integer), CType(CType(22, Byte), Integer), CType(CType(22, Byte), Integer))
         Me.TextBoxPwd.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBoxPwd.Enabled = False
         Me.TextBoxPwd.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxPwd.ForeColor = System.Drawing.Color.White
         Me.TextBoxPwd.Location = New System.Drawing.Point(19, 294)
@@ -72,12 +73,14 @@ Partial Class FormLogin
         Me.TextBoxPwd.Size = New System.Drawing.Size(499, 22)
         Me.TextBoxPwd.TabIndex = 1
         Me.TextBoxPwd.UseSystemPasswordChar = True
+        Me.TextBoxPwd.Visible = False
         Me.TextBoxPwd.WordWrap = False
         '
         'TextBoxPwdVerify
         '
         Me.TextBoxPwdVerify.BackColor = System.Drawing.Color.FromArgb(CType(CType(44, Byte), Integer), CType(CType(22, Byte), Integer), CType(CType(22, Byte), Integer))
         Me.TextBoxPwdVerify.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBoxPwdVerify.Enabled = False
         Me.TextBoxPwdVerify.Font = New System.Drawing.Font("Arial", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBoxPwdVerify.ForeColor = System.Drawing.Color.White
         Me.TextBoxPwdVerify.Location = New System.Drawing.Point(19, 379)
@@ -85,6 +88,8 @@ Partial Class FormLogin
         Me.TextBoxPwdVerify.Size = New System.Drawing.Size(499, 22)
         Me.TextBoxPwdVerify.TabIndex = 2
         Me.TextBoxPwdVerify.UseSystemPasswordChar = True
+        Me.TextBoxPwdVerify.Visible = False
+        Me.TextBoxPwdVerify.WordWrap = False
         '
         'PictureSalt
         '
@@ -331,11 +336,8 @@ Partial Class FormLogin
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents TextBoxPwd As TextBox
     Friend WithEvents PictureBoxLogin As PictureBox
     Friend WithEvents PicCAP1 As PictureBox
-    Friend WithEvents TextBoxPwdVerify As TextBox
     Friend WithEvents ButtonViewPass As PictureBox
     Friend WithEvents PictureBoxSD As PictureBox
     Friend WithEvents PictureBoxRUNAS As PictureBox
@@ -351,4 +353,6 @@ Partial Class FormLogin
     Friend WithEvents PictureWinMin As PictureBox
     Friend WithEvents PicturePMP As PictureBox
     Friend WithEvents PictureSalt As PictureBox
+    Private WithEvents TextBoxPwd As TextBox
+    Private WithEvents TextBoxPwdVerify As TextBox
 End Class

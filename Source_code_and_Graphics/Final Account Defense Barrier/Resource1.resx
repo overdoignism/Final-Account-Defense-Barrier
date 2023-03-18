@@ -418,4 +418,10 @@
   <data name="SALT_NO" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\SALT_NO.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="button_no" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_no.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_yes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_yes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

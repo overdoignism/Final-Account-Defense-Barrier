@@ -68,7 +68,7 @@ File write failed.\n\nInsufficient access rights or disk error.
 (Some error happend)
 Account "$$$" opened.
 Catalog password input
---
+Detected that you used copy-paste to input.\n\nDo you want to clear the clipboard?
 Generate without symbols
 Account Password Input
 (Disabled)
@@ -82,7 +82,9 @@ Current folder:
 Hotkey ($$$) registration failed: possible conflict with existing hotkeys.\n\nPlease avoid using the same hotkey and reconfigure.
 The validation string is mismatched.
 The validation is empty and the input doesn't pass the BIP39 rule.\n\nIf you're using BIP39, this may caused by:\n\n
-Incorrect format or word count.\n\nAn unknown word appeared. Maybe a typo.\n\nBad checksum, probably in the wrong order.
+Incorrect format or word count.
+An unknown word appeared. Maybe a typo.
+Bad checksum, probably in the wrong order.
 Detected an invaild $$$ (or its compatible coin) address, this may caused by:\n\n
 Typo, case error, order error.\n\nLength too logn or too short, or copy-paste miss.\n\nMisjudgment. It's not a $$$ address.\n\n
-Do you want to countiune or cancel?
+Do you want to countiune to save?

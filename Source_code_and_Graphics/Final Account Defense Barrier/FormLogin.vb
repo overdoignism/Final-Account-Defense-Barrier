@@ -2,6 +2,8 @@
 'Copyright (c) 2023 overdoingism Labs. 
 'https://github.com/overdoignism/Final-Account-Defense-Barrier
 
+Imports System.ComponentModel
+Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
 Imports System.Security.Principal
 
@@ -38,22 +40,45 @@ Public Class FormLogin
 
     Dim GP_Use_Symbol As Boolean = True
 
-    Private Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Integer, ByVal dwExtraInfo As Integer)
+    Dim TextBoxPwd2 As New MyTextBox
+    Dim TextBoxPwdVerify2 As New MyTextBox
 
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        ClearTextBox(TextBoxPwd)
-        ClearTextBox(TextBoxPwdVerify)
+        Me.Controls.Add(TextBoxPwd2)
+        TextBoxPwd2.Location = TextBoxPwd.Location
+        TextBoxPwd2.UseSystemPasswordChar = TextBoxPwd.UseSystemPasswordChar
+        TextBoxPwd2.Size = TextBoxPwd.Size
+        TextBoxPwd2.Font = TextBoxPwd.Font
+        TextBoxPwd2.ForeColor = TextBoxPwd.ForeColor
+        TextBoxPwd2.BackColor = TextBoxPwd.BackColor
+        TextBoxPwd2.BorderStyle = TextBoxPwd.BorderStyle
+        TextBoxPwd2.BringToFront()
+        AddHandler TextBoxPwd2.KeyDown, AddressOf TextBoxPwd_KeyDown
+        AddHandler TextBoxPwd2.TextChanged, AddressOf TextBoxPwd_TextChanged
+
+        Me.Controls.Add(TextBoxPwdVerify2)
+        TextBoxPwdVerify2.Location = TextBoxPwdVerify.Location
+        TextBoxPwdVerify2.UseSystemPasswordChar = TextBoxPwdVerify.UseSystemPasswordChar
+        TextBoxPwdVerify2.Size = TextBoxPwdVerify.Size
+        TextBoxPwdVerify2.Font = TextBoxPwdVerify.Font
+        TextBoxPwdVerify2.ForeColor = TextBoxPwdVerify.ForeColor
+        TextBoxPwdVerify2.BackColor = TextBoxPwdVerify.BackColor
+        TextBoxPwdVerify2.BorderStyle = TextBoxPwdVerify.BorderStyle
+        TextBoxPwdVerify2.BringToFront()
+        AddHandler TextBoxPwdVerify2.KeyDown, AddressOf TextBoxPwd_KeyDown
+        AddHandler TextBoxPwdVerify2.TextChanged, AddressOf TextBoxPwd_TextChanged
+
+        Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
+        ToolTip1.InitialDelay = 1
 
         Select Case WorkMode
+
             Case 0 ' Login Mode
 
                 Me.ButtonCancel.Image = My.Resources.Resource1.button_Final
-
-                Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
-                ToolTip1.SetToolTip(TextBoxPwd, TextStrs(3))
-                ToolTip1.SetToolTip(TextBoxPwdVerify, TextStrs(4))
-                ToolTip1.InitialDelay = 1
+                ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
+                ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(4))
 
                 Dim RAAMode As Boolean = New WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)
                 PictureBoxRUNAS.Enabled = Not RAAMode
@@ -64,6 +89,11 @@ Public Class FormLogin
                 Me.PictureSalt.Visible = True
 
             Case 1 ' Non Loging Mode
+
+                Me.PictureBoxLogin.Image = New Bitmap(My.Resources.Resource1.Title_NORMAL)
+                ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
+                ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(4))
+
                 Me.PictureBoxSD.Visible = False
                 Me.PictureBoxRUNAS.Visible = False
                 Me.PictureBoxMIT.Visible = False
@@ -72,19 +102,19 @@ Public Class FormLogin
                 Me.PictureWinMin.Visible = False
                 Me.ButtonCancel.Image = Me.BT_CANCEL
 
-                Me.PictureBoxLogin.Image = New Bitmap(My.Resources.Resource1.Title_NORMAL)
                 Me.Height = 346
                 Me.PicCAP1.Top -= 201
                 Me.ButtonOK.Top -= 201
                 Me.ButtonFileOpen.Top -= 201
                 Me.ButtonViewPass.Top -= 201
-                Me.TextBoxPwd.Top -= 201
-                Me.TextBoxPwdVerify.Top -= 201
+                Me.TextBoxPwd2.Top -= 201
+                Me.TextBoxPwdVerify2.Top -= 201
                 Me.ButtonCancel.Top -= 201
                 Me.PictureSalt.Top -= 201
                 If This_Time_Salt IsNot Nothing Then PictureSalt.Visible = True
 
             Case 2 ' Password Mode
+
                 Me.PictureBoxSD.Visible = False
                 Me.PictureBoxRUNAS.Visible = False
                 Me.PictureBoxMIT.Visible = False
@@ -99,8 +129,8 @@ Public Class FormLogin
                 Me.PicCAP1.Top -= 201
                 Me.ButtonOK.Top -= 201
                 Me.ButtonViewPass.Top -= 201
-                Me.TextBoxPwd.Top -= 201
-                Me.TextBoxPwdVerify.Top -= 201
+                Me.TextBoxPwd2.Top -= 201
+                Me.TextBoxPwdVerify2.Top -= 201
 
                 ButtonCancel.Top = 265
                 ButtonCancel.Left = 148
@@ -113,9 +143,8 @@ Public Class FormLogin
                 PictureBoxGPUS.Top = 267
                 PictureBoxGPUS.Visible = True
 
-                Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
-                ToolTip1.SetToolTip(TextBoxPwd, TextStrs(34))
-                ToolTip1.SetToolTip(TextBoxPwdVerify, TextStrs(35))
+                ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(34))
+                ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(35))
 
                 '0=New Account, CurrentAccountPass = "" in init
                 '1=Old File Read, not decrypt
@@ -124,9 +153,9 @@ Public Class FormLogin
 
                 Select Case PwdState
                     Case 0, 2, 3
-                        TextBoxPwd.Text = System.Text.Encoding.UTF8.GetString(
+                        TextBoxPwd2.Text = System.Text.Encoding.UTF8.GetString(
                             Security.Cryptography.ProtectedData.Unprotect(PassByte, Nothing, DataProtectionScope.CurrentUser))
-                        TextBoxPwdVerify.Text = TextBoxPwd.Text
+                        TextBoxPwdVerify2.Text = TextBoxPwd2.Text
                     Case 1
                         MsgBox("It should be mistake.")
                         Me.DialogResult = DialogResult.OK
@@ -150,17 +179,36 @@ Public Class FormLogin
 
     End Sub
 
+    Private Sub TextBoxPwd_KeyDown(sender As Object, e As KeyEventArgs)
+
+        If (e.KeyCode = Keys.Enter) Then
+            GoNextPre()
+            e.Handled = True
+            e.SuppressKeyPress = True
+        End If
+
+    End Sub
+
+    Private Sub TextBoxPwd_TextChanged(sender As Object, e As EventArgs)
+        If Not ClearWorking Then sender.forecolor = EvaPwdStrong(sender)
+    End Sub
+
     Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonOK.Click
+        GoNextPre()
+    End Sub
+
+    Private Sub GoNextPre()
 
         Select Case WorkMode
+
             Case 0, 1
-                GoNext(System.Text.Encoding.Unicode.GetBytes(TextBoxPwd.Text), False)
+                GoNext(System.Text.Encoding.Unicode.GetBytes(TextBoxPwd2.Text), False)
             Case 2
 
-                If String.CompareOrdinal(TextBoxPwd.Text, TextBoxPwdVerify.Text) <> 0 Then
-                    If TextBoxPwdVerify.Text = "" Then
+                If String.CompareOrdinal(TextBoxPwd2.Text, TextBoxPwdVerify2.Text) <> 0 Then
+                    If TextBoxPwdVerify2.Text = "" Then
 
-                        Select Case CheckBIP39(TextBoxPwd.Text)
+                        Select Case CheckBIP39(TextBoxPwd2.Text)
                             Case 0
                             Case 1
                                 MSGBOXNEW(TextStrs(83) + TextStrs(84), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
@@ -180,13 +228,9 @@ Public Class FormLogin
                 End If
 
                 PassByte = Security.Cryptography.ProtectedData.Protect(
-                    System.Text.Encoding.UTF8.GetBytes(TextBoxPwd.Text), Nothing, DataProtectionScope.CurrentUser)
+                    System.Text.Encoding.UTF8.GetBytes(TextBoxPwd2.Text), Nothing, DataProtectionScope.CurrentUser)
 
                 PwdState = 3
-
-                ClearTextBox(TextBoxPwd)
-                ClearTextBox(TextBoxPwdVerify)
-
                 Me.DialogResult = DialogResult.OK
 
         End Select
@@ -289,13 +333,13 @@ Public Class FormLogin
         If Not My.Computer.FileSystem.DirectoryExists(Work_Dir_String) Then
 
             If Not ItsaFile Then
-                If TextBoxPwdVerify.Text = "" Then
+                If TextBoxPwdVerify2.Text = "" Then
                     MSGBOXNEW(TextStrs(0), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
                     Me.Enabled = True
                     Exit Sub
                 End If
 
-                If TextBoxPwd.Text <> TextBoxPwdVerify.Text Then
+                If TextBoxPwd2.Text <> TextBoxPwdVerify2.Text Then
                     MSGBOXNEW(TextStrs(1), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
                     Me.Enabled = True
                     Exit Sub
@@ -312,15 +356,13 @@ Public Class FormLogin
         End If
 
         This_Time_Dir = Work_Dir_String
-        ClearTextBox(TextBoxPwd)
-        ClearTextBox(TextBoxPwdVerify)
         Me.DialogResult = DialogResult.OK
 
     End Sub
 
-    Private Sub Form2_VisibleChanged(sender As Object, e As EventArgs) Handles Me.VisibleChanged
-        TextBoxPwd.Focus()
-    End Sub
+    'Private Sub Form2_VisibleChanged(sender As Object, e As EventArgs) Handles Me.VisibleChanged
+    'TextBoxPwd.Focus()
+    'End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs)
 
@@ -334,16 +376,6 @@ Public Class FormLogin
 
     Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
         Me.DialogResult = DialogResult.Cancel
-    End Sub
-
-    Private Sub TextBoxPwd_KeyDown(sender As Object, e As KeyEventArgs) Handles TextBoxPwd.KeyDown, TextBoxPwdVerify.KeyDown
-
-        If (e.KeyCode = Keys.Enter) Then
-            GoNext(System.Text.Encoding.Unicode.GetBytes(TextBoxPwd.Text), False)
-            e.Handled = True
-            e.SuppressKeyPress = True
-        End If
-
     End Sub
 
     Private Sub Button_Restart_Click(sender As Object, e As EventArgs) Handles Button_Restart.Click
@@ -374,14 +406,6 @@ Public Class FormLogin
         FormMIT.ShowDialog()
         UnMakeWindowsBlur(PictureGray)
 
-    End Sub
-
-    Private Sub TextBoxPwd_TextChanged(sender As Object, e As EventArgs) Handles TextBoxPwd.TextChanged
-        If Not ClearWorking Then sender.forecolor = EvaPwdStrong(sender)
-    End Sub
-
-    Private Sub TextBoxPwdVerify_TextChanged(sender As Object, e As EventArgs) Handles TextBoxPwdVerify.TextChanged
-        If Not ClearWorking Then sender.forecolor = EvaPwdStrong(sender)
     End Sub
 
     Private Sub ButtonFileOpen_Click(sender As Object, e As EventArgs) Handles ButtonFileOpen.Click
@@ -416,19 +440,21 @@ Public Class FormLogin
         WipeBytes(This_Time_Key)
     End Sub
 
+    Private Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Integer, ByVal dwExtraInfo As Integer)
+
     Private Sub PicCAP1_Click(sender As Object, e As EventArgs) Handles PicCAP1.Click
         Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 1, 0)
         Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 3, 0)
     End Sub
 
     Private Sub ButtonViewPass_Click(sender As Object, e As EventArgs) Handles ButtonViewPass.Click
-        If TextBoxPwd.UseSystemPasswordChar Then
-            TextBoxPwd.UseSystemPasswordChar = False
-            TextBoxPwdVerify.UseSystemPasswordChar = False
+        If TextBoxPwd2.UseSystemPasswordChar Then
+            TextBoxPwd2.UseSystemPasswordChar = False
+            TextBoxPwdVerify2.UseSystemPasswordChar = False
             ButtonViewPass.Image = PWDSHOWon
         Else
-            TextBoxPwd.UseSystemPasswordChar = True
-            TextBoxPwdVerify.UseSystemPasswordChar = True
+            TextBoxPwd2.UseSystemPasswordChar = True
+            TextBoxPwdVerify2.UseSystemPasswordChar = True
             ButtonViewPass.Image = PWDSHOWoff
         End If
     End Sub
@@ -458,8 +484,8 @@ Public Class FormLogin
         Else
             PWDGMode = 2
         End If
-        TextBoxPwd.Text = Random_Strs(24, 24, PWDGMode)
-        TextBoxPwdVerify.Text = TextBoxPwd.Text
+        TextBoxPwd2.Text = Random_Strs(24, 24, PWDGMode)
+        TextBoxPwdVerify2.Text = TextBoxPwd2.Text
     End Sub
 
     Private Sub PictureBoxGPUS_Click(sender As Object, e As EventArgs) Handles PictureBoxGPUS.Click
@@ -479,9 +505,6 @@ Public Class FormLogin
         Button_Restart.Image = My.Resources.Resource1.button_RESTART_Off
     End Sub
 
-    Private lastLocation As Point
-    Private isMouseDown As Boolean = False
-
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         Dim bmp As New Bitmap(Me.Width, Me.Height)
         Me.DrawToBitmap(bmp, New Rectangle(0, 0, Me.Width, Me.Height))
@@ -491,6 +514,9 @@ Public Class FormLogin
     Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
+
+    Private lastLocation As Point
+    Private isMouseDown As Boolean = False
 
     Private Sub PictureBoxLogin_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBoxLogin.MouseDown
         ' 紀錄滑鼠按下的位置
@@ -510,7 +536,7 @@ Public Class FormLogin
         isMouseDown = False
     End Sub
 
-    Public Function CheckBIP39(ByRef BIP39Str As String) As Integer
+    Private Function CheckBIP39(ByRef BIP39Str As String) As Integer
 
         Dim LotInt() As UInteger
 
@@ -520,7 +546,7 @@ Public Class FormLogin
         'PassLevel 2 : Word not in list
         'PassLevel 3 : CheckSum error
 
-        Dim WorkStr() As String = BIP39Str.Split(" ")
+        Dim WorkStr() As String = BIP39Str.ToLower.Split(" ")
         If WorkStr.Length Mod 3 <> 0 Then PassLevel = 1
         If WorkStr.Length > 24 Then PassLevel = 1
 
@@ -584,9 +610,6 @@ Public Class FormLogin
 
             If LastDigi <> CheckSumVal Then PassLevel = 3
 
-            'TextBox3.Text = ByteIn_StringOut(TheBIP39Bytes)
-            'TextBox4.Text = Str(LastDigi) + " - " + Str(CheckSumVal)
-
         End If
 
         ReDim WorkStr(0)
@@ -594,6 +617,111 @@ Public Class FormLogin
 
         Return PassLevel
 
+    End Function
+
+    Private Function EvaPwdStrong(ByRef InTextbox As TextBox) As Color
+
+        Dim Score As Integer = 0
+        Dim SNum As Boolean = False
+        Dim SLow As Boolean = False
+        Dim SUpp As Boolean = False
+        Dim SSig As Boolean = False
+
+        For Each TmpCHR As Char In InTextbox.Text
+            Select Case TmpCHR
+                Case "0" To "9"
+                    SNum = True
+                Case "a" To "z"
+                    SLow = True
+                Case "A" To "Z"
+                    SUpp = True
+                Case "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "[", " "
+                    SSig = True
+                Case "]", "\", "{", "}", "|", ";", "'", ":", """", ",", ".", "/", "<", ">", "?"
+                    SSig = True
+            End Select
+            Score += 1
+        Next
+
+        If SNum Then Score += 3
+        If SLow Then Score += 3
+        If SUpp Then Score += 3
+        If SSig Then Score += 3
+
+        If Score < 16 Then
+            Return Color.FromArgb(172, 0, 0)
+        ElseIf Score < 28 Then
+            Return Color.FromArgb(124, 124, 0)
+        Else
+            Return Color.FromArgb(0, 172, 0)
+        End If
+
+    End Function
+
+    Private Sub FormLogin_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+
+        If TextBoxPwd2.DetectedPasteIn Or TextBoxPwdVerify2.DetectedPasteIn Then
+            If MSGBOXNEW(TextStrs(70), MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok Then
+                My.Computer.Clipboard.Clear()
+            End If
+        End If
+
+        ClearTextBox(TextBoxPwd2)
+        ClearTextBox(TextBoxPwdVerify2)
+        TextBoxPwd2.Dispose()
+        TextBoxPwdVerify2.Dispose()
+
+    End Sub
+End Class
+
+Class MyTextBox
+    Inherits TextBox
+    Public DetectedPasteIn As Boolean
+    Protected Overrides Sub WndProc(ByRef m As Message)
+        ' Trap WM_PASTE
+        If m.Msg = &H302 AndAlso Clipboard.ContainsText() Then
+            Me.Text = GetText()
+            'Clipboard.Clear()
+            DetectedPasteIn = True
+            Return
+        End If
+        MyBase.WndProc(m)
+    End Sub
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function OpenClipboard(ByVal hWndNewOwner As IntPtr) As Boolean
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function CloseClipboard() As Boolean
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function GetClipboardData(ByVal uFormat As UInteger) As IntPtr
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private Shared Function GlobalLock(ByVal hMem As IntPtr) As IntPtr
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private Shared Function GlobalUnlock(ByVal hMem As IntPtr) As Boolean
+    End Function
+
+    Public Shared Function GetText() As String
+        If Not OpenClipboard(IntPtr.Zero) Then Return Nothing
+
+        Dim handle = GetClipboardData(13)
+        If handle = IntPtr.Zero Then Return Nothing
+
+        Dim pointer = GlobalLock(handle)
+        If pointer = IntPtr.Zero Then Return Nothing
+
+        Dim data = Marshal.PtrToStringUni(pointer)
+        GlobalUnlock(handle)
+        CloseClipboard()
+
+        Return data
     End Function
 
 End Class

@@ -100,6 +100,7 @@
 ### About Operating Safety Features
 
 1.  Automatic logout function when idle.
+2.  When "Copy & paste" into the password box, it will prompt you to clear the clipboard.
 
 ### Notes
 

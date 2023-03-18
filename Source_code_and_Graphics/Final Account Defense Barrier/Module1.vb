@@ -132,7 +132,7 @@ Module Module1
         "(Some error happend)",'67
         "Account ""$$$"" opened.",'68
         "Catalog password input", '69
-        "--",
+        "Detected that you used copy-paste to input." + vbCrLf + vbCrLf + "Do you want to clear the clipboard?",
         "Generator don't use symbols", '71
         "Account Password Input",
         "(Disabled)",'73
@@ -146,10 +146,12 @@ Module Module1
          "Hotkey ($$$) registration failed: possible conflict with existing hotkeys." + vbCrLf + vbCrLf + "Please avoid using the same hotkey and reconfigure.",
          "The validation string is mismatched.",
          "The validation string is empty and the input doesn't pass the BIP39 rule." + vbCrLf + vbCrLf + "If you're using BIP39, the problem could be:" + vbCrLf + vbCrLf, '83
-         "Incorrect format or word count." + vbCrLf + vbCrLf + "An unknown word appeared. Maybe a typo." + vbCrLf + vbCrLf + "Bad checksum, probably in the wrong order.",
-         "Detected an invaild $$$ (or its compatible coin) address, this may caused by:" + vbCrLf + vbCrLf,'85
+         "Incorrect format or word count.",
+         "An unknown word appeared. Maybe a typo.",
+         "Bad checksum, probably in the wrong order.",
+         "Detected an invaild $$$ (or its compatible coin) address, this may caused by:" + vbCrLf + vbCrLf,'87
          "Typo, case error, order error." + vbCrLf + vbCrLf + "Length too logn or too short, or copy-paste miss." + vbCrLf + vbCrLf + "Misjudgment. It's not a $$$ address." + vbCrLf + vbCrLf,
-         "Do you want to continue or cancel?" '87
+         "Do you want to continue to save?" '89
     }
     '"By Random Generator",
     '"By SHA512of128 (x1024)" '70
@@ -358,27 +360,27 @@ Module Module1
         Select Case BoxType
             Case MsgBoxStyle.OkOnly
                 NeoMSGBOX.ButtonOK.Visible = True
-            Case MsgBoxStyle.OkCancel
+            Case MsgBoxStyle.OkCancel, MsgBoxStyle.YesNo
                 NeoMSGBOX.ButtonYes.Visible = True
-                NeoMSGBOX.ButtonCancel.Visible = True
-                NeoMSGBOX.PictureBox1.Image = New Bitmap(My.Resources.Resource1.Message_VRF)
-                NeoMSGBOX.LabelMSG.Image = New Bitmap(My.Resources.Resource1.Message_VRF_TXTB)
+                NeoMSGBOX.ButtonNo.Visible = True
+                NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_VRF
+                NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_VRF_TXTB
             Case MsgBoxStyle.Exclamation
                 NeoMSGBOX.ButtonOK.Visible = True
-                NeoMSGBOX.PictureBox1.Image = New Bitmap(My.Resources.Resource1.Message_VRF)
-                NeoMSGBOX.LabelMSG.Image = New Bitmap(My.Resources.Resource1.Message_VRF_TXTB)
+                NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_VRF
+                NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_VRF_TXTB
             Case MsgBoxStyle.Critical
-                NeoMSGBOX.ButtonCri.Visible = True
-                NeoMSGBOX.PictureBox1.Image = New Bitmap(My.Resources.Resource1.Message_CRI)
-                NeoMSGBOX.LabelMSG.Image = New Bitmap(My.Resources.Resource1.Message_CRI_TXTB)
+                NeoMSGBOX.ButtonOK.Visible = True
+                NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_CRI
+                NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_CRI_TXTB
             Case 65535
                 NeoMSGBOX.ButtonYes.Visible = True
                 NeoMSGBOX.ButtonYes.Enabled = False
-                NeoMSGBOX.ButtonYes.Image = New Bitmap(My.Resources.Resource1.button_confirm_dis)
+                NeoMSGBOX.ButtonYes.Image = My.Resources.Resource1.button_confirm_dis
                 NeoMSGBOX.ButtonCancel.Visible = True
                 NeoMSGBOX.TextBoxDELETE.Visible = True
-                NeoMSGBOX.PictureBox1.Image = New Bitmap(My.Resources.Resource1.Message_VRF)
-                NeoMSGBOX.LabelMSG.Image = New Bitmap(My.Resources.Resource1.Message_VRF_TXTB)
+                NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_VRF
+                NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_VRF_TXTB
         End Select
 
         NeoMSGBOX.LabelMSG.Text = MessageStr
@@ -552,45 +554,6 @@ Module Module1
 
         LIFW.Close()
         LIFW.Dispose()
-
-    End Function
-
-    Public Function EvaPwdStrong(ByRef InTextbox As TextBox) As Color
-
-        Dim Score As Integer = 0
-        Dim SNum As Boolean = False
-        Dim SLow As Boolean = False
-        Dim SUpp As Boolean = False
-        Dim SSig As Boolean = False
-
-        For Each TmpCHR As Char In InTextbox.Text
-            Select Case TmpCHR
-                Case "0" To "9"
-                    SNum = True
-                Case "a" To "z"
-                    SLow = True
-                Case "A" To "Z"
-                    SUpp = True
-                Case "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "[", " "
-                    SSig = True
-                Case "]", "\", "{", "}", "|", ";", "'", ":", """", ",", ".", "/", "<", ">", "?"
-                    SSig = True
-            End Select
-            Score += 1
-        Next
-
-        If SNum Then Score += 3
-        If SLow Then Score += 3
-        If SUpp Then Score += 3
-        If SSig Then Score += 3
-
-        If Score < 16 Then
-            Return Color.FromArgb(172, 0, 0)
-        ElseIf Score < 28 Then
-            Return Color.FromArgb(124, 124, 0)
-        Else
-            Return Color.FromArgb(0, 172, 0)
-        End If
 
     End Function
 

@@ -366,6 +366,8 @@
     <None Include="AllResource\PMP_ON.png" />
     <None Include="AllResource\SALT_ADD.png" />
     <None Include="AllResource\SALT_NO.png" />
+    <None Include="AllResource\button_no.png" />
+    <None Include="AllResource\button_yes.png" />
     <Content Include="icon_ALL.ico" />
   </ItemGroup>
   <ItemGroup>

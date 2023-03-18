@@ -31,10 +31,6 @@ Public Class MSGBOXXX
         Me.DialogResult = DialogResult.Cancel
     End Sub
 
-    Private Sub ButtonCri_Click(sender As Object, e As EventArgs) Handles ButtonCri.Click
-        Me.DialogResult = DialogResult.OK
-    End Sub
-
     Private lastLocation As Point
     Private isMouseDown As Boolean = False
 
@@ -56,4 +52,7 @@ Public Class MSGBOXXX
         isMouseDown = False
     End Sub
 
+    Private Sub ButtonNo_Click(sender As Object, e As EventArgs) Handles ButtonNo.Click
+        Me.DialogResult = DialogResult.Cancel
+    End Sub
 End Class

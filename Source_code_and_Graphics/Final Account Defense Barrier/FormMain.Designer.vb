@@ -170,7 +170,7 @@ Partial Class FormMain
         Me.Label_Act_Msg.BackColor = System.Drawing.Color.Black
         Me.Label_Act_Msg.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label_Act_Msg.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.Label_Act_Msg.Location = New System.Drawing.Point(24, 654)
+        Me.Label_Act_Msg.Location = New System.Drawing.Point(24, 655)
         Me.Label_Act_Msg.Name = "Label_Act_Msg"
         Me.Label_Act_Msg.Size = New System.Drawing.Size(291, 19)
         Me.Label_Act_Msg.TabIndex = 29

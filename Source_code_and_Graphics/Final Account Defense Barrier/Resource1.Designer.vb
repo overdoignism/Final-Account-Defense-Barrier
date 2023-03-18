@@ -417,6 +417,16 @@ Namespace My.Resources
         '''<summary>
         '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         '''</summary>
+        Friend Shared ReadOnly Property button_no() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_no", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
         Friend Shared ReadOnly Property button_OpenF() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("button_OpenF", resourceCulture)
@@ -480,6 +490,16 @@ Namespace My.Resources
         Friend Shared ReadOnly Property button_view_small_on() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("button_view_small_on", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property button_yes() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_yes", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
