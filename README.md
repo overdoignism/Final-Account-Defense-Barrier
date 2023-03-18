@@ -19,4 +19,4 @@ v1.0.8477.28912
 
 [歷史版本（繁中only）🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/HISTORY.md)
 
-![IMAGE](https://i.imgur.com/EZRO1gN.png)
+![IMAGE](https://i.imgur.com/FnbHPvA.png)
