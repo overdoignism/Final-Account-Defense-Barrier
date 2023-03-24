@@ -28,15 +28,8 @@ Public Class FormLogin
     Public WorkMode As Integer '0=Login 1=NonLogin 2=Password
     Public PwdState As Integer
 
-    Dim SDOn As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_ON)
-    Dim SDOff As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_OFF)
     Public IsUseSD As Boolean
-
-    Dim RUNASOn As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_ON)
-    Dim RUNASOff As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_OFF)
     Public IsUseRUNAS As Boolean
-
-    Dim BT_CANCEL As New Bitmap(My.Resources.Resource1.button_Cancel)
 
     Dim GP_Use_Symbol As Boolean = True
 
@@ -76,68 +69,72 @@ Public Class FormLogin
 
             Case 0 ' Login Mode
 
-                Me.ButtonCancel.Image = My.Resources.Resource1.button_Final
+                ButtonCancel.Image = My.Resources.Resource1.button_Final
                 ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
                 ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(4))
 
                 Dim RAAMode As Boolean = New WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)
                 PictureBoxRUNAS.Enabled = Not RAAMode
-                If RAAMode Then PictureBoxRUNAS.Image = RUNASOn
+                If RAAMode Then PictureBoxRUNAS.Image = RAA_ON
                 If This_Time_Salt IsNot Nothing Then PictureSalt.Image = My.Resources.Resource1.SALT_ADD
-                If OSver < 62 Then PicturePMP.Image = New Bitmap(My.Resources.Resource1.PMP_OFF)
-                Me.PicturePMP.Visible = True
-                Me.PictureSalt.Visible = True
+                If OSver < 62 Then PicturePMP.Image = My.Resources.Resource1.PMP_OFF
+                PicturePMP.Visible = True
+                PictureSalt.Visible = True
+                ButtonCancel.Visible = False
+                ButtonFin.Visible = True
 
             Case 1 ' Non Loging Mode
 
-                Me.PictureBoxLogin.Image = New Bitmap(My.Resources.Resource1.Title_NORMAL)
+                PictureBoxLogin.Image = My.Resources.Resource1.Title_NORMAL
                 ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
                 ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(4))
 
-                Me.PictureBoxSD.Visible = False
-                Me.PictureBoxRUNAS.Visible = False
-                Me.PictureBoxMIT.Visible = False
-                Me.Button_Restart.Visible = False
-                Me.ButtonHelp.Visible = False
-                Me.PictureWinMin.Visible = False
-                Me.ButtonCancel.Image = Me.BT_CANCEL
+                PictureBoxSD.Visible = False
+                PictureBoxRUNAS.Visible = False
+                PictureBoxMIT.Visible = False
+                Button_Restart.Visible = False
+                ButtonHelp.Visible = False
+                PictureWinMin.Visible = False
+                ButtonCancel.Visible = True
+                ButtonFin.Visible = False
 
-                Me.Height = 346
-                Me.PicCAP1.Top -= 201
-                Me.ButtonOK.Top -= 201
-                Me.ButtonFileOpen.Top -= 201
-                Me.ButtonViewPass.Top -= 201
-                Me.TextBoxPwd2.Top -= 201
-                Me.TextBoxPwdVerify2.Top -= 201
-                Me.ButtonCancel.Top -= 201
-                Me.PictureSalt.Top -= 201
+                Height = 346
+                PicCAP1.Top -= 201
+                ButtonOK.Top -= 201
+                ButtonFileOpen.Top -= 201
+                ButtonViewPass.Top -= 201
+                TextBoxPwd2.Top -= 201
+                TextBoxPwdVerify2.Top -= 201
+                ButtonCancel.Top -= 201
+                PictureSalt.Top -= 201
                 If This_Time_Salt IsNot Nothing Then PictureSalt.Visible = True
 
             Case 2 ' Password Mode
 
-                Me.PictureBoxSD.Visible = False
-                Me.PictureBoxRUNAS.Visible = False
-                Me.PictureBoxMIT.Visible = False
-                Me.Button_Restart.Visible = False
-                Me.ButtonHelp.Visible = False
-                Me.ButtonFileOpen.Visible = False
-                Me.PictureWinMin.Visible = False
-                Me.ButtonCancel.Image = Me.BT_CANCEL
+                PictureBoxSD.Visible = False
+                PictureBoxRUNAS.Visible = False
+                PictureBoxMIT.Visible = False
+                Button_Restart.Visible = False
+                ButtonHelp.Visible = False
+                ButtonFileOpen.Visible = False
+                PictureWinMin.Visible = False
+                ButtonCancel.Visible = True
+                ButtonFin.Visible = False
 
-                Me.PictureBoxLogin.Image = New Bitmap(My.Resources.Resource1.Title_Password)
-                Me.Height = 346
-                Me.PicCAP1.Top -= 201
-                Me.ButtonOK.Top -= 201
-                Me.ButtonViewPass.Top -= 201
-                Me.TextBoxPwd2.Top -= 201
-                Me.TextBoxPwdVerify2.Top -= 201
+                PictureBoxLogin.Image = My.Resources.Resource1.Title_Password
+                Height = 346
+                PicCAP1.Top -= 201
+                ButtonOK.Top -= 201
+                ButtonViewPass.Top -= 201
+                TextBoxPwd2.Top -= 201
+                TextBoxPwdVerify2.Top -= 201
 
                 ButtonCancel.Top = 265
                 ButtonCancel.Left = 148
 
-                PictureBoxGenPwd.Visible = True
-                PictureBoxGenPwd.Top = 265
-                PictureBoxGenPwd.Left = 277
+                ButtonGenPwd.Visible = True
+                ButtonGenPwd.Top = 265
+                ButtonGenPwd.Left = 277
 
                 PictureBoxGPUS.Left = 408
                 PictureBoxGPUS.Top = 267
@@ -166,7 +163,7 @@ Public Class FormLogin
         If SecureDesktopMode = True Then
             Me.CenterToScreen()
             Me.PictureWinMin.Visible = False
-            PictureBoxSD.Image = SDOn
+            PictureBoxSD.Image = SD_ON
         Else
             Me.StartPosition = FormStartPosition.Manual
             Me.Left = FormL + (FormW - Me.Width) / 2
@@ -360,10 +357,6 @@ Public Class FormLogin
 
     End Sub
 
-    'Private Sub Form2_VisibleChanged(sender As Object, e As EventArgs) Handles Me.VisibleChanged
-    'TextBoxPwd.Focus()
-    'End Sub
-
     Private Sub Timer1_Tick(sender As Object, e As EventArgs)
 
         If Control.IsKeyLocked(Keys.CapsLock) Then
@@ -401,11 +394,11 @@ Public Class FormLogin
         FormMIT.FormH = Me.Height
         FormMIT.FormT = Me.Top
         FormMIT.FormL = Me.Left
-
+        FormMIT.Opacity = ALLOPACITY
         MakeWindowsBlur(Me, PictureGray)
         FormMIT.ShowDialog()
         UnMakeWindowsBlur(PictureGray)
-
+        FullGC()
     End Sub
 
     Private Sub ButtonFileOpen_Click(sender As Object, e As EventArgs) Handles ButtonFileOpen.Click
@@ -459,25 +452,30 @@ Public Class FormLogin
         End If
     End Sub
 
+    Dim SD_OFF As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_OFF)
+    Dim SD_ON As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_ON)
+    Dim RAA_OFF As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_OFF)
+    Dim RAA_ON As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_ON)
+
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBoxSD.Click
         If IsUseSD Then
-            PictureBoxSD.Image = SDOff
+            PictureBoxSD.Image = SD_OFF
         Else
-            PictureBoxSD.Image = SDOn
+            PictureBoxSD.Image = SD_ON
         End If
         IsUseSD = Not IsUseSD
     End Sub
 
     Private Sub PictureBoxRUNAS_Click(sender As Object, e As EventArgs) Handles PictureBoxRUNAS.Click
         If IsUseRUNAS Then
-            PictureBoxRUNAS.Image = RUNASOff
+            PictureBoxRUNAS.Image = RAA_OFF
         Else
-            PictureBoxRUNAS.Image = RUNASOn
+            PictureBoxRUNAS.Image = RAA_ON
         End If
         IsUseRUNAS = Not IsUseRUNAS
     End Sub
 
-    Private Sub PictureBoxGenPwd_Click(sender As Object, e As EventArgs) Handles PictureBoxGenPwd.Click
+    Private Sub PictureBoxGenPwd_Click(sender As Object, e As EventArgs) Handles ButtonGenPwd.Click
         Dim PWDGMode As Integer
         If GP_Use_Symbol Then
             PWDGMode = 1
@@ -505,12 +503,6 @@ Public Class FormLogin
         Button_Restart.Image = My.Resources.Resource1.button_RESTART_Off
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs)
-        Dim bmp As New Bitmap(Me.Width, Me.Height)
-        Me.DrawToBitmap(bmp, New Rectangle(0, 0, Me.Width, Me.Height))
-        PictureGray.Image = bmp
-    End Sub
-
     Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
@@ -536,86 +528,94 @@ Public Class FormLogin
         isMouseDown = False
     End Sub
 
+    Private Sub ButtonFin_Click(sender As Object, e As EventArgs) Handles ButtonFin.Click
+        Me.DialogResult = DialogResult.Cancel
+    End Sub
+
     Private Function CheckBIP39(ByRef BIP39Str As String) As Integer
 
-        Dim LotInt() As UInteger
+        Try
+            Dim LotInt() As UInteger
 
-        Dim PassLevel As Integer = 0
-        'PassLevel 0 : Pass
-        'PassLevel 1 : Length not match
-        'PassLevel 2 : Word not in list
-        'PassLevel 3 : CheckSum error
+            Dim PassLevel As Integer = 0
+            'PassLevel 0 : Pass
+            'PassLevel 1 : Length not match
+            'PassLevel 2 : Word not in list
+            'PassLevel 3 : CheckSum error
 
-        Dim WorkStr() As String = BIP39Str.ToLower.Split(" ")
-        If WorkStr.Length Mod 3 <> 0 Then PassLevel = 1
-        If WorkStr.Length > 24 Then PassLevel = 1
-
-        If PassLevel = 1 Then 'Why Japanese word make trouble
-            PassLevel = 0
-            WorkStr = BIP39Str.Split("　")
+            Dim WorkStr() As String = BIP39Str.ToLower.Split(" ")
             If WorkStr.Length Mod 3 <> 0 Then PassLevel = 1
             If WorkStr.Length > 24 Then PassLevel = 1
-        End If
 
-        If PassLevel = 0 Then
+            If PassLevel = 1 Then 'Why Japanese word make trouble
+                PassLevel = 0
+                WorkStr = BIP39Str.Split("　")
+                If WorkStr.Length Mod 3 <> 0 Then PassLevel = 1
+                If WorkStr.Length > 24 Then PassLevel = 1
+            End If
 
-            For IDX01 As Integer = 0 To WorkStr.Length - 1
+            If PassLevel = 0 Then
 
-                ReDim Preserve LotInt(IDX01)
-                PassLevel = 2
+                For IDX01 As Integer = 0 To WorkStr.Length - 1
 
-                For IDX02 As Integer = 0 To 9
-                    For IDX03 As Integer = 0 To 2047
-                        If String.CompareOrdinal(WorkStr(IDX01), BIP39_Word(IDX02).BIP39Word(IDX03)) = 0 Then
-                            LotInt(IDX01) = IDX03
-                            PassLevel = 0
-                            Exit For
-                        End If
+                    ReDim Preserve LotInt(IDX01)
+                    PassLevel = 2
+
+                    For IDX02 As Integer = 0 To 9
+                        For IDX03 As Integer = 0 To 2047
+                            If String.CompareOrdinal(WorkStr(IDX01), BIP39_Word(IDX02).BIP39Word(IDX03)) = 0 Then
+                                LotInt(IDX01) = IDX03
+                                PassLevel = 0
+                                Exit For
+                            End If
+                        Next
+                        If PassLevel = 0 Then Exit For
                     Next
-                    If PassLevel = 0 Then Exit For
+                    If PassLevel = 2 Then Exit For
                 Next
-                If PassLevel = 2 Then Exit For
-            Next
 
-        End If
+            End If
 
-        If PassLevel = 0 Then
+            If PassLevel = 0 Then
 
-            Dim LastDigi As UInteger
-            Dim CheckSumVal As Byte
-            Dim TheBIP39Tmp As UInteger
-            Dim TBIP39IDX As Integer = 0
-            Dim TmpBytes() As Byte
-            Dim TheBIP39Bytes(((WorkStr.Length / 3) * 4) - 1) As Byte
+                Dim LastDigi As UInteger
+                Dim CheckSumVal As Byte
+                Dim TheBIP39Tmp As UInteger
+                Dim TBIP39IDX As Integer = 0
+                Dim TmpBytes() As Byte
+                Dim TheBIP39Bytes(((WorkStr.Length / 3) * 4) - 1) As Byte
 
-            For IDX01 As Integer = 0 To WorkStr.Length - 1 Step 3
+                For IDX01 As Integer = 0 To WorkStr.Length - 1 Step 3
 
-                TheBIP39Tmp = (LastDigi << (32 - TBIP39IDX))
-                TheBIP39Tmp += (LotInt(IDX01) << (21 - TBIP39IDX))
-                TheBIP39Tmp += (LotInt(IDX01 + 1) << (10 - TBIP39IDX))
-                TheBIP39Tmp += (LotInt(IDX01 + 2) >> (1 + TBIP39IDX))
+                    TheBIP39Tmp = (LastDigi << (32 - TBIP39IDX))
+                    TheBIP39Tmp += (LotInt(IDX01) << (21 - TBIP39IDX))
+                    TheBIP39Tmp += (LotInt(IDX01 + 1) << (10 - TBIP39IDX))
+                    TheBIP39Tmp += (LotInt(IDX01 + 2) >> (1 + TBIP39IDX))
 
-                LastDigi = LotInt(IDX01 + 2) Mod (2 ^ (TBIP39IDX + 1))
+                    LastDigi = LotInt(IDX01 + 2) Mod (2 ^ (TBIP39IDX + 1))
 
-                TmpBytes = BitConverter.GetBytes(TheBIP39Tmp)
-                Array.Reverse(TmpBytes)
-                Array.Copy(TmpBytes, 0, TheBIP39Bytes, TBIP39IDX * 4, 4)
-                TBIP39IDX += 1
+                    TmpBytes = BitConverter.GetBytes(TheBIP39Tmp)
+                    Array.Reverse(TmpBytes)
+                    Array.Copy(TmpBytes, 0, TheBIP39Bytes, TBIP39IDX * 4, 4)
+                    TBIP39IDX += 1
 
-            Next
+                Next
 
-            Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
-            CheckSumVal = SHA256_Worker.ComputeHash(TheBIP39Bytes)(0) >> (8 - TBIP39IDX)
-            SHA256_Worker.Dispose()
+                Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
+                CheckSumVal = SHA256_Worker.ComputeHash(TheBIP39Bytes)(0) >> (8 - TBIP39IDX)
+                SHA256_Worker.Dispose()
 
-            If LastDigi <> CheckSumVal Then PassLevel = 3
+                If LastDigi <> CheckSumVal Then PassLevel = 3
 
-        End If
+            End If
 
-        ReDim WorkStr(0)
-        WipeUINT(LotInt)
+            ReDim WorkStr(0)
+            WipeUINT(LotInt)
 
-        Return PassLevel
+            Return PassLevel
+        Catch ex As Exception
+            Return 1
+        End Try
 
     End Function
 
@@ -671,6 +671,61 @@ Public Class FormLogin
         TextBoxPwd2.Dispose()
         TextBoxPwdVerify2.Dispose()
 
+    End Sub
+
+    Dim B_confirm_on As New Bitmap(My.Resources.Resource1.button_confirm_on)
+    Dim B_OpenF_on As New Bitmap(My.Resources.Resource1.button_OpenF_on)
+    Dim B_Final_on As New Bitmap(My.Resources.Resource1.button_Final_on)
+    Dim B_Cancel_on As New Bitmap(My.Resources.Resource1.button_Cancel_on)
+    Dim B_HELP_on As New Bitmap(My.Resources.Resource1.button_HELP_on)
+    Dim B_genpwd_on As New Bitmap(My.Resources.Resource1.button_genpwd_on)
+
+    Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
+        ButtonOK.MouseEnter, ButtonFileOpen.MouseEnter, ButtonFin.MouseEnter, ButtonCancel.MouseEnter, ButtonHelp.MouseEnter,
+        ButtonGenPwd.MouseEnter
+
+        Select Case sender.Name
+            Case "ButtonOK"
+                ButtonOK.Image = B_confirm_on
+            Case "ButtonFileOpen"
+                ButtonFileOpen.Image = B_OpenF_on
+            Case "ButtonFin"
+                ButtonFin.Image = B_Final_on
+            Case "ButtonCancel"
+                ButtonCancel.Image = B_Cancel_on
+            Case "ButtonHelp"
+                ButtonHelp.Image = B_HELP_on
+            Case "ButtonGenPwd"
+                ButtonGenPwd.Image = B_genpwd_on
+        End Select
+
+    End Sub
+
+    Dim B_confirm As New Bitmap(My.Resources.Resource1.button_confirm)
+    Dim B_OpenF As New Bitmap(My.Resources.Resource1.button_OpenF)
+    Dim B_Final As New Bitmap(My.Resources.Resource1.button_Final)
+    Dim B_Cancel As New Bitmap(My.Resources.Resource1.button_Cancel)
+    Dim B_HELP As New Bitmap(My.Resources.Resource1.button_HELP)
+    Dim B_genpwd As New Bitmap(My.Resources.Resource1.button_genpwd)
+
+    Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles _
+        ButtonOK.MouseLeave, ButtonFileOpen.MouseLeave, ButtonFin.MouseLeave, ButtonCancel.MouseLeave, ButtonHelp.MouseLeave,
+        ButtonGenPwd.MouseLeave
+
+        Select Case sender.Name
+            Case "ButtonOK"
+                ButtonOK.Image = B_confirm
+            Case "ButtonFileOpen"
+                ButtonFileOpen.Image = B_OpenF
+            Case "ButtonFin"
+                ButtonFin.Image = B_Final
+            Case "ButtonCancel"
+                ButtonCancel.Image = B_Cancel
+            Case "ButtonHelp"
+                ButtonHelp.Image = B_HELP
+            Case "ButtonGenPwd"
+                ButtonGenPwd.Image = B_genpwd
+        End Select
     End Sub
 End Class
 

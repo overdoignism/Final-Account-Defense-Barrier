@@ -374,9 +374,10 @@ Module Module1
                 NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_CRI
                 NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_CRI_TXTB
             Case 65535
-                NeoMSGBOX.ButtonYes.Visible = True
-                NeoMSGBOX.ButtonYes.Enabled = False
-                NeoMSGBOX.ButtonYes.Image = My.Resources.Resource1.button_confirm_dis
+                NeoMSGBOX.ButtonOK.Visible = True
+                NeoMSGBOX.ButtonOK.Enabled = False
+                NeoMSGBOX.ButtonOK.Image = My.Resources.Resource1.button_confirm_dis
+                NeoMSGBOX.ButtonOK.Location = New Point(142, NeoMSGBOX.ButtonOK.Location.Y)
                 NeoMSGBOX.ButtonCancel.Visible = True
                 NeoMSGBOX.TextBoxDELETE.Visible = True
                 NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_VRF

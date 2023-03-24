@@ -74,4 +74,33 @@ Public Class FormConfig
         isMouseDown = False
     End Sub
 
+    Dim B_confirm_on As New Bitmap(My.Resources.Resource1.button_confirm_on)
+    Dim B_Cancel_on As New Bitmap(My.Resources.Resource1.button_Cancel_on)
+
+    Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
+    ButtonOK.MouseEnter, ButtonCancel.MouseEnter
+
+        Select Case sender.Name
+            Case "ButtonOK"
+                ButtonOK.Image = B_confirm_on
+            Case "ButtonCancel"
+                ButtonCancel.Image = B_Cancel_on
+        End Select
+
+    End Sub
+
+    Dim B_confirm As New Bitmap(My.Resources.Resource1.button_confirm)
+    Dim B_Cancel As New Bitmap(My.Resources.Resource1.button_Cancel)
+
+    Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles _
+        ButtonOK.MouseLeave, ButtonCancel.MouseLeave
+
+        Select Case sender.Name
+            Case "ButtonOK"
+                ButtonOK.Image = B_confirm
+            Case "ButtonCancel"
+                ButtonCancel.Image = B_Cancel
+        End Select
+    End Sub
+
 End Class

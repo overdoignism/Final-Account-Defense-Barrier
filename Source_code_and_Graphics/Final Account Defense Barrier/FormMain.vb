@@ -27,12 +27,6 @@ Public Class FormMain
 
     Public SecureDesktop As Boolean = False
 
-    Dim BTN_ViewHidden As New Bitmap(My.Resources.Resource1.button_view)
-    Dim BTN_ViewHidden_on As New Bitmap(My.Resources.Resource1.button_view_on)
-    Dim TOPSEC_BOX As New Bitmap(My.Resources.Resource1.TOPSEC)
-    Dim BTN_PwdV As New Bitmap(My.Resources.Resource1.button_view_small)
-    Dim BTN_PwdV_on As New Bitmap(My.Resources.Resource1.button_view_small_on)
-
     Dim LBTN_Save_En As New Bitmap(My.Resources.Resource1.button_L_save)
     Dim LBTN_Del_En As New Bitmap(My.Resources.Resource1.button_L_delete)
     Dim LBTN_MoveU_En As New Bitmap(My.Resources.Resource1.button_L_moveUP)
@@ -54,6 +48,16 @@ Public Class FormMain
     Public DIGI_NUM_N As New Bitmap(My.Resources.Resource1.DIGI_Y__)
 
     Public WithEvents AutoCloseTimer As New Windows.Forms.Timer
+
+    '====Listbox scroll bar
+    Dim WithEvents LSCB_UPDW As New Windows.Forms.Timer
+    Dim WithEvents LSCB_MSC As New Windows.Forms.Timer
+    Dim NowUPorDW As Integer
+    Dim LB_Ration As Double
+    Dim LB_Range_Scale As Double
+    Dim UpY As Integer
+    Dim DwY As Integer
+    Dim BarIsHolding As Boolean
 
     Dim version As Version = Reflection.Assembly.GetEntryAssembly().GetName().Version
     Dim versionNumber As String = version.Major & "." & version.Minor & "." & version.Build & "." & version.Revision
@@ -176,6 +180,15 @@ Public Class FormMain
         Next
         '===========================
 
+        '====================== Listbox Scrollbar
+        UpY = LSCBU.Top + LSCBU.Height
+        DwY = LSCBD.Top - LSCBBAR.Height + 1
+        LSCB_UPDW.Interval = 150
+        LSCB_UPDW.Enabled = False
+        LSCB_MSC.Interval = 100
+        LSCB_MSC.Enabled = False
+        LB_Ration = ListBox1.ClientRectangle.Height / ListBox1.ItemHeight
+
         '================================Login stage=====
         discontinue = False
 
@@ -216,11 +229,13 @@ Public Class FormMain
         LabelBy.Text = "▎ By overdoingism Lab."
         LABVER.Text = "▎ " + TextStrs(42) + " " + versionNumber
 
+
     End Sub
 
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
 
         Read_and_decrypt(FilesList1(ListBox1.SelectedIndex))
+        GoCorrectPos()
         FullGC()
 
     End Sub
@@ -250,7 +265,8 @@ Public Class FormMain
         VG_CCC_Done = False
 
         TextBoxNote2Hid.UseSystemPasswordChar = True
-        ButtonViewNote.Image = BTN_ViewHidden
+        ButtonViewNote.Image = My.Resources.Resource1.button_view
+
         Dim AES_IV_1(15) As Byte
         Dim AES_IV_2(15) As Byte
         Dim AES_IV_USE(15) As Byte
@@ -266,6 +282,7 @@ Public Class FormMain
             VG_Title_Done = True
             ReadingWorking = False
             Label_Act_Msg.Text = TextStrs(27)
+            GoCorrectPos()
             Exit Sub
 
         Else
@@ -571,6 +588,8 @@ Public Class FormMain
 
         Next
 
+        LB_Range_Scale = CDbl(ListBox1.Items.Count) - LB_Ration
+
     End Sub
 
     Private Sub Form1_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
@@ -617,7 +636,7 @@ Public Class FormMain
 
                 If Not continuous_mode Then GetList()
 
-                If OLDidx >= 1 Then ListBox1.SelectedIndex = OLDidx - 1
+                If OLDidx >= 1 Then Go_ListBoxIdx(OLDidx - 1)
 
             Catch ex As Exception
                 Delete_ACC_File = 2
@@ -651,7 +670,7 @@ Public Class FormMain
 
                 For IDX01 As Integer = 1 To ListBox1.Items.Count - 1
 
-                    ListBox1.SelectedIndex = IDX01
+                    Go_ListBoxIdx(IDX01)
 
                     If FilesList1(IDX01).FileIsBad = False Then
 
@@ -890,9 +909,9 @@ Public Class FormMain
     Private Sub ButtonViewNote_Click(sender As Object, e As EventArgs) Handles ButtonViewNote.Click
 
         If TextBoxNote2Hid.UseSystemPasswordChar Then
-            ButtonViewNote.Image = BTN_ViewHidden_on
+            ButtonViewNote.Image = My.Resources.Resource1.button_view_Son_on
         Else
-            ButtonViewNote.Image = BTN_ViewHidden
+            ButtonViewNote.Image = My.Resources.Resource1.button_view_on
         End If
 
         TextBoxNote2Hid.UseSystemPasswordChar = Not TextBoxNote2Hid.UseSystemPasswordChar
@@ -1222,7 +1241,7 @@ Public Class FormMain
 
         If NowPassStatue > 1 Then
             Dim FPWDS As New SmallPWDShow
-            PictureBoxPwdVi.Image = BTN_PwdV_on
+            PictureBoxPwdVi.Image = My.Resources.Resource1.button_view_small_Son_on
             FPWDS.InputByte = CurrentAccountPass
             FPWDS.Width = 1
             FPWDS.Height = 1
@@ -1234,13 +1253,13 @@ Public Class FormMain
     End Sub
 
     Private Sub PictureBoxPwdVi_MouseUp(sender As Object, e As MouseEventArgs) Handles PictureBoxPwdVi.MouseUp
-        PictureBoxPwdVi.Image = BTN_PwdV
-        PictureBoxPwd.Image = TOPSEC_BOX
+        PictureBoxPwd.Image = My.Resources.Resource1.TOPSEC
+        PictureBoxPwdVi.Image = b_view_small_on
     End Sub
 
     Private Sub PictureBoxPwdVi_MouseLeave(sender As Object, e As EventArgs) Handles PictureBoxPwdVi.MouseLeave
-        PictureBoxPwdVi.Image = BTN_PwdV
-        PictureBoxPwd.Image = TOPSEC_BOX
+        PictureBoxPwd.Image = My.Resources.Resource1.TOPSEC
+        PictureBoxPwdVi.Image = b_view_small_on
     End Sub
 
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
@@ -1272,10 +1291,10 @@ Public Class FormMain
 
                 If Not WriteFile(Filename2, AES_KEY_Protected, DERIVED_IDT_Protected) Then
                     GetList()
-                    ListBox1.SelectedIndex = ListBox1.Items.Count - 1
                     Label_Act_Msg.Text = Replace(TextStrs(20), "$$$", NowSaveAccName)
                     Exe_Fill_Trash()
                     FullGC()
+                    Go_ListBoxIdx(ListBox1.Items.Count - 1)
                 Else
                     Label_Act_Msg.Text = TextStrs(67)
                     MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
@@ -1292,7 +1311,7 @@ Public Class FormMain
                 If Not WriteFile(NowProcFile, AES_KEY_Protected, DERIVED_IDT_Protected) Then
                     If OLDidx >= 1 Then
                         GetList()
-                        ListBox1.SelectedIndex = OLDidx
+                        Go_ListBoxIdx(OLDidx)
                     End If
                     Label_Act_Msg.Text = Replace(TextStrs(21), "$$$", NowSaveAccName)
                     Exe_Fill_Trash()
@@ -1336,7 +1355,7 @@ Public Class FormMain
             My.Computer.FileSystem.MoveFile(NowProcFile + ".TMP", UpperFilename)
 
             GetList()
-            ListBox1.SelectedIndex = NowSelect - 1
+            Go_ListBoxIdx(NowSelect - 1)
             Label_Act_Msg.Text = TextStrs(28)
         Else
             Exit Sub
@@ -1357,7 +1376,7 @@ Public Class FormMain
             My.Computer.FileSystem.MoveFile(NowProcFile + ".TMP", LowerFilename)
 
             GetList()
-            ListBox1.SelectedIndex = NowSelect + 1
+            Go_ListBoxIdx(NowSelect + 1)
             Label_Act_Msg.Text = TextStrs(29)
 
         Else
@@ -1505,7 +1524,7 @@ Public Class FormMain
 
     End Sub
 
-    Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonExit.Click
+    Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonFin.Click
         End_Program()
     End Sub
 
@@ -1548,48 +1567,317 @@ Public Class FormMain
 
     End Sub
 
-    Private Sub PictureBoxCATMAN_MouseHover(sender As Object, e As EventArgs) Handles PictureBoxCATMAN.MouseHover
-        PictureBoxCATMAN.Image = My.Resources.Resource1.button_CATMAN_on
-    End Sub
-
-    Private Sub PictureBoxCATMAN_MouseLeave(sender As Object, e As EventArgs) Handles PictureBoxCATMAN.MouseLeave
-        PictureBoxCATMAN.Image = My.Resources.Resource1.button_CATMAN
-    End Sub
-
     Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
 
-    'For Textbox lighton
+    '==================================================================== ListBox Scrollbar work
 
-    'Private Sub TextBox_Enter(sender As Object, e As EventArgs) Handles TextBoxTitle.Enter,
-    '    TextBoxNameAddr.Enter, TextBoxNote2Hid.Enter, TextBoxURL.Enter,
-    '    TextBoxRegMailPhone.Enter, TextBoxNote1.Enter
+    Private Sub LSCBU_MouseDown(sender As Object, e As MouseEventArgs) Handles _
+        LSCBU.MouseDown, LSCBD.MouseDown, LSCBBACK.MouseDown
 
-    'End Sub
+        If sender.Name = "LSCBU" Then
+            NowUPorDW = 0
+            ListBox1.TopIndex -= 1
+            GoCorrectPos()
+        ElseIf sender.Name = "LSCBD" Then
+            NowUPorDW = 1
+            ListBox1.TopIndex += 1
+            GoCorrectPos()
+        Else
+            Dim WhereIsY As Integer = e.Y + LSCBBACK.Top
+            If WhereIsY < LSCBBAR.Top Then
+                NowUPorDW = 2
+                If ListBox1.TopIndex - LB_Ration < 0 Then
+                    ListBox1.TopIndex = 0
+                Else
+                    ListBox1.TopIndex -= LB_Ration
+                End If
+                GoCorrectPos()
+            Else
+                    NowUPorDW = 3
+                ListBox1.TopIndex += LB_Ration
+                GoCorrectPos()
+            End If
 
-    'Private Sub TextBox_Leave(sender As Object, e As EventArgs) Handles TextBoxTitle.Leave,
-    '        TextBoxNameAddr.Leave, TextBoxNote2Hid.Leave,
-    '        TextBoxRegMailPhone.Leave, TextBoxURL.Leave, TextBoxNote1.Leave
+        End If
 
-    'End Sub
+        LSCB_UPDW.Enabled = True
+    End Sub
 
-    'For batch account file upgrade
-    'Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub LSCBWORK(ByVal sender As Object, ByVal e As EventArgs) Handles LSCB_UPDW.Tick
+        Select Case NowUPorDW
+            Case 0
+                ListBox1.TopIndex -= 1
+            Case 1
+                ListBox1.TopIndex += 1
+            Case 2
+                If ListBox1.TopIndex - LB_Ration < 0 Then
+                    ListBox1.TopIndex = 0
+                Else
+                    ListBox1.TopIndex -= LB_Ration
+                End If
+            Case 3
+                ListBox1.TopIndex += LB_Ration
+        End Select
+        GoCorrectPos()
+    End Sub
 
-    '    For IDX01 As Integer = 1 To ListBox1.Items.Count - 1
-    '        ListBox1.SelectedIndex = IDX01
-    '        GetPass()
-    '        NowPassStatue = 3
-    '        VG_Data_Done = True
-    '        VG_Title_Done = True
-    '        Thread.Sleep(200)
+    Private Sub LSCBU_MouseUp(sender As Object, e As MouseEventArgs) Handles LSCBU.MouseUp, LSCBD.MouseUp, LSCBBACK.MouseUp
+        LSCB_UPDW.Enabled = False
+    End Sub
 
-    '        ' Dim NewPath As String = Get_New_ACC_Filename(Tmpdir)
-    '        WriteFile(NowProcFile, AES_KEY_Protected, DERIVED_IDT_Protected)
-    '    Next
+    Private Sub LSCB_MSC_WORK(ByVal sender As Object, ByVal e As EventArgs) Handles LSCB_MSC.Tick
+        GoCorrectPos()
+        LSCB_MSC.Enabled = False
+    End Sub
 
-    'End Sub
+    Private Sub GoCorrectPos()
 
+        If LB_Range_Scale > 0 Then
+            Dim TmpIdx As Double = CDbl(ListBox1.TopIndex) / LB_Range_Scale
+            TmpIdx = TmpIdx * CDbl(DwY - UpY)
+            LSCBBAR.Top = CInt(TmpIdx + UpY)
+        Else
+            LSCBBAR.Top = UpY
+        End If
+
+    End Sub
+
+    Private Sub LSCBBAR_MouseDown(sender As Object, e As MouseEventArgs) Handles LSCBBAR.MouseDown
+        If e.Button = MouseButtons.Left Then
+            If LB_Range_Scale > 0 Then
+                BarIsHolding = True
+                Cursor = Cursors.SizeAll ' 更改游標形狀以指示按住按鈕時可以移動它
+            End If
+        End If
+    End Sub
+
+    Private Sub LSCBBAR_MouseMove(sender As Object, e As MouseEventArgs) Handles LSCBBAR.MouseMove
+
+        If BarIsHolding Then
+
+            Dim TmpY As Integer = sender.Top + e.Y - sender.Height / 2
+            'sender.Left += e.X - sender.Width / 2 ' 移動按鈕的位置
+
+            If (TmpY >= UpY) And (TmpY <= DwY) Then
+                ListBox1.TopIndex = CInt((CDbl(sender.Top - UpY) / CDbl(DwY - UpY)) * LB_Range_Scale)
+                sender.Top = TmpY
+            ElseIf TmpY < UpY Then
+                ListBox1.TopIndex = 0
+                sender.Top = UpY
+            End If
+
+        End If
+    End Sub
+
+    Private Sub LSCBBAR_MouseUp(sender As Object, e As MouseEventArgs) Handles LSCBBAR.MouseUp
+        BarIsHolding = False
+        Cursor = Cursors.Default ' 將游標形狀恢復為預設值
+    End Sub
+
+    Private Sub ListBox1_MouseWheel(sender As Object, e As MouseEventArgs) Handles ListBox1.MouseWheel
+        LSCB_MSC.Enabled = True
+    End Sub
+
+    Private Sub LSCB_MouseWheel(sender As Object, e As MouseEventArgs) Handles _
+            LSCBBAR.MouseWheel, LSCBBACK.MouseWheel, LSCBD.MouseWheel, LSCBU.MouseWheel
+        If e.Delta > 0 Then
+            If ListBox1.TopIndex - 3 < 0 Then
+                ListBox1.TopIndex = 0
+            Else
+                ListBox1.TopIndex -= 3
+            End If
+        Else
+            ListBox1.TopIndex += 3
+        End If
+        GoCorrectPos()
+    End Sub
+
+    Private Sub Go_ListBoxIdx(Gowhere As Integer)
+        ListBox1.SelectedIndex = Gowhere
+        GoCorrectPos()
+    End Sub
+
+    Dim b_Logout_on As New Bitmap(My.Resources.Resource1.button_LOGOUT_on)
+    Dim b_Final_on As New Bitmap(My.Resources.Resource1.button_Final_on)
+    Dim b_HELP_on As New Bitmap(My.Resources.Resource1.button_HELP_on)
+    Dim b_Launch_on As New Bitmap(My.Resources.Resource1.button_Launch_on)
+    Dim b_COPY_on As New Bitmap(My.Resources.Resource1.button_COPY_on)
+    Dim b_view_small_on As New Bitmap(My.Resources.Resource1.button_view_small_on)
+    Dim b_copy_small_on As New Bitmap(My.Resources.Resource1.button_copy_small_on)
+    Dim b_view_on As New Bitmap(My.Resources.Resource1.button_view_on)
+    Dim b_view_Son_on As New Bitmap(My.Resources.Resource1.button_view_Son_on)
+    Dim b_PictureBoxCATMAN_on As New Bitmap(My.Resources.Resource1.button_CATMAN_on)
+
+    Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
+        ButtonRestart.MouseEnter, ButtonFin.MouseEnter, ButtonHelp.MouseEnter, ButtonLaunch.MouseEnter,
+        ButtonCopyAccount.MouseEnter, PictureBoxPwdVi.MouseEnter, PictureBoxPwdCPY.MouseEnter,
+        ButtonCopyReg.MouseEnter, ButtonViewNote.MouseEnter, PictureBoxCATMAN.MouseEnter
+
+        Select Case sender.Name
+            Case "ButtonRestart"
+                ButtonRestart.Image = b_Logout_on
+            Case "ButtonFin"
+                ButtonFin.Image = b_Final_on
+            Case "ButtonHelp"
+                ButtonHelp.Image = b_HELP_on
+            Case "ButtonLaunch"
+                ButtonLaunch.Image = b_Launch_on
+            Case "ButtonCopyAccount"
+                ButtonCopyAccount.Image = b_COPY_on
+            Case "PictureBoxPwdVi"
+                PictureBoxPwdVi.Image = b_view_small_on
+            Case "PictureBoxPwdCPY"
+                PictureBoxPwdCPY.Image = b_copy_small_on
+            Case "ButtonCopyReg"
+                ButtonCopyReg.Image = b_COPY_on
+            Case "ButtonViewNote"
+                If TextBoxNote2Hid.UseSystemPasswordChar Then
+                    ButtonViewNote.Image = b_view_on
+                Else
+                    ButtonViewNote.Image = b_view_Son_on
+                End If
+            Case "PictureBoxCATMAN"
+                PictureBoxCATMAN.Image = b_PictureBoxCATMAN_on
+        End Select
+    End Sub
+
+    Dim b_Logout As New Bitmap(My.Resources.Resource1.button_LOGOUT)
+    Dim b_Final As New Bitmap(My.Resources.Resource1.button_Final)
+    Dim b_HELP As New Bitmap(My.Resources.Resource1.button_HELP)
+    Dim b_Launch As New Bitmap(My.Resources.Resource1.button_Launch)
+    Dim b_COPY As New Bitmap(My.Resources.Resource1.button_COPY)
+    Dim b_view_small As New Bitmap(My.Resources.Resource1.button_view_small)
+    Dim b_copy_small As New Bitmap(My.Resources.Resource1.button_copy_small)
+    Dim b_view As New Bitmap(My.Resources.Resource1.button_view)
+    Dim b_view_Son As New Bitmap(My.Resources.Resource1.button_view_Son)
+    Dim b_PictureBoxCATMAN As New Bitmap(My.Resources.Resource1.button_CATMAN)
+
+    Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles _
+        ButtonRestart.MouseLeave, ButtonFin.MouseLeave, ButtonHelp.MouseLeave, ButtonLaunch.MouseLeave,
+        ButtonCopyAccount.MouseLeave, PictureBoxPwdVi.MouseLeave, PictureBoxPwdCPY.MouseLeave,
+        ButtonCopyReg.MouseLeave, ButtonViewNote.MouseLeave, PictureBoxCATMAN.MouseLeave
+
+        Select Case sender.Name
+            Case "ButtonRestart"
+                ButtonRestart.Image = b_Logout
+            Case "ButtonFin"
+                ButtonFin.Image = b_Final
+            Case "ButtonHelp"
+                ButtonHelp.Image = b_HELP
+            Case "ButtonLaunch"
+                ButtonLaunch.Image = b_Launch
+            Case "ButtonCopyAccount"
+                ButtonCopyAccount.Image = b_COPY
+            Case "PictureBoxPwdVi"
+                PictureBoxPwdVi.Image = b_view_small
+            Case "PictureBoxPwdCPY"
+                PictureBoxPwdCPY.Image = b_copy_small
+            Case "ButtonCopyReg"
+                ButtonCopyReg.Image = b_COPY
+            Case "ButtonViewNote"
+                If TextBoxNote2Hid.UseSystemPasswordChar Then
+                    ButtonViewNote.Image = b_view
+                Else
+                    ButtonViewNote.Image = b_view_Son
+                End If
+            Case "PictureBoxCATMAN"
+                PictureBoxCATMAN.Image = b_PictureBoxCATMAN
+        End Select
+    End Sub
+
+    Dim B_L_Save_on As New Bitmap(My.Resources.Resource1.button_L_save_on)
+    Dim B_L_delete_on As New Bitmap(My.Resources.Resource1.button_L_delete_on)
+    Dim B_L_moveUP_on As New Bitmap(My.Resources.Resource1.button_L_moveUP_on)
+    Dim B_L_moveDWN_on As New Bitmap(My.Resources.Resource1.button_L_moveDWN_on)
+    Dim B_L_transKEY_on As New Bitmap(My.Resources.Resource1.button_L_transKEY_on)
+    Dim B_L_fileInfo_on As New Bitmap(My.Resources.Resource1.button_L_fileInfo_on)
+
+    Private Sub L_Mouse_Enter(sender As Object, e As EventArgs) Handles _
+        ButtonSave.MouseEnter, ButtonDelete.MouseEnter, ButtonGoUP.MouseEnter, ButtonGoDown.MouseEnter,
+        ButtonTransCatalog.MouseEnter, ButtonFileInfo.MouseEnter
+
+        If sender.Enabled = True Then
+            Select Case sender.Name
+                Case "ButtonSave"
+                    ButtonSave.Image = B_L_Save_on
+                Case "ButtonDelete"
+                    ButtonDelete.Image = B_L_delete_on
+                Case "ButtonGoUP"
+                    ButtonGoUP.Image = B_L_moveUP_on
+                Case "ButtonGoDown"
+                    ButtonGoDown.Image = B_L_moveDWN_on
+                Case "ButtonTransCatalog"
+                    ButtonTransCatalog.Image = B_L_transKEY_on
+                Case "ButtonFileInfo"
+                    ButtonFileInfo.Image = B_L_fileInfo_on
+            End Select
+        End If
+
+    End Sub
+
+    Dim B_L_Save As New Bitmap(My.Resources.Resource1.button_L_save)
+    Dim B_L_delete As New Bitmap(My.Resources.Resource1.button_L_delete)
+    Dim B_L_moveUP As New Bitmap(My.Resources.Resource1.button_L_moveUP)
+    Dim B_L_moveDWN As New Bitmap(My.Resources.Resource1.button_L_moveDWN)
+    Dim B_L_transKEY As New Bitmap(My.Resources.Resource1.button_L_transKEY)
+    Dim B_L_fileInfo As New Bitmap(My.Resources.Resource1.button_L_fileInfo)
+
+    Private Sub L_Mouse_Leave(sender As Object, e As EventArgs) Handles _
+        ButtonSave.MouseLeave, ButtonDelete.MouseLeave, ButtonGoUP.MouseLeave, ButtonGoDown.MouseLeave,
+        ButtonTransCatalog.MouseLeave, ButtonFileInfo.MouseLeave
+
+        If sender.Enabled = True Then
+            Select Case sender.Name
+                Case "ButtonSave"
+                    ButtonSave.Image = B_L_Save
+                Case "ButtonDelete"
+                    ButtonDelete.Image = B_L_delete
+                Case "ButtonGoUP"
+                    ButtonGoUP.Image = B_L_moveUP
+                Case "ButtonGoDown"
+                    ButtonGoDown.Image = B_L_moveDWN
+                Case "ButtonTransCatalog"
+                    ButtonTransCatalog.Image = B_L_transKEY
+                Case "ButtonFileInfo"
+                    ButtonFileInfo.Image = B_L_fileInfo
+            End Select
+        End If
+
+    End Sub
 End Class
+
+'For Textbox lighton
+
+'Private Sub TextBox_Enter(sender As Object, e As EventArgs) Handles TextBoxTitle.Enter,
+'    TextBoxNameAddr.Enter, TextBoxNote2Hid.Enter, TextBoxURL.Enter,
+'    TextBoxRegMailPhone.Enter, TextBoxNote1.Enter
+
+'End Sub
+
+'Private Sub TextBox_Leave(sender As Object, e As EventArgs) Handles TextBoxTitle.Leave,
+'        TextBoxNameAddr.Leave, TextBoxNote2Hid.Leave,
+'        TextBoxRegMailPhone.Leave, TextBoxURL.Leave, TextBoxNote1.Leave
+
+'End Sub
+
+'For batch account file upgrade
+'Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+'    For IDX01 As Integer = 1 To ListBox1.Items.Count - 1
+'        ListBox1.SelectedIndex = IDX01
+'        GetPass()
+'        NowPassStatue = 3
+'        VG_Data_Done = True
+'        VG_Title_Done = True
+'        Thread.Sleep(200)
+
+'        ' Dim NewPath As String = Get_New_ACC_Filename(Tmpdir)
+'        WriteFile(NowProcFile, AES_KEY_Protected, DERIVED_IDT_Protected)
+'    Next
+
+'End Sub
+
+
 

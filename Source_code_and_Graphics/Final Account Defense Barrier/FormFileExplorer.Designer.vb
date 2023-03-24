@@ -22,18 +22,27 @@ Partial Class FormFileExplorer
     '請勿使用程式碼編輯器進行修改。
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormFileExplorer))
         Me.ListBoxDrivers = New System.Windows.Forms.ListBox()
         Me.ListBoxFiles = New System.Windows.Forms.ListBox()
         Me.ButtonCancel = New System.Windows.Forms.PictureBox()
-        Me.ButtonOK = New System.Windows.Forms.PictureBox()
+        Me.ButtonFileOpen = New System.Windows.Forms.PictureBox()
         Me.PictureBox8 = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
         Me.LabelPath = New System.Windows.Forms.Label()
+        Me.LSCBBAR = New System.Windows.Forms.PictureBox()
+        Me.LSCBD = New System.Windows.Forms.PictureBox()
+        Me.LSCBU = New System.Windows.Forms.PictureBox()
+        Me.LSCBBACK = New System.Windows.Forms.PictureBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ButtonFileOpen, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LSCBBAR, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LSCBD, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LSCBU, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LSCBBACK, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'ListBoxDrivers
@@ -44,9 +53,9 @@ Partial Class FormFileExplorer
         Me.ListBoxDrivers.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.ListBoxDrivers.FormattingEnabled = True
         Me.ListBoxDrivers.ItemHeight = 18
-        Me.ListBoxDrivers.Location = New System.Drawing.Point(24, 167)
+        Me.ListBoxDrivers.Location = New System.Drawing.Point(24, 172)
         Me.ListBoxDrivers.Name = "ListBoxDrivers"
-        Me.ListBoxDrivers.Size = New System.Drawing.Size(221, 144)
+        Me.ListBoxDrivers.Size = New System.Drawing.Size(221, 162)
         Me.ListBoxDrivers.TabIndex = 0
         '
         'ListBoxFiles
@@ -57,9 +66,9 @@ Partial Class FormFileExplorer
         Me.ListBoxFiles.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.ListBoxFiles.FormattingEnabled = True
         Me.ListBoxFiles.ItemHeight = 18
-        Me.ListBoxFiles.Location = New System.Drawing.Point(273, 167)
+        Me.ListBoxFiles.Location = New System.Drawing.Point(0, 0)
         Me.ListBoxFiles.Name = "ListBoxFiles"
-        Me.ListBoxFiles.Size = New System.Drawing.Size(604, 324)
+        Me.ListBoxFiles.Size = New System.Drawing.Size(615, 324)
         Me.ListBoxFiles.TabIndex = 3
         '
         'ButtonCancel
@@ -73,16 +82,16 @@ Partial Class FormFileExplorer
         Me.ButtonCancel.TabIndex = 85
         Me.ButtonCancel.TabStop = False
         '
-        'ButtonOK
+        'ButtonFileOpen
         '
-        Me.ButtonOK.BackColor = System.Drawing.Color.Black
-        Me.ButtonOK.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonOK.Image = CType(resources.GetObject("ButtonOK.Image"), System.Drawing.Image)
-        Me.ButtonOK.Location = New System.Drawing.Point(22, 466)
-        Me.ButtonOK.Name = "ButtonOK"
-        Me.ButtonOK.Size = New System.Drawing.Size(112, 61)
-        Me.ButtonOK.TabIndex = 84
-        Me.ButtonOK.TabStop = False
+        Me.ButtonFileOpen.BackColor = System.Drawing.Color.Black
+        Me.ButtonFileOpen.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonFileOpen.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_OpenF_DI
+        Me.ButtonFileOpen.Location = New System.Drawing.Point(22, 466)
+        Me.ButtonFileOpen.Name = "ButtonFileOpen"
+        Me.ButtonFileOpen.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonFileOpen.TabIndex = 84
+        Me.ButtonFileOpen.TabStop = False
         '
         'PictureBox8
         '
@@ -114,6 +123,54 @@ Partial Class FormFileExplorer
         Me.LabelPath.TabIndex = 119
         Me.LabelPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'LSCBBAR
+        '
+        Me.LSCBBAR.BackColor = System.Drawing.Color.Black
+        Me.LSCBBAR.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_BAR
+        Me.LSCBBAR.Location = New System.Drawing.Point(859, 187)
+        Me.LSCBBAR.Name = "LSCBBAR"
+        Me.LSCBBAR.Size = New System.Drawing.Size(17, 59)
+        Me.LSCBBAR.TabIndex = 130
+        Me.LSCBBAR.TabStop = False
+        '
+        'LSCBD
+        '
+        Me.LSCBD.BackColor = System.Drawing.Color.Black
+        Me.LSCBD.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_S_DW
+        Me.LSCBD.Location = New System.Drawing.Point(859, 482)
+        Me.LSCBD.Name = "LSCBD"
+        Me.LSCBD.Size = New System.Drawing.Size(17, 17)
+        Me.LSCBD.TabIndex = 129
+        Me.LSCBD.TabStop = False
+        '
+        'LSCBU
+        '
+        Me.LSCBU.BackColor = System.Drawing.Color.Black
+        Me.LSCBU.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_S_UP
+        Me.LSCBU.Location = New System.Drawing.Point(859, 170)
+        Me.LSCBU.Name = "LSCBU"
+        Me.LSCBU.Size = New System.Drawing.Size(17, 17)
+        Me.LSCBU.TabIndex = 128
+        Me.LSCBU.TabStop = False
+        '
+        'LSCBBACK
+        '
+        Me.LSCBBACK.BackColor = System.Drawing.Color.Black
+        Me.LSCBBACK.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_BARV
+        Me.LSCBBACK.Location = New System.Drawing.Point(859, 187)
+        Me.LSCBBACK.Name = "LSCBBACK"
+        Me.LSCBBACK.Size = New System.Drawing.Size(17, 295)
+        Me.LSCBBACK.TabIndex = 127
+        Me.LSCBBACK.TabStop = False
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.ListBoxFiles)
+        Me.Panel1.Location = New System.Drawing.Point(274, 172)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(582, 324)
+        Me.Panel1.TabIndex = 131
+        '
         'FormFileExplorer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -121,10 +178,14 @@ Partial Class FormFileExplorer
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(901, 548)
         Me.ControlBox = False
+        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.LSCBBAR)
+        Me.Controls.Add(Me.LSCBD)
+        Me.Controls.Add(Me.LSCBU)
+        Me.Controls.Add(Me.LSCBBACK)
         Me.Controls.Add(Me.LabelPath)
         Me.Controls.Add(Me.ButtonCancel)
-        Me.Controls.Add(Me.ButtonOK)
-        Me.Controls.Add(Me.ListBoxFiles)
+        Me.Controls.Add(Me.ButtonFileOpen)
         Me.Controls.Add(Me.ListBoxDrivers)
         Me.Controls.Add(Me.PictureBox8)
         Me.Controls.Add(Me.PictureGray)
@@ -139,9 +200,14 @@ Partial Class FormFileExplorer
         Me.Text = "File Explorer"
         Me.TransparencyKey = System.Drawing.Color.Lime
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ButtonFileOpen, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LSCBBAR, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LSCBD, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LSCBU, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LSCBBACK, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -150,7 +216,12 @@ Partial Class FormFileExplorer
     Friend WithEvents ListBoxFiles As ListBox
     Friend WithEvents PictureBox8 As PictureBox
     Friend WithEvents ButtonCancel As PictureBox
-    Friend WithEvents ButtonOK As PictureBox
+    Friend WithEvents ButtonFileOpen As PictureBox
     Friend WithEvents PictureGray As PictureBox
     Friend WithEvents LabelPath As Label
+    Friend WithEvents LSCBBAR As PictureBox
+    Friend WithEvents LSCBD As PictureBox
+    Friend WithEvents LSCBU As PictureBox
+    Friend WithEvents LSCBBACK As PictureBox
+    Friend WithEvents Panel1 As Panel
 End Class

@@ -4,17 +4,14 @@
 
 Public Class MSGBOXXX
 
-    Dim Btn_C As Image = New Bitmap(My.Resources.Resource1.button_confirm)
-    Dim Btn_C_Di As Image = New Bitmap(My.Resources.Resource1.button_confirm_dis)
-
     Private Sub TextBoxDELETE_TextChanged(sender As Object, e As EventArgs) Handles TextBoxDELETE.TextChanged
 
         If TextBoxDELETE.Text = "DELETE" Then
-            ButtonYes.Enabled = True
-            ButtonYes.Image = Btn_C
+            ButtonOK.Enabled = True
+            ButtonOK.Image = My.Resources.Resource1.button_confirm
         Else
-            ButtonYes.Enabled = False
-            ButtonYes.Image = Btn_C_Di
+            ButtonOK.Enabled = False
+            ButtonOK.Image = My.Resources.Resource1.button_confirm_dis
         End If
 
     End Sub
@@ -55,4 +52,52 @@ Public Class MSGBOXXX
     Private Sub ButtonNo_Click(sender As Object, e As EventArgs) Handles ButtonNo.Click
         Me.DialogResult = DialogResult.Cancel
     End Sub
+
+    Dim B_confirm_on As New Bitmap(My.Resources.Resource1.button_confirm_on)
+    Dim B_Cancel_on As New Bitmap(My.Resources.Resource1.button_Cancel_on)
+    Dim B_yes_on As New Bitmap(My.Resources.Resource1.button_yes_on)
+    Dim B_no_on As New Bitmap(My.Resources.Resource1.button_no_on)
+
+    Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
+        ButtonOK.MouseEnter, ButtonCancel.MouseEnter, ButtonYes.MouseEnter,
+        ButtonNo.MouseEnter
+
+        Select Case sender.Name
+            Case "ButtonOK"
+                If ButtonOK.Enabled Then
+                    ButtonOK.Image = B_confirm_on
+                End If
+            Case "ButtonCancel"
+                ButtonCancel.Image = B_Cancel_on
+            Case "ButtonYes"
+                ButtonYes.Image = B_yes_on
+            Case "ButtonNo"
+                ButtonNo.Image = B_no_on
+        End Select
+
+    End Sub
+
+    Dim B_confirm As New Bitmap(My.Resources.Resource1.button_confirm)
+    Dim B_Cancel As New Bitmap(My.Resources.Resource1.button_Cancel)
+    Dim B_yes As New Bitmap(My.Resources.Resource1.button_yes)
+    Dim B_no As New Bitmap(My.Resources.Resource1.button_no)
+
+    Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles _
+        ButtonOK.MouseLeave, ButtonCancel.MouseLeave, ButtonYes.MouseLeave,
+        ButtonNo.MouseLeave
+
+        Select Case sender.Name
+            Case "ButtonOK"
+                If ButtonOK.Enabled Then
+                    ButtonOK.Image = B_confirm
+                End If
+            Case "ButtonCancel"
+                ButtonCancel.Image = B_Cancel
+            Case "ButtonYes"
+                ButtonYes.Image = B_yes
+            Case "ButtonNo"
+                ButtonNo.Image = B_no
+        End Select
+    End Sub
 End Class
+

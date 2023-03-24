@@ -29,7 +29,7 @@ Partial Class FormLogin
         Me.PicturePMP = New System.Windows.Forms.PictureBox()
         Me.PictureWinMin = New System.Windows.Forms.PictureBox()
         Me.PictureBoxGPUS = New System.Windows.Forms.PictureBox()
-        Me.PictureBoxGenPwd = New System.Windows.Forms.PictureBox()
+        Me.ButtonGenPwd = New System.Windows.Forms.PictureBox()
         Me.PictureBoxMIT = New System.Windows.Forms.PictureBox()
         Me.ButtonHelp = New System.Windows.Forms.PictureBox()
         Me.ButtonCancel = New System.Windows.Forms.PictureBox()
@@ -42,11 +42,12 @@ Partial Class FormLogin
         Me.PicCAP1 = New System.Windows.Forms.PictureBox()
         Me.PictureBoxLogin = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
+        Me.ButtonFin = New System.Windows.Forms.PictureBox()
         CType(Me.PictureSalt, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicturePMP, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxGPUS, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBoxGenPwd, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ButtonGenPwd, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxMIT, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -59,6 +60,7 @@ Partial Class FormLogin
         CType(Me.PicCAP1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxLogin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBoxPwd
@@ -138,17 +140,17 @@ Partial Class FormLogin
         Me.PictureBoxGPUS.TabStop = False
         Me.PictureBoxGPUS.Visible = False
         '
-        'PictureBoxGenPwd
+        'ButtonGenPwd
         '
-        Me.PictureBoxGenPwd.BackColor = System.Drawing.Color.Black
-        Me.PictureBoxGenPwd.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBoxGenPwd.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_genpwd
-        Me.PictureBoxGenPwd.Location = New System.Drawing.Point(509, 573)
-        Me.PictureBoxGenPwd.Name = "PictureBoxGenPwd"
-        Me.PictureBoxGenPwd.Size = New System.Drawing.Size(112, 61)
-        Me.PictureBoxGenPwd.TabIndex = 86
-        Me.PictureBoxGenPwd.TabStop = False
-        Me.PictureBoxGenPwd.Visible = False
+        Me.ButtonGenPwd.BackColor = System.Drawing.Color.Black
+        Me.ButtonGenPwd.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonGenPwd.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_genpwd
+        Me.ButtonGenPwd.Location = New System.Drawing.Point(509, 573)
+        Me.ButtonGenPwd.Name = "ButtonGenPwd"
+        Me.ButtonGenPwd.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonGenPwd.TabIndex = 86
+        Me.ButtonGenPwd.TabStop = False
+        Me.ButtonGenPwd.Visible = False
         '
         'PictureBoxMIT
         '
@@ -176,7 +178,7 @@ Partial Class FormLogin
         '
         Me.ButtonCancel.BackColor = System.Drawing.Color.Black
         Me.ButtonCancel.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonCancel.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Final
+        Me.ButtonCancel.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Cancel
         Me.ButtonCancel.Location = New System.Drawing.Point(277, 466)
         Me.ButtonCancel.Name = "ButtonCancel"
         Me.ButtonCancel.Size = New System.Drawing.Size(112, 61)
@@ -278,6 +280,17 @@ Partial Class FormLogin
         Me.PictureGray.TabStop = False
         Me.PictureGray.Visible = False
         '
+        'ButtonFin
+        '
+        Me.ButtonFin.BackColor = System.Drawing.Color.Black
+        Me.ButtonFin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonFin.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Final
+        Me.ButtonFin.Location = New System.Drawing.Point(277, 466)
+        Me.ButtonFin.Name = "ButtonFin"
+        Me.ButtonFin.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonFin.TabIndex = 125
+        Me.ButtonFin.TabStop = False
+        '
         'FormLogin
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -285,11 +298,12 @@ Partial Class FormLogin
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(538, 717)
         Me.ControlBox = False
+        Me.Controls.Add(Me.ButtonFin)
         Me.Controls.Add(Me.PictureSalt)
         Me.Controls.Add(Me.PicturePMP)
         Me.Controls.Add(Me.PictureWinMin)
         Me.Controls.Add(Me.PictureBoxGPUS)
-        Me.Controls.Add(Me.PictureBoxGenPwd)
+        Me.Controls.Add(Me.ButtonGenPwd)
         Me.Controls.Add(Me.PictureBoxMIT)
         Me.Controls.Add(Me.ButtonHelp)
         Me.Controls.Add(Me.ButtonCancel)
@@ -319,7 +333,7 @@ Partial Class FormLogin
         CType(Me.PicturePMP, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxGPUS, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBoxGenPwd, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ButtonGenPwd, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxMIT, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonHelp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).EndInit()
@@ -332,6 +346,7 @@ Partial Class FormLogin
         CType(Me.PicCAP1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxLogin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -347,7 +362,7 @@ Partial Class FormLogin
     Friend WithEvents ButtonCancel As PictureBox
     Friend WithEvents ButtonHelp As PictureBox
     Friend WithEvents PictureBoxMIT As PictureBox
-    Friend WithEvents PictureBoxGenPwd As PictureBox
+    Friend WithEvents ButtonGenPwd As PictureBox
     Friend WithEvents PictureBoxGPUS As PictureBox
     Friend WithEvents PictureGray As PictureBox
     Friend WithEvents PictureWinMin As PictureBox
@@ -355,4 +370,5 @@ Partial Class FormLogin
     Friend WithEvents PictureSalt As PictureBox
     Private WithEvents TextBoxPwd As TextBox
     Private WithEvents TextBoxPwdVerify As TextBox
+    Friend WithEvents ButtonFin As PictureBox
 End Class

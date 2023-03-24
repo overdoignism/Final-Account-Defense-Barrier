@@ -43,7 +43,7 @@ Partial Class FormMain
         Me.PicDIGI_1 = New System.Windows.Forms.PictureBox()
         Me.ButtonRestart = New System.Windows.Forms.PictureBox()
         Me.ButtonHelp = New System.Windows.Forms.PictureBox()
-        Me.ButtonExit = New System.Windows.Forms.PictureBox()
+        Me.ButtonFin = New System.Windows.Forms.PictureBox()
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
@@ -63,6 +63,11 @@ Partial Class FormMain
         Me.PictureBoxPwd = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.LSCBBAR = New System.Windows.Forms.PictureBox()
+        Me.LSCBD = New System.Windows.Forms.PictureBox()
+        Me.LSCBU = New System.Windows.Forms.PictureBox()
+        Me.LSCBBACK = New System.Windows.Forms.PictureBox()
         CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicTimerINACT, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicTimerACT, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -72,7 +77,7 @@ Partial Class FormMain
         CType(Me.PicDIGI_1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonRestart, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ButtonExit, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -92,6 +97,11 @@ Partial Class FormMain
         CType(Me.PictureBoxPwd, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
+        CType(Me.LSCBBAR, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LSCBD, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LSCBU, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LSCBBACK, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ListBox1
@@ -103,9 +113,9 @@ Partial Class FormMain
         Me.ListBox1.FormattingEnabled = True
         Me.ListBox1.ItemHeight = 19
         Me.ListBox1.Items.AddRange(New Object() {""})
-        Me.ListBox1.Location = New System.Drawing.Point(26, 199)
+        Me.ListBox1.Location = New System.Drawing.Point(0, 0)
         Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(286, 266)
+        Me.ListBox1.Size = New System.Drawing.Size(300, 266)
         Me.ListBox1.TabIndex = 2
         '
         'TextBoxTitle
@@ -321,16 +331,16 @@ Partial Class FormMain
         Me.ButtonHelp.TabIndex = 109
         Me.ButtonHelp.TabStop = False
         '
-        'ButtonExit
+        'ButtonFin
         '
-        Me.ButtonExit.BackColor = System.Drawing.Color.Black
-        Me.ButtonExit.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonExit.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Final
-        Me.ButtonExit.Location = New System.Drawing.Point(871, 620)
-        Me.ButtonExit.Name = "ButtonExit"
-        Me.ButtonExit.Size = New System.Drawing.Size(112, 61)
-        Me.ButtonExit.TabIndex = 108
-        Me.ButtonExit.TabStop = False
+        Me.ButtonFin.BackColor = System.Drawing.Color.Black
+        Me.ButtonFin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonFin.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Final
+        Me.ButtonFin.Location = New System.Drawing.Point(871, 620)
+        Me.ButtonFin.Name = "ButtonFin"
+        Me.ButtonFin.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonFin.TabIndex = 108
+        Me.ButtonFin.TabStop = False
         '
         'PictureBox4
         '
@@ -536,6 +546,54 @@ Partial Class FormMain
         Me.PictureGray.TabStop = False
         Me.PictureGray.Visible = False
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.ListBox1)
+        Me.Panel1.Location = New System.Drawing.Point(29, 199)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(265, 266)
+        Me.Panel1.TabIndex = 122
+        '
+        'LSCBBAR
+        '
+        Me.LSCBBAR.BackColor = System.Drawing.Color.Black
+        Me.LSCBBAR.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_BAR
+        Me.LSCBBAR.Location = New System.Drawing.Point(295, 216)
+        Me.LSCBBAR.Name = "LSCBBAR"
+        Me.LSCBBAR.Size = New System.Drawing.Size(17, 59)
+        Me.LSCBBAR.TabIndex = 126
+        Me.LSCBBAR.TabStop = False
+        '
+        'LSCBD
+        '
+        Me.LSCBD.BackColor = System.Drawing.Color.Black
+        Me.LSCBD.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_S_DW
+        Me.LSCBD.Location = New System.Drawing.Point(295, 448)
+        Me.LSCBD.Name = "LSCBD"
+        Me.LSCBD.Size = New System.Drawing.Size(17, 17)
+        Me.LSCBD.TabIndex = 125
+        Me.LSCBD.TabStop = False
+        '
+        'LSCBU
+        '
+        Me.LSCBU.BackColor = System.Drawing.Color.Black
+        Me.LSCBU.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_S_UP
+        Me.LSCBU.Location = New System.Drawing.Point(295, 199)
+        Me.LSCBU.Name = "LSCBU"
+        Me.LSCBU.Size = New System.Drawing.Size(17, 17)
+        Me.LSCBU.TabIndex = 124
+        Me.LSCBU.TabStop = False
+        '
+        'LSCBBACK
+        '
+        Me.LSCBBACK.BackColor = System.Drawing.Color.Black
+        Me.LSCBBACK.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_BARV
+        Me.LSCBBACK.Location = New System.Drawing.Point(295, 216)
+        Me.LSCBBACK.Name = "LSCBBACK"
+        Me.LSCBBACK.Size = New System.Drawing.Size(17, 232)
+        Me.LSCBBACK.TabIndex = 123
+        Me.LSCBBACK.TabStop = False
+        '
         'FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -543,6 +601,11 @@ Partial Class FormMain
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(995, 698)
         Me.ControlBox = False
+        Me.Controls.Add(Me.LSCBBAR)
+        Me.Controls.Add(Me.LSCBD)
+        Me.Controls.Add(Me.LSCBU)
+        Me.Controls.Add(Me.LSCBBACK)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.PictureWinMin)
         Me.Controls.Add(Me.LabelBy)
         Me.Controls.Add(Me.LABVER)
@@ -555,7 +618,7 @@ Partial Class FormMain
         Me.Controls.Add(Me.PicDIGI_1)
         Me.Controls.Add(Me.ButtonRestart)
         Me.Controls.Add(Me.ButtonHelp)
-        Me.Controls.Add(Me.ButtonExit)
+        Me.Controls.Add(Me.ButtonFin)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.PictureBox1)
@@ -580,7 +643,6 @@ Partial Class FormMain
         Me.Controls.Add(Me.TextBoxNameAddr)
         Me.Controls.Add(Me.TextBoxURL)
         Me.Controls.Add(Me.TextBoxTitle)
-        Me.Controls.Add(Me.ListBox1)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.PictureGray)
         Me.DoubleBuffered = True
@@ -599,7 +661,7 @@ Partial Class FormMain
         CType(Me.PicDIGI_1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonRestart, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ButtonExit, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -619,6 +681,11 @@ Partial Class FormMain
         CType(Me.PictureBoxPwd, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        CType(Me.LSCBBAR, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LSCBD, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LSCBU, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LSCBBACK, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -651,7 +718,7 @@ Partial Class FormMain
     Friend WithEvents PictureBox3 As PictureBox
     Friend WithEvents PictureBox4 As PictureBox
     Friend WithEvents ButtonHelp As PictureBox
-    Friend WithEvents ButtonExit As PictureBox
+    Friend WithEvents ButtonFin As PictureBox
     Friend WithEvents ButtonRestart As PictureBox
     Friend WithEvents PicDIGI_1 As PictureBox
     Friend WithEvents PicDIGI_2 As PictureBox
@@ -664,4 +731,9 @@ Partial Class FormMain
     Friend WithEvents LABVER As Label
     Friend WithEvents LabelBy As Label
     Friend WithEvents PictureWinMin As PictureBox
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents LSCBBAR As PictureBox
+    Friend WithEvents LSCBD As PictureBox
+    Friend WithEvents LSCBU As PictureBox
+    Friend WithEvents LSCBBACK As PictureBox
 End Class

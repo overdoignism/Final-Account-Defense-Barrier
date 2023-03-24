@@ -22,7 +22,6 @@ Partial Class FormConfig
     '請勿使用程式碼編輯器進行修改。
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormConfig))
         Me.TextBoxCatalog = New System.Windows.Forms.TextBox()
         Me.CB_SIM1 = New System.Windows.Forms.ComboBox()
         Me.CB_SIM2 = New System.Windows.Forms.ComboBox()
@@ -134,7 +133,7 @@ Partial Class FormConfig
         '
         Me.ButtonOK.BackColor = System.Drawing.Color.Black
         Me.ButtonOK.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonOK.Image = CType(resources.GetObject("ButtonOK.Image"), System.Drawing.Image)
+        Me.ButtonOK.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_confirm
         Me.ButtonOK.Location = New System.Drawing.Point(450, 326)
         Me.ButtonOK.Name = "ButtonOK"
         Me.ButtonOK.Size = New System.Drawing.Size(112, 61)

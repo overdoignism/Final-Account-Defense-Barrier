@@ -151,9 +151,6 @@
   <data name="SECURE_DESKTOP_ON" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\SECURE DESKTOP ON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_view_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_view_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DIGI_Y_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\DIGI_Y_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -178,7 +175,7 @@
   <data name="button_L_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_L_save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_view_small_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="button_view_small_Son" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_view_small_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_L_moveDWN_DI" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -423,5 +420,107 @@
   </data>
   <data name="button_yes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_yes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_Cancel_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_cancel_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_confirm_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_confirm_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_Final_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_Final_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_genpwd_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_genpwd_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_HELP_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_HELP_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_LOGOUT_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_LOGOUT_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_no_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_no_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_OpenF_DI" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_OpenF_DI.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_OpenF_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_OpenF_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_yes_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_yes_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SCB_BAR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\SCB_BAR.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SCB_BARV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\SCB_BARV.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SCB_S_DW" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\SCB_S_DW.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SCB_S_UP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\SCB_S_UP.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arr_Left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Arr_Left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arr_Right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Arr_Right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_COPY_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_COPY_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_copy_small_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_copy_small_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_Launch_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_Launch_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_L_delete_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_L_delete_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_L_fileInfo_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_L_fileInfo_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_L_moveDWN_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_L_moveDWN_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_L_moveUP_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_L_moveUP_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_L_save_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_L_save_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_L_transKEY_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_L_transKEY_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_view_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_view_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_view_small_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_view_small_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_view_small_Son_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_view_small_Son_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_view_Son" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_view_Son.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_view_Son_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_view_Son_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Doc01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Doc01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Doc02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Doc02.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Doc03" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Doc03.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exit_Pic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\exit_Pic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
