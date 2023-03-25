@@ -11,9 +11,9 @@ v1.0.8483.40927
 *   Open source with MIT License
 *   Recommend for Windows 10 or later.
 
-[★若您的防毒程式提出警報，請見此](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)
-[★Refer to this if your antivirus program reports an alert.](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)
-[★防毒ソフトが警告を出した場合は、これを参照してください](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)
+[★若您的防毒程式提出警報，請見此](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)  
+[★Refer to this if your antivirus program reports an alert.](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)  
+[★防毒ソフトが警告を出した場合は、これを参照してください](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)  
 
 [說明文件🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/README_ZHTW.md)
 
