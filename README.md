@@ -1,6 +1,6 @@
-## Final Account Defense Barrier 最終アカウント防御障壁 V1.0
+## Final Account Defense Barrier 最終アカウント防御障壁 V1.1
 
-v1.0.8483.40927
+v1.1.8488.33464
 
 (繁中) 一個福音戰士風格的帳號密碼管理程式，基於Windows平台。  
 (English) An Evangelion style account management program, based on the Windows platform.  
@@ -13,9 +13,9 @@ v1.0.8483.40927
 
 ---
 
-[★若您的防毒程式提出警報，請見此說明](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)  
-[★Refer to this if your antivirus program reports an alert.](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)  
-[★防毒ソフトが警告を出した場合は、これを参照してください](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)
+[★ 若您的防毒程式提出警報，請見此說明](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)  
+[★ Refer to this if your antivirus program reports an alert.](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)  
+[★ 防毒ソフトが警告を出した場合は、これを参照してください](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/FALSEALERT.md)
 
 ---
 

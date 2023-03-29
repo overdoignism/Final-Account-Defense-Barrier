@@ -130,6 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoCurrencyChk.vb" />
+    <Compile Include="FormCSVWorking.Designer.vb">
+      <DependentUpon>FormCSVWorking.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormCSVWorking.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Encode_Lib.vb" />
     <Compile Include="FormConfig.Designer.vb">
       <DependentUpon>FormConfig.vb</DependentUpon>
@@ -217,6 +223,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormCSVWorking.resx">
+      <DependentUpon>FormCSVWorking.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormConfig.resx">
       <DependentUpon>FormConfig.vb</DependentUpon>
     </EmbeddedResource>
@@ -400,6 +409,15 @@
     <None Include="AllResource\Arr_Left.png" />
     <None Include="AllResource\Arr_Right.png" />
     <None Include="AllResource\exit_Pic.png" />
+    <None Include="AllResource\CSV_Waiting.png" />
+    <None Include="AllResource\button_CAT_CSVIM.png" />
+    <None Include="AllResource\button_CAT_CSVIM_on.png" />
+    <None Include="AllResource\button_CAT_DEL_on.png" />
+    <None Include="AllResource\button_CAT_TRANS_on.png" />
+    <None Include="AllResource\button_CAT_CSVEX.png" />
+    <None Include="AllResource\button_CAT_CSVEX_on.png" />
+    <None Include="AllResource\CSV_IMP.png" />
+    <None Include="AllResource\CSV_EXP.png" />
     <Content Include="icon_ALL.ico" />
   </ItemGroup>
   <ItemGroup>

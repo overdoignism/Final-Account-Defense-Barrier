@@ -54,9 +54,10 @@
 *   No validation is required when using BIP39 passphrase, as it is automatically verified.
 *   Before save, certain errors in cryptocurrency addresses will be automatically detected. Currently, BTC (TRX, Doge, LTC), ETH and compatible coins are supported.
 
-### Backup operation
+### Backup operation and [CSV Import/Export](CSV_EN.md)
 
-*  Simply copy the main program along with the generated folders and files. You can choose to compress, save to a USB drive, or upload to the cloud.
+*  Generally, simply copy the main program along with the generated folders and files. You can choose to compress, save to a USB drive, or upload to the cloud.
+*  For CSV import/export, please read the document "[CSV Inport/Export](CSV_EN.md)".
 
 ### Enhanced security operations
 

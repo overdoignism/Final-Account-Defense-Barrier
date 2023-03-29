@@ -4,6 +4,8 @@
 
 Imports System.Numerics
 
+'======= For check CryptoCurrency address
+
 Public Class CryptoCurrencyChk : Implements IDisposable
 
     Private disposedValue As Boolean

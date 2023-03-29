@@ -37,7 +37,7 @@ The validation to prevent typos. (Omit when using BIP39)
 Registed e-mail or cell phone number.
 Note 2. For invisible message.
 Filename:
-Source and destination are the same.
+Source and destination are the same.\n\nIt will make duplicate account data in the catalog, are you sure?
 Account "$$$" deleted.
 Account "$$$" transformed.
 Version
@@ -88,3 +88,14 @@ Bad checksum, probably in the wrong order.
 Detected an invaild $$$ (or its compatible coin) address, this may caused by:\n\n
 Typo, case error, order error.\n\nLength too logn or too short, or copy-paste miss.\n\nMisjudgment. It's not a $$$ address.\n\n
 Do you want to countiune to save?
+Are you sure you want to import CSV file?\n\nIf you have any questions,\n\nplease refer to the online help, "CSV Import" section.
+CSV import done.
+CSV import failure.
+This may not be a correct CSV file.
+Please handle the CSV files properly to avoid leakage of confidentiality.
+CSV file is not encrypted and has security risks.\n\nAre you sure you want to export?\n\n(Yow need to enter the password of the current catalog.)
+The password does not match the current catalog. Export abort.
+No account in the catalog. Export abort.
+The saved file name is\n\n$$$\n\nin the application folder.\n\n(Next we will guide you to the file location.)
+Attached debugger detected.\n\nIf you're not programming, it probably means a malicious attack has occurred.\n\nStrongly recommended to stop using and perform anti-virus.
+Critical

@@ -40,15 +40,8 @@ Module Module1
     Public CurrentAccountPass() As Byte
     Public Read_File_Pass_Str As String
 
-    Public PWDSHOWon As New Bitmap(My.Resources.Resource1.PASSWORD_SHOW)
-    Public PWDSHOWoff As New Bitmap(My.Resources.Resource1.PASSWORD_HIDE)
-
-    Public CAPon As New Bitmap(My.Resources.Resource1.caps_lock_on)
-    Public CAPoff As New Bitmap(My.Resources.Resource1.caps_lock_off)
-
     Public ALLOPACITY As Single = 1.0F
     Public OSver As Integer
-
 
     Public Const MainWebURL As String = "https://github.com/overdoignism/Final-Account-Defense-Barrier"
     Public Const File_Limit As Long = 134217728
@@ -56,10 +49,6 @@ Module Module1
     Public SCutChar() As String = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G",
         "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "-", "=",
         "[", "]", ";", "'", "<", ">", "/"}
-
-    Public PWD_num_letter_only() As String = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G",
-        "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e",
-        "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 
     Public TextStrs() As String = {
         "No matching catalog found," + vbCrLf + vbCrLf + "and the validation is required when creating a new one.", '0
@@ -101,7 +90,7 @@ Module Module1
         "Registed e-mail or cell phone number.",
         "Note 2. For invisible message.",
         "Filename:",'38 
-        "Source and destination are the same.",
+        "Source and destination are the same." + vbCrLf + vbCrLf + "It will make duplicate account data in the catalog, are you sure?",
         "Account ""$$$"" deleted.", '40
         "Account ""$$$"" transformed.", '41
         "Version",
@@ -151,23 +140,24 @@ Module Module1
          "Bad checksum, probably in the wrong order.",
          "Detected an invaild $$$ (or its compatible coin) address, this may caused by:" + vbCrLf + vbCrLf,'87
          "Typo, case error, order error." + vbCrLf + vbCrLf + "Length too logn or too short, or copy-paste miss." + vbCrLf + vbCrLf + "Misjudgment. It's not a $$$ address." + vbCrLf + vbCrLf,
-         "Do you want to continue to save?" '89
+         "Do you want to continue to save?", '89
+         "Are you sure you want to import CSV file?" + vbCrLf + vbCrLf + "If you have any questions," + vbCrLf + vbCrLf + "please refer to the online help, ""CSV Import"" section.",
+         "CSV import done.", '91
+         "CSV import failure.",
+         "This may not be a correct CSV file.",
+         "Please handle the CSV files properly to avoid leakage of confidentiality.", '94
+         "CSV file is not encrypted and has security risks." + vbCrLf + vbCrLf + "Are you sure you want to export?" + vbCrLf + vbCrLf + "(Yow need to enter the password of the current catalog.)",
+         "The password does not match the current catalog. Export abort.",
+         "No account in the catalog. Export abort.", '97
+         "The saved file name is " + vbCrLf + vbCrLf + "$$$" + vbCrLf + vbCrLf + "in the application folder." + vbCrLf + vbCrLf + "(Next we will guide you to the file location.)",
+         "Attached debugger detected." + vbCrLf + vbCrLf + "If you're not programming, it probably means a malicious attack has occurred." + vbCrLf + vbCrLf + "Strongly recommended to stop using and perform anti-virus.",
+         "Critical"
     }
-    '"By Random Generator",
-    '"By SHA512of128 (x1024)" '70
 
     Public CoinList() As String = {"-", "BTC", "TRX", "Doge", "LTC", "ETH", "BTC"}
 
     Public HotKeyID1 As Integer = 1100
     Public HotKeyID2 As Integer = 2100
-
-    Public Const KEY_W As Integer = &H57
-    Public Const MOD_ALT As Integer = &H1
-    Public Const MOD_SHIFT As Integer = &H4
-    Public Const MOD_CTRL As Integer = &H2
-    Public Const MOD_WIN As Integer = &H8
-    Public Const WM_HOTKEY As Integer = &H312
-    'Public Const WM_LBUTTONDOWN As Integer = &H201
 
     <DllImport("user32.dll")>
     Public Function RegisterHotKey(hWnd As IntPtr, id As Integer, fsModifiers As Integer, vlc As Integer) As Boolean
@@ -176,21 +166,6 @@ Module Module1
     <DllImport("user32.dll")>
     Public Function UnregisterHotKey(hWnd As IntPtr, id As Integer) As Boolean
     End Function
-
-    Public Sub FullGC()
-
-        GC.Collect(2, GCCollectionMode.Forced, True, True)
-        GC.WaitForPendingFinalizers()
-        GC.WaitForFullGCApproach()
-        GC.WaitForFullGCComplete()
-        GC.Collect(2, GCCollectionMode.Forced, True, True)
-        GC.WaitForPendingFinalizers()
-        GC.WaitForFullGCApproach()
-        GC.WaitForFullGCComplete()
-
-        System.Diagnostics.Process.GetCurrentProcess().MinWorkingSet = CType(3000, IntPtr)
-
-    End Sub
 
     Public Function Get_New_ACC_Filename(ByRef The_path As String) As String
 
@@ -202,11 +177,9 @@ Module Module1
     Public Function CX16STR_2_DEC(ByRef InputStr As String) As Decimal
 
         Dim TmpDecimal As Decimal = 0
-
         For IDX01 As Integer = 0 To InputStr.Length - 1
             TmpDecimal = (TmpDecimal * 16) + Convert.ToDecimal(Convert.ToInt32(InputStr.Substring(IDX01, 1), 16))
         Next
-
         Return TmpDecimal
 
     End Function
@@ -223,11 +196,9 @@ Module Module1
         Tmp2 = InVal
 
         Do
-
             Tmp1 = Tmp2 Mod 36
             Tmp2 = (Tmp2 - Tmp1) / 36
             OutputStr = x36Str(Tmp1) + OutputStr
-
         Loop While Tmp2 > 0
 
         If AsFileName Then
@@ -240,43 +211,16 @@ Module Module1
 
     Public Sub End_Program()
 
+        FullGC()
+        Exe_Fill_Trash()
+        FullGC()
+
         Try
             UnregisterHotKey(FormMain.Handle, HotKeyID1)
             UnregisterHotKey(FormMain.Handle, HotKeyID2)
         Catch ex As Exception
-
         End Try
         End
-
-    End Sub
-
-    Public Sub WipeBytes(ByRef Input_Bytes() As Byte)
-
-        If Input_Bytes IsNot Nothing Then
-            For IDX01 As Integer = 0 To UBound(Input_Bytes)
-                Input_Bytes(IDX01) = 0
-            Next
-
-        End If
-
-    End Sub
-
-    Public Sub WipeUINT(ByRef Input_Uint() As UInteger)
-
-        If Input_Uint IsNot Nothing Then
-            For IDX01 As Integer = 0 To UBound(Input_Uint)
-                Input_Uint(IDX01) = 0
-            Next
-
-        End If
-
-    End Sub
-
-    Public Sub WipeChrs(ByRef Input_Chrs() As Char)
-
-        For IDX01 As Integer = 0 To UBound(Input_Chrs)
-            Input_Chrs(IDX01) = "x"
-        Next
 
     End Sub
 
@@ -300,6 +244,12 @@ Module Module1
                 SpeedSB.Append(Chr(Get_RangeRnd_ByRNG(33, 126)))
             Next
         ElseIf StrMode = 2 Then
+
+            Dim PWD_num_letter_only() As String = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
+                "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
+                "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q",
+                "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+
             For IDX01 As Long = 0 To LengthNeed - 1
                 SpeedSB.Append(PWD_num_letter_only(Get_RangeRnd_ByRNG(0, UBound(PWD_num_letter_only))))
             Next
@@ -308,47 +258,6 @@ Module Module1
         Random_Strs = SpeedSB.ToString
 
     End Function
-
-    Public Sub ClearTextBox(ByRef ClearTextBox As TextBox)
-
-        Dim Short1KBYTEstr() As String = {New String("x", 1024), New String("y", 1024)}
-
-        ClearWorking = True
-
-        For idx01 As Integer = 0 To 511
-            ClearTextBox.Text = Short1KBYTEstr(idx01 Mod 2)
-            ClearTextBox.ClearUndo()
-        Next
-
-        ClearWorking = False
-
-        ClearTextBox.Clear()
-
-    End Sub
-
-    Public Sub ClearLabel(ByRef ClearLabel As Label)
-
-        Dim Short1KBYTEstr() As String = {New String("x", 1024), New String("y", 1024)}
-
-        ClearWorking = True
-
-        For idx01 As Integer = 0 To 511
-            ClearLabel.Text = Short1KBYTEstr(idx01 Mod 2)
-        Next
-
-        ClearWorking = False
-        ClearLabel.Dispose()
-
-    End Sub
-
-    Public Sub ClearMS(ByRef source As System.IO.MemoryStream)
-
-        Dim buffer As Byte() = source.GetBuffer()
-        Array.Clear(buffer, 0, buffer.Length)
-        source.Position = 0
-        source.SetLength(0)
-
-    End Sub
 
     Public Function MSGBOXNEW(MessageStr As String, BoxType As MsgBoxStyle, BoxTitle As String,
                               ByRef FirerForm As Form, ByRef FFPicBox As PictureBox) As DialogResult
@@ -417,6 +326,163 @@ Module Module1
         End_Program()
 
     End Sub
+
+    Public Sub Load_BIP39_Word()
+        BIP39_Word(0).BIP39Word = My.Resources.Resource1.BIP39_ENG.Split(",")
+        BIP39_Word(1).BIP39Word = My.Resources.Resource1.BIP39_CZ.Split(",")
+        BIP39_Word(2).BIP39Word = My.Resources.Resource1.BIP39_FR.Split(",")
+        BIP39_Word(3).BIP39Word = My.Resources.Resource1.BIP39_ITA.Split(",")
+        BIP39_Word(4).BIP39Word = My.Resources.Resource1.BIP39_JP.Split(",")
+        BIP39_Word(5).BIP39Word = My.Resources.Resource1.BIP39_KOR.Split(",")
+        BIP39_Word(6).BIP39Word = My.Resources.Resource1.BIP39_POR.Split(",")
+        BIP39_Word(7).BIP39Word = My.Resources.Resource1.BIP39_SPA.Split(",")
+        BIP39_Word(8).BIP39Word = My.Resources.Resource1.BIP39_ZHCN.Split(",")
+        BIP39_Word(9).BIP39Word = My.Resources.Resource1.BIP39_ZHTW.Split(",")
+    End Sub
+
+    Public Function GetOkFilename(TheFilename As String) As String
+
+        Dim invalidChars As String = New String(IO.Path.GetInvalidFileNameChars())
+        For Each c As Char In invalidChars
+            TheFilename = TheFilename.Replace(c, "_"c)
+        Next
+
+        Return TheFilename
+
+    End Function
+
+    Public Function Get_RangeRnd_ByRNG(minValue As Long, maxValue As Long) As Long
+
+        ' 產生一個隨機數產生器
+        Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
+
+        ' 產生一個 4 bytes 的隨機數字範圍 (0 ~ 4294967295)
+        Dim randomBytes(3) As Byte
+        rng.GetBytes(randomBytes)
+        Dim randomNumber As Long = BitConverter.ToUInt32(randomBytes, 0)
+
+        ' 將隨機數字轉換為指定範圍的整數
+        Return CLng(Math.Floor((randomNumber / UInt32.MaxValue) * (maxValue - minValue + 1))) + minValue
+
+    End Function
+
+    Public Sub GetPass()
+
+        Select Case NowPassStatue
+            Case 0
+            Case 1
+                Dim SDAES As New SmallDecoderAES
+                SDAES.AES_KEY_Use = AES_KEY_Protected
+                SDAES.NeedToDecryptoStr = Read_File_Pass_Str
+                If SDAES.ShowDialog() = DialogResult.OK Then
+                    CurrentAccountPass = SDAES.CurrentAccountPass
+                    NowPassStatue = 2
+                End If
+                SDAES.Dispose()
+                FullGC()
+            Case 2
+            Case 3
+
+        End Select
+
+    End Sub
+
+    '==================== Functions try for mitigation memory leak
+
+    Public Sub Exe_Fill_Trash(Optional BigNum As Integer = 1)
+        Dim FillTrash() As String
+        Dim Big2 As Integer = 8 * BigNum
+
+        For idx01 As Integer = 0 To 32767
+            ReDim Preserve FillTrash(idx01)
+            FillTrash(idx01) = New String("x", Big2)
+        Next
+    End Sub
+
+    Public Sub FullGC()
+
+        GC.Collect(2, GCCollectionMode.Forced, True, True)
+        GC.WaitForPendingFinalizers()
+        GC.WaitForFullGCApproach()
+        GC.WaitForFullGCComplete()
+        GC.Collect(2, GCCollectionMode.Forced, True, True)
+        GC.WaitForPendingFinalizers()
+        GC.WaitForFullGCApproach()
+        GC.WaitForFullGCComplete()
+
+        System.Diagnostics.Process.GetCurrentProcess().MinWorkingSet = CType(3000, IntPtr)
+
+    End Sub
+
+    Public Sub WipeBytes(ByRef Input_Bytes() As Byte)
+
+        If Input_Bytes IsNot Nothing Then
+            For IDX01 As Integer = 0 To UBound(Input_Bytes)
+                Input_Bytes(IDX01) = 0
+            Next
+        End If
+
+    End Sub
+
+    Public Sub WipeUINT(ByRef Input_Uint() As UInteger)
+
+        If Input_Uint IsNot Nothing Then
+            For IDX01 As Integer = 0 To UBound(Input_Uint)
+                Input_Uint(IDX01) = 0
+            Next
+        End If
+
+    End Sub
+
+    Public Sub WipeChrs(ByRef Input_Chrs() As Char)
+
+        For IDX01 As Integer = 0 To UBound(Input_Chrs)
+            Input_Chrs(IDX01) = "x"
+        Next
+
+    End Sub
+
+    Public Sub ClearTextBox(ByRef ClearTextBox As TextBox)
+
+        Dim Short1KBYTEstr() As String = {New String("x", 1024), New String("y", 1024)}
+
+        ClearWorking = True
+
+        For idx01 As Integer = 0 To 511
+            ClearTextBox.Text = Short1KBYTEstr(idx01 Mod 2)
+            ClearTextBox.ClearUndo()
+        Next
+
+        ClearWorking = False
+        ClearTextBox.Clear()
+
+    End Sub
+
+    Public Sub ClearLabel(ByRef ClearLabel As Label)
+
+        Dim Short1KBYTEstr() As String = {New String("x", 1024), New String("y", 1024)}
+
+        ClearWorking = True
+
+        For idx01 As Integer = 0 To 511
+            ClearLabel.Text = Short1KBYTEstr(idx01 Mod 2)
+        Next
+
+        ClearWorking = False
+        ClearLabel.Dispose()
+
+    End Sub
+
+    Public Sub ClearMS(ByRef source As System.IO.MemoryStream)
+
+        Dim buffer As Byte() = source.GetBuffer()
+        Array.Clear(buffer, 0, buffer.Length)
+        source.Position = 0
+        source.SetLength(0)
+
+    End Sub
+
+    ' ====================== Secure desktop mode and Password input window (FormLogin)
 
     <DllImport("user32.dll")>
     Public Function CreateDesktop(lpszDesktop As String, lpszDevice As IntPtr, pDevmode As IntPtr,
@@ -551,6 +617,9 @@ Module Module1
                 Else
                     LogInFormWork = PwdState
                 End If
+            Case 3
+                ThisTimeDir = LIFW.This_Time_Dir.Clone
+                LogInFormWork = LIFWRtn
         End Select
 
         LIFW.Close()
@@ -558,51 +627,7 @@ Module Module1
 
     End Function
 
-    Public Function Get_RangeRnd_ByRNG(minValue As Long, maxValue As Long) As Long
-
-        ' 產生一個隨機數產生器
-        Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
-
-        ' 產生一個 4 bytes 的隨機數字範圍 (0 ~ 4294967295)
-        Dim randomBytes(3) As Byte
-        rng.GetBytes(randomBytes)
-        Dim randomNumber As Long = BitConverter.ToUInt32(randomBytes, 0)
-
-        ' 將隨機數字轉換為指定範圍的整數
-        Return CLng(Math.Floor((randomNumber / UInt32.MaxValue) * (maxValue - minValue + 1))) + minValue
-
-    End Function
-
-    Public Sub Exe_Fill_Trash(Optional BigNum As Integer = 1)
-        Dim FillTrash() As String
-        Dim Big2 As Integer = 8 * BigNum
-
-        For idx01 As Integer = 0 To 32767
-            ReDim Preserve FillTrash(idx01)
-            FillTrash(idx01) = New String("x", Big2)
-        Next
-    End Sub
-
-    Public Sub GetPass()
-
-        Select Case NowPassStatue
-            Case 0
-            Case 1
-                Dim SDAES As New SmallDecoderAES
-                SDAES.AES_KEY_Use = AES_KEY_Protected
-                SDAES.NeedToDecryptoStr = Read_File_Pass_Str
-                If SDAES.ShowDialog() = DialogResult.OK Then
-                    CurrentAccountPass = SDAES.CurrentAccountPass
-                    NowPassStatue = 2
-                End If
-                SDAES.Dispose()
-                FullGC()
-            Case 2
-            Case 3
-
-        End Select
-
-    End Sub
+    '================ For window grayed out visual ==============
 
     Private Declare Function BitBlt Lib "gdi32" (ByVal hdcDest As IntPtr, ByVal nXDest As Integer,
     ByVal nYDest As Integer, ByVal nWidth As Integer, ByVal nHeight As Integer, ByVal hdcSrc As IntPtr,
@@ -647,22 +672,9 @@ Module Module1
         My.Application.DoEvents()
     End Sub
 
-    Public Sub Load_BIP39_Word()
-
-        BIP39_Word(0).BIP39Word = My.Resources.Resource1.BIP39_ENG.Split(",")
-        BIP39_Word(1).BIP39Word = My.Resources.Resource1.BIP39_CZ.Split(",")
-        BIP39_Word(2).BIP39Word = My.Resources.Resource1.BIP39_FR.Split(",")
-        BIP39_Word(3).BIP39Word = My.Resources.Resource1.BIP39_ITA.Split(",")
-        BIP39_Word(4).BIP39Word = My.Resources.Resource1.BIP39_JP.Split(",")
-        BIP39_Word(5).BIP39Word = My.Resources.Resource1.BIP39_KOR.Split(",")
-        BIP39_Word(6).BIP39Word = My.Resources.Resource1.BIP39_POR.Split(",")
-        BIP39_Word(7).BIP39Word = My.Resources.Resource1.BIP39_SPA.Split(",")
-        BIP39_Word(8).BIP39Word = My.Resources.Resource1.BIP39_ZHCN.Split(",")
-        BIP39_Word(9).BIP39Word = My.Resources.Resource1.BIP39_ZHTW.Split(",")
-
-    End Sub
-
 End Module
+
+'============= Mouse/KB detect for Auto Count down 
 
 Public Class DetectActivityMessageFilter
 
@@ -675,14 +687,10 @@ Public Class DetectActivityMessageFilter
     Public Const WM_MBUTTONDOWN As Integer = &H207
 
     Public Function PreFilterMessage(ByRef m As Message) As Boolean Implements IMessageFilter.PreFilterMessage
-
         Select Case m.Msg
-
             Case WM_LBUTTONDOWN, WM_KEYDOWN, WM_RBUTTONDOWN, WM_MBUTTONDOWN ', WM_MOUSEMOVE 'For Auto Close Countdown
                 ACTCount = 0
-
         End Select
-
         Return False
     End Function
 

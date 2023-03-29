@@ -197,6 +197,46 @@ Namespace My.Resources
         '''<summary>
         '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         '''</summary>
+        Friend Shared ReadOnly Property button_CAT_CSVEX() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_CAT_CSVEX", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property button_CAT_CSVEX_on() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_CAT_CSVEX_on", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property button_CAT_CSVIM() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_CAT_CSVIM", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property button_CAT_CSVIM_on() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_CAT_CSVIM_on", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
         Friend Shared ReadOnly Property button_CAT_DEL() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("button_CAT_DEL", resourceCulture)
@@ -207,9 +247,29 @@ Namespace My.Resources
         '''<summary>
         '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         '''</summary>
+        Friend Shared ReadOnly Property button_CAT_DEL_on() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_CAT_DEL_on", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
         Friend Shared ReadOnly Property button_CAT_TRANS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("button_CAT_TRANS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property button_CAT_TRANS_on() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_CAT_TRANS_on", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -770,6 +830,36 @@ Namespace My.Resources
         Friend Shared ReadOnly Property caps_lock_on() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("caps_lock_on", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property CSV_EXP() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("CSV_EXP", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property CSV_IMP() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("CSV_IMP", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property CSV_Waiting() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("CSV_Waiting", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

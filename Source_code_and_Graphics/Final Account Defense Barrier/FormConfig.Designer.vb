@@ -34,12 +34,16 @@ Partial Class FormConfig
         Me.ButtonDelCat = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
+        Me.ButtonCSVIM = New System.Windows.Forms.PictureBox()
+        Me.ButtonCSVEx = New System.Windows.Forms.PictureBox()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonTransFullCat, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonDelCat, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ButtonCSVIM, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ButtonCSVEx, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBoxCatalog
@@ -123,7 +127,7 @@ Partial Class FormConfig
         Me.ButtonCancel.BackColor = System.Drawing.Color.Black
         Me.ButtonCancel.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ButtonCancel.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Cancel
-        Me.ButtonCancel.Location = New System.Drawing.Point(567, 326)
+        Me.ButtonCancel.Location = New System.Drawing.Point(569, 326)
         Me.ButtonCancel.Name = "ButtonCancel"
         Me.ButtonCancel.Size = New System.Drawing.Size(112, 61)
         Me.ButtonCancel.TabIndex = 105
@@ -134,7 +138,7 @@ Partial Class FormConfig
         Me.ButtonOK.BackColor = System.Drawing.Color.Black
         Me.ButtonOK.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ButtonOK.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_confirm
-        Me.ButtonOK.Location = New System.Drawing.Point(450, 326)
+        Me.ButtonOK.Location = New System.Drawing.Point(452, 326)
         Me.ButtonOK.Name = "ButtonOK"
         Me.ButtonOK.Size = New System.Drawing.Size(112, 61)
         Me.ButtonOK.TabIndex = 104
@@ -180,6 +184,28 @@ Partial Class FormConfig
         Me.PictureGray.TabIndex = 98
         Me.PictureGray.TabStop = False
         '
+        'ButtonCSVIM
+        '
+        Me.ButtonCSVIM.BackColor = System.Drawing.Color.Black
+        Me.ButtonCSVIM.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonCSVIM.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_CAT_CSVIM
+        Me.ButtonCSVIM.Location = New System.Drawing.Point(452, 178)
+        Me.ButtonCSVIM.Name = "ButtonCSVIM"
+        Me.ButtonCSVIM.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonCSVIM.TabIndex = 106
+        Me.ButtonCSVIM.TabStop = False
+        '
+        'ButtonCSVEx
+        '
+        Me.ButtonCSVEx.BackColor = System.Drawing.Color.Black
+        Me.ButtonCSVEx.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonCSVEx.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_CAT_CSVEX
+        Me.ButtonCSVEx.Location = New System.Drawing.Point(569, 178)
+        Me.ButtonCSVEx.Name = "ButtonCSVEx"
+        Me.ButtonCSVEx.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonCSVEx.TabIndex = 107
+        Me.ButtonCSVEx.TabStop = False
+        '
         'FormConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -187,6 +213,8 @@ Partial Class FormConfig
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(717, 418)
         Me.ControlBox = False
+        Me.Controls.Add(Me.ButtonCSVEx)
+        Me.Controls.Add(Me.ButtonCSVIM)
         Me.Controls.Add(Me.ButtonCancel)
         Me.Controls.Add(Me.ButtonOK)
         Me.Controls.Add(Me.ButtonTransFullCat)
@@ -213,6 +241,8 @@ Partial Class FormConfig
         CType(Me.ButtonDelCat, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ButtonCSVIM, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ButtonCSVEx, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -229,4 +259,6 @@ Partial Class FormConfig
     Friend WithEvents ButtonOK As PictureBox
     Friend WithEvents TB_AC_KEY As ComboBox
     Friend WithEvents TB_PW_KEY As ComboBox
+    Friend WithEvents ButtonCSVIM As PictureBox
+    Friend WithEvents ButtonCSVEx As PictureBox
 End Class

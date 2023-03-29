@@ -13,23 +13,9 @@ Public Class FormFileExplorer
     Public Final_File As String
     Public BigByte() As Byte
 
-
-    '====Listbox scroll bar
-    Dim WithEvents LSCB_UPDW As New Windows.Forms.Timer
-    Dim WithEvents LSCB_MSC As New Windows.Forms.Timer
-    Dim NowUPorDW As Integer
-    Dim LB_Ration As Double
-    Dim LB_Range_Scale As Double
-    Dim UpY As Integer
-    Dim DwY As Integer
-    Dim BarIsHolding As Boolean
-
-    Private lastLocation As Point
-    Private isMouseDown As Boolean = False
-
     Private Sub FormFileExplorer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        '====================== Listbox Scrollbar
+        '====================== Listbox Scrollbar work
         UpY = LSCBU.Top + LSCBU.Height
         DwY = LSCBD.Top - LSCBBAR.Height + 1
         LSCB_UPDW.Interval = 200
@@ -37,7 +23,6 @@ Public Class FormFileExplorer
         LSCB_MSC.Interval = 100
         LSCB_MSC.Enabled = False
         LB_Ration = ListBoxFiles.ClientRectangle.Height / ListBoxFiles.ItemHeight
-
 
         Dim drives() As DriveInfo = DriveInfo.GetDrives()
         ReDim DriverList(2)
@@ -68,14 +53,7 @@ Public Class FormFileExplorer
 
     End Sub
 
-    Private Sub ListBoxDrivers_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxDrivers.SelectedIndexChanged
-
-        Patch_Changed(DriverList(ListBoxDrivers.SelectedIndex))
-        Exe_Fill_Trash()
-        LB_Range_Scale = CDbl(ListBoxFiles.Items.Count) - LB_Ration
-        GoCorrectPos()
-
-    End Sub
+    '=============== Functions and subs 
 
     Private Function Patch_Changed(ByRef New_Patch As String) As Boolean
 
@@ -108,46 +86,6 @@ Public Class FormFileExplorer
         Return True
 
     End Function
-
-    Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonFileOpen.Click
-        GoWork()
-    End Sub
-
-    Private Sub ListBoxFiles_DoubleClick(sender As Object, e As EventArgs) Handles ListBoxFiles.DoubleClick
-        GoWork()
-    End Sub
-
-    Private Sub ListBoxFiles_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxFiles.SelectedIndexChanged
-
-        If ListBoxFiles.SelectedIndex = -1 Then
-            ButtonFileOpen.Enabled = False
-            ButtonFileOpen.Image = My.Resources.Resource1.button_OpenF_DI
-        Else
-            ButtonFileOpen.Enabled = True
-            ButtonFileOpen.Image = My.Resources.Resource1.button_OpenF
-        End If
-
-        GoCorrectPos()
-
-    End Sub
-
-    Private Sub PictureBox8_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseDown
-        ' 紀錄滑鼠按下的位置
-        isMouseDown = True
-        lastLocation = e.Location
-    End Sub
-
-    Private Sub PictureBox8_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseMove
-        ' 當滑鼠左鍵按下時，設定窗體的位置
-        If isMouseDown Then
-            Me.Location = New Point(Me.Location.X + (e.X - lastLocation.X), Me.Location.Y + (e.Y - lastLocation.Y))
-        End If
-    End Sub
-
-    Private Sub PictureBox8_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseUp
-        ' 當滑鼠左鍵釋放時，重設 isMouseDown 變數
-        isMouseDown = False
-    End Sub
 
     Private Sub GoWork()
 
@@ -207,6 +145,39 @@ Public Class FormFileExplorer
 
     End Sub
 
+    '================= Form contorls work
+
+    Private Sub ListBoxDrivers_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxDrivers.SelectedIndexChanged
+
+        Patch_Changed(DriverList(ListBoxDrivers.SelectedIndex))
+        Exe_Fill_Trash()
+        LB_Range_Scale = CDbl(ListBoxFiles.Items.Count) - LB_Ration
+        GoCorrectPos()
+
+    End Sub
+
+    Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonFileOpen.Click
+        GoWork()
+    End Sub
+
+    Private Sub ListBoxFiles_DoubleClick(sender As Object, e As EventArgs) Handles ListBoxFiles.DoubleClick
+        GoWork()
+    End Sub
+
+    Private Sub ListBoxFiles_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxFiles.SelectedIndexChanged
+
+        If ListBoxFiles.SelectedIndex = -1 Then
+            ButtonFileOpen.Enabled = False
+            ButtonFileOpen.Image = My.Resources.Resource1.button_OpenF_DI
+        Else
+            ButtonFileOpen.Enabled = True
+            ButtonFileOpen.Image = My.Resources.Resource1.button_OpenF
+        End If
+
+        GoCorrectPos()
+
+    End Sub
+
     Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
         Me.DialogResult = DialogResult.Cancel
     End Sub
@@ -215,6 +186,8 @@ Public Class FormFileExplorer
         ListBoxDrivers.Dispose()
         ClearLabel(LabelPath)
     End Sub
+
+    '============================= Read file via API avoid memory leak=================================
 
     Private Const GENERIC_READ As Integer = &H80000000
     Private Const OPEN_EXISTING As Integer = 3
@@ -251,9 +224,7 @@ Public Class FormFileExplorer
     Private Function ReadFileViaAPI(ByRef OpenTheFile As String, ByRef ReturnBytes() As Byte) As Integer
 
         Try
-
             Dim ErrInt As Integer
-
             Dim hFile As IntPtr = CreateFileW(OpenTheFile, GENERIC_READ, 0, Nothing,
                                          OPEN_EXISTING, FILE_ATTRIBUTE_ALL, Nothing)
 
@@ -292,8 +263,39 @@ Public Class FormFileExplorer
 
     End Function
 
+    '====================================== Window base operate =====================
 
-    '==================================================================== ListBox Scrollbar work
+    Private lastLocation As Point
+    Private isMouseDown As Boolean = False
+
+    Private Sub PictureBox8_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseDown
+        ' 紀錄滑鼠按下的位置
+        isMouseDown = True
+        lastLocation = e.Location
+    End Sub
+
+    Private Sub PictureBox8_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseMove
+        ' 當滑鼠左鍵按下時，設定窗體的位置
+        If isMouseDown Then
+            Me.Location = New Point(Me.Location.X + (e.X - lastLocation.X), Me.Location.Y + (e.Y - lastLocation.Y))
+        End If
+    End Sub
+
+    Private Sub PictureBox8_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseUp
+        ' 當滑鼠左鍵釋放時，重設 isMouseDown 變數
+        isMouseDown = False
+    End Sub
+
+    '========================================== ListBox Scrollbar work
+
+    Dim WithEvents LSCB_UPDW As New Windows.Forms.Timer
+    Dim WithEvents LSCB_MSC As New Windows.Forms.Timer
+    Dim NowUPorDW As Integer
+    Dim LB_Ration As Double
+    Dim LB_Range_Scale As Double
+    Dim UpY As Integer
+    Dim DwY As Integer
+    Dim BarIsHolding As Boolean
 
     Private Sub LSCBU_MouseDown(sender As Object, e As MouseEventArgs) Handles _
         LSCBU.MouseDown, LSCBD.MouseDown, LSCBBACK.MouseDown
@@ -370,7 +372,7 @@ Public Class FormFileExplorer
         If e.Button = MouseButtons.Left Then
             If LB_Range_Scale > 0 Then
                 BarIsHolding = True
-                Cursor = Cursors.SizeAll ' 更改游標形狀以指示按住按鈕時可以移動它
+                Cursor = Cursors.SizeNS ' 更改游標形狀以指示按住按鈕時可以移動它
             End If
         End If
     End Sub
@@ -421,6 +423,7 @@ Public Class FormFileExplorer
         GoCorrectPos()
     End Sub
 
+    '=============== Button Visual Work =========================
 
     Dim B_OpenF_on As New Bitmap(My.Resources.Resource1.button_OpenF_on)
     Dim B_Cancel_on As New Bitmap(My.Resources.Resource1.button_Cancel_on)

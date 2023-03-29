@@ -523,4 +523,31 @@
   <data name="exit_Pic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\exit_Pic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="button_CAT_CSVEX" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_CAT_CSVEX.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_CAT_CSVEX_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_CAT_CSVEX_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_CAT_CSVIM" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_CAT_CSVIM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_CAT_CSVIM_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_CAT_CSVIM_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_CAT_DEL_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_CAT_DEL_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_CAT_TRANS_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_CAT_TRANS_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CSV_EXP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\CSV_EXP.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CSV_IMP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\CSV_IMP.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CSV_Waiting" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\CSV_Waiting.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

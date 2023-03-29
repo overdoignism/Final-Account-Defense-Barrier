@@ -234,13 +234,17 @@ Public Class FormMain
 
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
 
-        Read_and_decrypt(FilesList1(ListBox1.SelectedIndex))
+        Read_and_decrypt(ListBox1.SelectedIndex)
         GoCorrectPos()
         FullGC()
 
     End Sub
 
-    Private Sub Read_and_decrypt(ByRef File_To_Decrypt As FileLists)
+    '============== Subs and functions ================
+
+    Private Sub Read_and_decrypt(TheIndex As Long) 'ByRef File_To_Decrypt As FileLists)
+
+        Dim ErrFlag As Boolean = False
 
         ReadingWorking = True
         TextBoxTitle.Text = ""
@@ -250,61 +254,63 @@ Public Class FormMain
         TextBoxNote1.Text = ""
         TextBoxNote2Hid.Text = ""
 
-        ButtonGoUP.Enabled = False
-        ButtonGoUP.Image = LBTN_MoveU_Di
-        ButtonGoDown.Enabled = False
-        ButtonGoDown.Image = LBTN_MoveD_Di
-        ButtonTransCatalog.Enabled = False
-        ButtonTransCatalog.Image = LBTN_TKey_Di
-        ButtonFileInfo.Enabled = False
-        ButtonFileInfo.Image = LBTN_FInfo_Di
-        ButtonSave.Enabled = False
-        ButtonSave.Image = LBTN_Save_Di
-        ButtonDelete.Enabled = False
-        ButtonDelete.Image = LBTN_Del_Di
-        VG_CCC_Done = False
+        If TheIndex >= 0 Then
+            ButtonGoUP.Enabled = False
+            ButtonGoUP.Image = LBTN_MoveU_Di
+            ButtonGoDown.Enabled = False
+            ButtonGoDown.Image = LBTN_MoveD_Di
+            ButtonTransCatalog.Enabled = False
+            ButtonTransCatalog.Image = LBTN_TKey_Di
+            ButtonFileInfo.Enabled = False
+            ButtonFileInfo.Image = LBTN_FInfo_Di
+            ButtonSave.Enabled = False
+            ButtonSave.Image = LBTN_Save_Di
+            ButtonDelete.Enabled = False
+            ButtonDelete.Image = LBTN_Del_Di
+            TextBoxNote2Hid.UseSystemPasswordChar = True
+            ButtonViewNote.Image = b_view
+            VG_CCC_Done = False
+        Else
+            Exit Sub
+        End If
 
-        TextBoxNote2Hid.UseSystemPasswordChar = True
-        ButtonViewNote.Image = My.Resources.Resource1.button_view
-
-        Dim AES_IV_1(15) As Byte
-        Dim AES_IV_2(15) As Byte
-        Dim AES_IV_USE(15) As Byte
-        Dim ErrFlag As Boolean = False
-
-        If ListBox1.SelectedIndex = 0 Then
+        If TheIndex = 0 Then
 
             NowProcFile = ""
-            CurrentAccountPass = Security.Cryptography.ProtectedData.
-                Protect(Encoding.Unicode.GetBytes(""), Nothing, DataProtectionScope.CurrentUser)
-            NowPassStatue = 0
             VG_Data_Done = True
             VG_Title_Done = True
             ReadingWorking = False
+            NowPassStatue = 0
+
+            CurrentAccountPass = Security.Cryptography.ProtectedData.
+                 Protect(Encoding.Unicode.GetBytes(""), Nothing, DataProtectionScope.CurrentUser)
+
             Label_Act_Msg.Text = TextStrs(27)
             GoCorrectPos()
+
             Exit Sub
 
         Else
 
+            Dim AES_IV_USE(15) As Byte
+
             ButtonDelete.Enabled = True
             ButtonDelete.Image = LBTN_Del_En
 
-            NowProcFile = File_To_Decrypt.FileName
-            If My.Computer.FileSystem.GetFileInfo(NowProcFile).Length > 1048576 Then File_To_Decrypt.FileIsBad = True
+            NowProcFile = FilesList1(TheIndex).FileName
+            If My.Computer.FileSystem.GetFileInfo(NowProcFile).Length > 1048576 Then FilesList1(TheIndex).FileIsBad = True
 
-            If File_To_Decrypt.FileIsBad Then
+            If FilesList1(TheIndex).FileIsBad Then
                 ErrFlag = True
             Else
 
                 Try
-
                     '==================== Stage 1 init
                     Dim TheEncLib As New Encode_Libs
                     Dim IOreader1 As IO.StreamReader
 
                     IOreader1 = My.Computer.FileSystem.OpenTextFileReader(NowProcFile)
-                    TextBoxTitle.Text = File_To_Decrypt.ShowName
+                    TextBoxTitle.Text = FilesList1(TheIndex).ShowName
 
                     Dim AllFileStr() As String = Replace(IOreader1.ReadToEnd, vbCrLf, vbCr).Split(vbCr)
 
@@ -358,7 +364,7 @@ Public Class FormMain
                             NowDataStringCpt = AllFileStr(1)
                             TextBoxURL.Text = WorkStr2(1)
                             TextBoxNameAddr.Text = WorkStr2(2)
-                            TextBoxNote1.Text = WorkStr2(4)
+                            TextBoxNote1.Text = WorkStr2(4) 'Replace(WorkStr2(4), vbLf, vbCrLf)
                             TextBoxRegMailPhone.Text = WorkStr2(5)
                             TextBoxNote2Hid.Text = WorkStr2(6)
                         End If
@@ -384,7 +390,7 @@ Public Class FormMain
 
         If ErrFlag Then
             NowPassStatue = 0
-            File_To_Decrypt.FileIsBad = True
+            FilesList1(TheIndex).FileIsBad = True
             Label_Act_Msg.Text = TextStrs(67)
             MSGBOXNEW(TextStrs(65), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
         Else
@@ -441,6 +447,9 @@ Public Class FormMain
                 Dim TMPstr1 As String
 
                 If VG_Data_Done Then
+
+                    'Dim TmpNote1 As String = Replace(TextBoxNote1.Text, vbCrLf, vbLf)
+                    'If TmpNote1 Is Nothing Then TmpNote1 = ""
 
                     TMPstr1 = INDTstr + vbCr + TextBoxURL.Text + vbCr + TextBoxNameAddr.Text +
                     vbCr + Random_Strs(30, 50, 1) + vbCr + TextBoxNote1.Text + vbCr + TextBoxRegMailPhone.Text +
@@ -592,38 +601,9 @@ Public Class FormMain
 
     End Sub
 
-    Private Sub Form1_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
-        End_Program()
-    End Sub
-
-    Private Sub ButtonCopyAccount_Click(sender As Object, e As EventArgs) Handles ButtonCopyAccount.Click
-
-        If TextBoxNameAddr.Text = "" Then Exit Sub
-        My.Computer.Clipboard.SetText(TextBoxNameAddr.Text)
-        Label_Act_Msg.Text = TextStrs(25)
-
-    End Sub
-
-    Private Sub ButtonCopyReg_Click(sender As Object, e As EventArgs) Handles ButtonCopyReg.Click
-
-        If TextBoxRegMailPhone.Text = "" Then Exit Sub
-        Label_Act_Msg.Text = TextStrs(25)
-        My.Computer.Clipboard.SetText(TextBoxRegMailPhone.Text)
-
-    End Sub
-
-    Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextBoxNameAddr.TextChanged
-
-        If Not ReadingWorking Then
-            VG_CCC_Done = True
-            If InStr(TextBoxNameAddr.Text, "@") > 0 And InStr(TextBoxNameAddr.Text, ".") > 0 Then
-                TextBoxRegMailPhone.Text = TextBoxNameAddr.Text
-            End If
-        End If
-
-    End Sub
-
     Private Function Delete_ACC_File(What_file As String, Ask_String As String, continuous_mode As Boolean) As Integer
+
+        '0 = OK 1 = Cancel 2 = Error
 
         Dim OLDidx As Integer = ListBox1.SelectedIndex
         Delete_ACC_File = 0
@@ -653,6 +633,8 @@ Public Class FormMain
         Dim DirNameCurrent As String = ""
         Dim AESKeyCurrent(0) As Byte
         Dim DERIVED_IDT_Current(0) As Byte
+        Dim NeedRefresh As Boolean
+        Dim NowSelect As Integer = ListBox1.SelectedIndex
 
         Dim TmpDR As DialogResult
 
@@ -664,54 +646,63 @@ Public Class FormMain
 
         If TmpDR = DialogResult.OK Then
 
-            If DirName <> DirNameCurrent Then
 
-                Me.Enabled = False
-
-                For IDX01 As Integer = 1 To ListBox1.Items.Count - 1
-
-                    Go_ListBoxIdx(IDX01)
-
-                    If FilesList1(IDX01).FileIsBad = False Then
-
-                        Dim Filename2 As String = Get_New_ACC_Filename(DirNameCurrent)
-
-                        GetPass()
-                        NowPassStatue = 3
-                        VG_Data_Done = True
-                        VG_Title_Done = True
-
-                        If WriteFile(Filename2, AESKeyCurrent, DERIVED_IDT_Current) Then
-                            ErrFlag = True
-                            Exit For
-                        End If
-
-                    End If
-
-                Next
-
-                Me.Enabled = True
-
-                If Not ErrFlag Then
-                    Label_Act_Msg.Text = TextStrs(43)
-
-                    If MSGBOXNEW(TextStrs(43) + vbCrLf + vbCrLf + TextStrs(10).Replace("$$$", LabelCatalog.Text),
-                     MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) <> MsgBoxResult.Cancel Then
-                        Full_Catalog_Delete()
-                        Exe_Fill_Trash()
-                    End If
-
+            If DirName = DirNameCurrent Then
+                If MSGBOXNEW(TextStrs(39), MsgBoxStyle.OkCancel, TextStrs(5), Me, PictureGray) = DialogResult.Cancel Then
+                    FullGC()
+                    Exit Sub
                 Else
-                    Label_Act_Msg.Text = TextStrs(67)
-                    MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+                    NeedRefresh = True
+                End If
+            End If
+
+            Me.Enabled = False
+
+            For IDX01 As Integer = 1 To ListBox1.Items.Count - 1
+
+                Go_ListBoxIdx(IDX01)
+
+                If FilesList1(IDX01).FileIsBad = False Then
+
+                    Dim Filename2 As String = Get_New_ACC_Filename(DirNameCurrent)
+
+                    GetPass()
+                    NowPassStatue = 3
+                    VG_Data_Done = True
+                    VG_Title_Done = True
+
+                    If WriteFile(Filename2, AESKeyCurrent, DERIVED_IDT_Current) Then
+                        ErrFlag = True
+                        Exit For
+                    End If
+
+                End If
+
+            Next
+
+            Me.Enabled = True
+
+            If Not ErrFlag Then
+                Label_Act_Msg.Text = TextStrs(43)
+
+                If MSGBOXNEW(TextStrs(43) + vbCrLf + vbCrLf + TextStrs(10).Replace("$$$", LabelCatalog.Text),
+                     MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) <> MsgBoxResult.Cancel Then
+                    Full_Catalog_Delete()
+                Else
+                    If NeedRefresh Then
+                        GetList()
+                        Go_ListBoxIdx(NowSelect)
+                    End If
                 End If
 
             Else
-                MSGBOXNEW(TextStrs(39), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+                Label_Act_Msg.Text = TextStrs(67)
+                MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
             End If
 
         End If
 
+        Exe_Fill_Trash()
         FullGC()
 
     End Sub
@@ -854,44 +845,411 @@ Public Class FormMain
 
     End Sub
 
-    Private Sub RegisterKeys(RegSettings() As String)
+    '===================== Catalog Manager ====================================
 
-        Dim kc As KeysConverter = New KeysConverter()
-        Dim o As Object
-        Dim CheckBool As Boolean
+    Private Sub PictureBoxCATMAN_Click(sender As Object, e As EventArgs) Handles PictureBoxCATMAN.Click
 
-        UnregisterHotKey(Me.Handle, HotKeyID1)
-        UnregisterHotKey(Me.Handle, HotKeyID2)
+        FormConfig.ComboBoxTimer.SelectedIndex = Val(CAT_setting_Str(0))
+        FormConfig.TB_AC_KEY.SelectedIndex = Val(CAT_setting_Str(2))
+        FormConfig.CB_SIM1.SelectedIndex = Val(CAT_setting_Str(3))
+        FormConfig.TB_PW_KEY.SelectedIndex = Val(CAT_setting_Str(5))
+        FormConfig.CB_SIM2.SelectedIndex = Val(CAT_setting_Str(6))
 
-        If Val(RegSettings(3)) > 0 Then
-            o = kc.ConvertFromString(SCutChar(Val(RegSettings(2))))
+        FormConfig.FormL = Me.Left + (Me.Width - FormConfig.Width) / 2
+        FormConfig.FormT = Me.Top + (Me.Height - FormConfig.Height) / 2
+        FormConfig.Opacity = Me.Opacity
 
-            For idx01 As Integer = 1000 To 1999
-                CheckBool = RegisterHotKey(Me.Handle, idx01, MOD_ALT + MOD_CTRL, CType(o, Keys))
-                If CheckBool = True Then
-                    HotKeyID1 = idx01
-                    Exit For
+        MakeWindowsBlur(Me, PictureGray)
+        Dim DR As DialogResult = FormConfig.ShowDialog(Me)
+        PictureGray.Visible = False
+        PictureGray.SendToBack()
+        My.Application.DoEvents()
+
+
+        Select Case DR
+            Case DialogResult.OK
+                ACTLimitSelectIDX = FormConfig.ComboBoxTimer.SelectedIndex
+                RegisterKeys(CAT_setting_Str)
+                AutoCountDownClose(ACTLimitSelect(CInt(CAT_setting_Str(0))))
+                Write_CatDatas()
+            Case DialogResult.Ignore ' Use "Ignore" for catalog transfer
+                If FormConfig.OtherWorkMode = 1 Then
+                    If ListBox1.Items.Count > 1 Then
+                        TransFullCat()
+                    End If
+                ElseIf FormConfig.OtherWorkMode = 2 Then
+                    Full_Catalog_Delete()
                 End If
-            Next
-            If CheckBool = False Then MSGBOXNEW(Replace(TextStrs(81), "$$$", "1"), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
-        End If
+            Case DialogResult.Abort ' ===============Use "Abort" for CSV import
 
-        If Val(RegSettings(6)) > 0 Then
-            o = kc.ConvertFromString(SCutChar(Val(RegSettings(5))))
-
-            For idx01 As Integer = 2000 To 2999
-                CheckBool = RegisterHotKey(Me.Handle, idx01, MOD_ALT + MOD_CTRL, CType(o, Keys))
-                If CheckBool = True Then
-                    HotKeyID2 = idx01
-                    Exit For
+                If ParseCSV_S1(FormConfig.ReturnCSV) = 0 Then
+                    GetList()
+                    Label_Act_Msg.Text = TextStrs(91)
+                    MSGBOXNEW(TextStrs(91) + vbCrLf + vbCrLf + TextStrs(94), MsgBoxStyle.OkOnly, TextStrs(9), Me, PictureGray)
+                    Go_ListBoxIdx(ListBox1.Items.Count - 1)
+                Else
+                    Label_Act_Msg.Text = TextStrs(92)
+                    MSGBOXNEW(TextStrs(92) + vbCrLf + vbCrLf + TextStrs(93), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
                 End If
-            Next
-            If CheckBool = False Then MSGBOXNEW(Replace(TextStrs(81), "$$$", "2"), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
-        End If
+
+                FullGC()
+                Exe_Fill_Trash()
+                FullGC()
+
+            Case DialogResult.Retry ' ===============Use "Retry" for CSV export
+
+                Dim ErrFlag As Boolean = False
+                Dim DirNameCurrent As String = ""
+                Dim AESKeyCurrent(0) As Byte
+                Dim DERIVED_IDT_Current(0) As Byte
+                Dim TmpDR As DialogResult
+
+                If SecureDesktop Then
+                    TmpDR = LogInFormWork(TextStrs(69), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 3, Nothing, Nothing, PictureGray, TheSalt)
+                Else
+                    TmpDR = LogInFormWork(TextStrs(69), DirNameCurrent, AESKeyCurrent, DERIVED_IDT_Current, 3, Nothing, Nothing, PictureGray, TheSalt, Me)
+                End If
+
+                If TmpDR = DialogResult.OK Then
+
+                    If DirName <> DirNameCurrent Then
+                        MSGBOXNEW(TextStrs(96), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+                        Exit Sub
+                    End If
+
+                    Try
+                        Dim CSV_Head As String = "TITLE,URL,USERNAME,PASSWORD,REGDATA,NOTES,NOTES2"
+                        Dim CSV_Filename As String = GetOkFilename(LabelCatalog.Text + " - " + Format(Now, "yyyyMMddHHmmss") + ".CSV")
+                        Dim TheWriter As IO.StreamWriter = My.Computer.FileSystem.OpenTextFileWriter(CSV_Filename, False)
+                        TheWriter.WriteLine(CSV_Head)
+                        Dim Quo As String = """"
+                        Dim Account_Count As String = " /" + Str(ListBox1.Items.Count - 1)
+
+                        Dim CSVW As New FormCSVWorking
+                        CSVW.ProgLab.Text = "0" + Account_Count
+                        CSVW.FormW = Me.Width
+                        CSVW.FormH = Me.Height
+                        CSVW.FormT = Me.Top
+                        CSVW.FormL = Me.Left
+                        CSVW.Opacity = Me.Opacity
+                        CSVW.PictureMode.Image = My.Resources.Resource1.CSV_EXP
+                        CSVW.Show()
+
+                        MakeWindowsBlur(Me, PictureGray)
+                        My.Application.DoEvents()
+
+                        For idx01 As Integer = 1 To ListBox1.Items.Count - 1
+                            CSVW.ProgLab.Text = Str(idx01) + Account_Count
+                            My.Application.DoEvents()
+
+                            If Not FilesList1(idx01).FileIsBad Then
+                                ListBox1.SelectedIndex = idx01
+                                GetPass()
+                                TheWriter.WriteLine(Quo + TextBoxTitle.Text + Quo + "," + Quo +
+                                TextBoxURL.Text + Quo + "," + Quo +
+                                TextBoxNameAddr.Text + Quo + "," + Quo +
+                                System.Text.Encoding.UTF8.GetString(Security.Cryptography.ProtectedData.Unprotect(
+                                CurrentAccountPass, Nothing, DataProtectionScope.CurrentUser)) + Quo + "," + Quo +
+                                TextBoxRegMailPhone.Text + Quo + "," + Quo +
+                                TextBoxNote1.Text + Quo + "," + Quo +
+                                TextBoxNote2Hid.Text + Quo)
+                            End If
+
+                        Next
+
+                        UnMakeWindowsBlur(PictureGray)
+
+                        TheWriter.Close()
+                        TheWriter.Dispose()
+                        CSVW.Close()
+                        CSVW.Dispose()
+
+                        MSGBOXNEW(Replace(TextStrs(98), "$$$", CSV_Filename) + vbCrLf + vbCrLf + TextStrs(94), MsgBoxStyle.OkOnly, TextStrs(9), Me, PictureGray)
+
+                        Process.Start("explorer.exe", "/select," + CSV_Filename)
+
+                    Catch ex As Exception
+
+                        MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+
+                    End Try
+
+                End If
+
+        End Select
 
     End Sub
 
-    Private Sub AutoCountDownClose(CountdownSec As Integer)
+    '============================== CSV import
+    Private Function ParseCSV_S1(ByRef InputStr As String) As Integer
+
+        Dim CSVW As New FormCSVWorking
+        Dim ErrFlag As Integer = 0
+
+        Try
+            Dim TITLE_IND() As String = {"TITLE", "NAME", "ACCOUNT"}
+            Dim USER_IND() As String = {"USERNAME", "LOGIN NAME", "LOGIN_USERNAME"}
+            Dim URL_IND() As String = {"URL", "LOGIN_URI", "WEB SITE"}
+            Dim PWD_IND() As String = {"PASSWORD", "LOGIN_PASSWORD"}
+            Dim NOTE_IND() As String = {"NOTES", "COMMENTS"}
+            Dim NOTE2_IND() As String = {"NOTES2"}
+            Dim REGDATA_IND() As String = {"REGDATA"}
+
+            Dim CSV_head(0) As String
+            Dim CSV_head_IND(0) As Integer '0=nothing 1=Title 2=Username 3=URL 4=Password 5= Note 
+            Dim CSV_head_Count As Integer
+            Dim CSV_head_Chk(7) As Integer
+
+            Dim TmpStr1 As String = Replace(InputStr, vbCrLf, vbCr)
+            TmpStr1 = Replace(TmpStr1, vbLf, vbCr)
+            Dim TmpStr2() As String = TmpStr1.Split(vbCr)
+
+            If TmpStr2(0) IsNot Nothing Then
+                ParseCSV_S2(TmpStr2(0), CSV_head)
+                CSV_head_Count = CSV_head.Length
+                ReDim CSV_head_IND(CSV_head_Count - 1)
+            Else
+                Throw New Exception("")
+            End If
+
+            If CSV_head.Length <= 2 Then Throw New Exception("")
+
+            '============================== CSV_head_IND ================ Start 
+            For IDX01 As Integer = 0 To CSV_head.Length - 1
+                If CSV_head(IDX01) IsNot Nothing Then
+                    Dim TmpUpCase As String = CSV_head(IDX01).ToUpper
+                    If CSV_head_Chk(1) = 0 Then
+                        For Each TmpStrIND1 As String In TITLE_IND
+                            If TmpUpCase = TmpStrIND1 Then
+                                CSV_head_IND(IDX01) = 1
+                                CSV_head_Chk(1) = 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If CSV_head_Chk(2) = 0 Then
+                        For Each TmpStrIND1 As String In USER_IND
+                            If TmpUpCase = TmpStrIND1 Then
+                                CSV_head_IND(IDX01) = 2
+                                CSV_head_Chk(2) = 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If CSV_head_Chk(3) = 0 Then
+                        For Each TmpStrIND1 As String In URL_IND
+                            If TmpUpCase = TmpStrIND1 Then
+                                CSV_head_IND(IDX01) = 3
+                                CSV_head_Chk(3) = 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If CSV_head_Chk(4) = 0 Then
+                        For Each TmpStrIND1 As String In PWD_IND
+                            If TmpUpCase = TmpStrIND1 Then
+                                CSV_head_IND(IDX01) = 4
+                                CSV_head_Chk(4) = 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If CSV_head_Chk(5) = 0 Then
+                        For Each TmpStrIND1 As String In NOTE_IND
+                            If TmpUpCase = TmpStrIND1 Then
+                                CSV_head_IND(IDX01) = 5
+                                CSV_head_Chk(5) = 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If CSV_head_Chk(6) = 0 Then
+                        For Each TmpStrIND1 As String In REGDATA_IND
+                            If TmpUpCase = TmpStrIND1 Then
+                                CSV_head_IND(IDX01) = 6
+                                CSV_head_Chk(6) = 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If CSV_head_Chk(7) = 0 Then
+                        For Each TmpStrIND1 As String In NOTE2_IND
+                            If TmpUpCase = TmpStrIND1 Then
+                                CSV_head_IND(IDX01) = 7
+                                CSV_head_Chk(7) = 1
+                                Exit For
+                            End If
+                        Next
+                    End If
+
+                End If
+            Next
+
+            If (CSV_head_Chk(1) + CSV_head_Chk(2) + CSV_head_Chk(4)) < 3 Then
+                'Title + Username + Password they are must
+                Throw New Exception("")
+            End If
+
+            '============================== CSV_head_IND ================ End 
+
+            Dim CSV_Total_Str As String = ""
+            If TmpStr2.Length >= 1 Then
+                For IDX01 As Integer = 1 To TmpStr2.Length - 1
+                    If TmpStr2(IDX01) <> "" Then
+                        CSV_Total_Str += TmpStr2(IDX01) + ","
+                    End If
+                Next
+            End If
+
+            If CSV_Total_Str.EndsWith(",") Then
+                CSV_Total_Str = CSV_Total_Str.Substring(0, CSV_Total_Str.Length - 1)
+            End If
+
+            Dim AllCSV(0) As String
+            ParseCSV_S2(CSV_Total_Str, AllCSV)
+            Dim Acc_Counts As String = " /" + Str(AllCSV.Length / CSV_head.Length)
+
+            If (AllCSV.Length Mod CSV_head.Length <> 0) Or (AllCSV.Length = 0) Then
+                'AllCSV must align CSV_head 
+                Throw New Exception("")
+            End If
+
+            CSVW.ProgLab.Text = "0" + Acc_Counts
+            CSVW.FormW = Me.Width
+            CSVW.FormH = Me.Height
+            CSVW.FormT = Me.Top
+            CSVW.FormL = Me.Left
+            CSVW.Opacity = Me.Opacity
+            CSVW.Show(Me)
+
+            MakeWindowsBlur(Me, PictureGray)
+            My.Application.DoEvents()
+
+            For IDX01 As Integer = 0 To AllCSV.Length - 1
+
+                If IDX01 Mod CSV_head.Length = 0 Then ' It's new one
+                    Read_and_decrypt(-1)
+                End If
+
+                Dim CSV_Idx As Integer = IDX01 Mod CSV_head_Count
+                If AllCSV(IDX01) Is Nothing Then AllCSV(IDX01) = ""
+
+                Select Case CSV_head_IND(CSV_Idx)
+                    Case 1 'Title
+                        TextBoxTitle.Text = AllCSV(IDX01)
+                    Case 2 'Username
+                        TextBoxNameAddr.Text = AllCSV(IDX01)
+                    Case 3 'URL
+                        TextBoxURL.Text = AllCSV(IDX01)
+                    Case 4 'Password
+                        CurrentAccountPass = Security.Cryptography.ProtectedData.Protect(
+                        System.Text.Encoding.UTF8.GetBytes(AllCSV(IDX01)), Nothing, DataProtectionScope.CurrentUser)
+                        NowPassStatue = 3
+                    Case 5 'Note
+                        TextBoxNote1.Text = AllCSV(IDX01)
+                    Case 6 'RegData
+                        TextBoxRegMailPhone.Text = AllCSV(IDX01)
+                    Case 7 'Note2
+                        TextBoxNote2Hid.Text = AllCSV(IDX01)
+                End Select
+
+                If IDX01 Mod CSV_head.Length = CSV_head.Length - 1 Then
+
+                    If TextBoxTitle.Text = "" Then
+                        TextBoxTitle.Text = "(?)"
+                    End If
+
+                    ' need to save
+                    VG_Title_Done = True
+                    VG_Data_Done = True
+                    NowPassStatue = 3
+
+                    If Not WriteFile(Get_New_ACC_Filename(DirName), AES_KEY_Protected, DERIVED_IDT_Protected) Then
+                        Label_Act_Msg.Text = Replace(TextStrs(20), "$$$", TextBoxTitle.Text)
+                        CSVW.ProgLab.Text = Str((IDX01 + 1) / CSV_head.Length) + Acc_Counts
+                        My.Application.DoEvents()
+                    Else
+                        Label_Act_Msg.Text = TextStrs(67)
+                        MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+                    End If
+                End If
+
+            Next
+
+        Catch ex As Exception
+            If CSVW.Visible Then
+                CSVW.Visible = False
+                CSVW.Close()
+                CSVW.Dispose()
+                UnMakeWindowsBlur(PictureGray)
+            End If
+            ErrFlag = 1
+
+        End Try
+
+        Thread.Sleep(50)
+        CSVW.Visible = False
+        CSVW.Close()
+        CSVW.Dispose()
+        UnMakeWindowsBlur(PictureGray)
+
+        Return ErrFlag
+
+    End Function
+
+    Private Sub ParseCSV_S2(ByRef InputStr As String, ByRef ReturnStrArray() As String)
+
+        Dim Quo_On As Boolean = False
+        Dim RSA_IDX As Integer = 0
+        Dim TmpEachItem() As String
+        Dim TmpSTB As New System.Text.StringBuilder
+
+        ReDim ReturnStrArray(RSA_IDX)
+
+        For Each TmpChar As Char In InputStr
+
+            If TmpChar = """" Then
+                Quo_On = Not Quo_On
+            End If
+
+            If TmpChar = "," Then
+                If Not Quo_On Then
+                    TmpSTB.Append(TmpChar)
+                Else
+                    TmpSTB.Append(Chr(13))
+                End If
+            Else
+                TmpSTB.Append(TmpChar)
+            End If
+        Next
+
+        TmpEachItem = TmpSTB.ToString().Split(",")
+
+        For Each TmpStr As String In TmpEachItem
+
+            ReDim Preserve ReturnStrArray(RSA_IDX)
+
+            TmpStr = Replace(TmpStr, Chr(13), ",")
+
+            If TmpStr IsNot Nothing Then
+                If TmpStr.StartsWith("""") Then TmpStr = TmpStr.Substring(1, TmpStr.Length - 1)
+                If TmpStr.EndsWith("""") Then TmpStr = TmpStr.Substring(0, TmpStr.Length - 1)
+            Else
+                TmpStr = ""
+            End If
+
+            TmpStr = Replace(TmpStr, """""", """")
+
+            ReturnStrArray(RSA_IDX) = TmpStr
+            RSA_IDX += 1
+
+        Next
+
+    End Sub
+
+    '============================== Auto CountDown Close ===========
+
+    Private Sub AutoCountDownClose(CountdownSec As Integer) 'Set Auto CountDown Close Timer
 
         ACTLimit = CountdownSec
         ACTCount = 0
@@ -906,15 +1264,45 @@ Public Class FormMain
 
     End Sub
 
-    Private Sub ButtonViewNote_Click(sender As Object, e As EventArgs) Handles ButtonViewNote.Click
 
-        If TextBoxNote2Hid.UseSystemPasswordChar Then
-            ButtonViewNote.Image = My.Resources.Resource1.button_view_Son_on
+    Private Sub AutoCloseTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles AutoCloseTimer.Tick
+
+        Dim TimeCountDown() As Char
+
+        If ACTLimit > 0 Then
+            PicTimerACT.Visible = True
+            PicTimerINACT.Visible = False
+            ACTCount += 1
+            TimeCountDown = TimeSpan.FromSeconds(ACTLimit - ACTCount + 1).ToString("mm\:ss").ToCharArray
+            PicDIGI_1.Image = DIGI_NUM(Convert.ToInt32(TimeCountDown(0)) - 48)
+            PicDIGI_2.Image = DIGI_NUM(Convert.ToInt32(TimeCountDown(1)) - 48)
+            PicDIGI_3.Image = DIGI_NUM(Convert.ToInt32(TimeCountDown(3)) - 48)
+            PicDIGI_4.Image = DIGI_NUM(Convert.ToInt32(TimeCountDown(4)) - 48)
+
+            If ACTCount > ACTLimit Then
+                RestartApp2(SecureDesktop, False)
+            End If
         Else
-            ButtonViewNote.Image = My.Resources.Resource1.button_view_on
+            PicTimerACT.Visible = False
+            PicTimerINACT.Visible = True
+            PicDIGI_1.Image = DIGI_NUM_N
+            PicDIGI_2.Image = DIGI_NUM_N
+            PicDIGI_3.Image = DIGI_NUM_N
+            PicDIGI_4.Image = DIGI_NUM_N
         End If
 
-        TextBoxNote2Hid.UseSystemPasswordChar = Not TextBoxNote2Hid.UseSystemPasswordChar
+    End Sub
+
+    '================== Textbox Works =================================
+
+    Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextBoxNameAddr.TextChanged
+
+        If Not ReadingWorking Then
+            VG_CCC_Done = True
+            If InStr(TextBoxNameAddr.Text, "@") > 0 And InStr(TextBoxNameAddr.Text, ".") > 0 Then
+                TextBoxRegMailPhone.Text = TextBoxNameAddr.Text
+            End If
+        End If
 
     End Sub
 
@@ -945,6 +1333,29 @@ Public Class FormMain
         End If
 
     End Sub
+
+    '===================== Hotkey and Clipboard defence works ============================
+
+    Public Const WM_KEYDOWN As Integer = &H100
+    Public Const WM_MOUSEMOVE As Integer = &H200
+    Public Const WM_LBUTTONDOWN As Integer = &H201
+    Public Const WM_RBUTTONDOWN As Integer = &H204
+    Public Const WM_MBUTTONDOWN As Integer = &H207
+
+    Public Const WM_DRAWCLIPBOARD As Integer = &H308
+    Public Const WM_CHANGECBCHAIN As Integer = &H30D
+
+    Public Const KEY_W As Integer = &H57
+    Public Const MOD_ALT As Integer = &H1
+    Public Const MOD_SHIFT As Integer = &H4
+    Public Const MOD_CTRL As Integer = &H2
+    Public Const MOD_WIN As Integer = &H8
+    Public Const WM_HOTKEY As Integer = &H312
+    'Public Const WM_LBUTTONDOWN As Integer = &H201
+
+    Public Declare Function ChangeClipboardChain Lib "user32" Alias "ChangeClipboardChain" (ByVal hWndRemove As IntPtr, ByVal hWndNewNext As IntPtr) As Boolean
+    Public Declare Function SetClipboardViewer Lib "user32" Alias "SetClipboardViewer" (ByVal hWndNewViewer As IntPtr) As IntPtr
+    Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As IntPtr, ByVal wMsg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As Integer
 
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
 
@@ -1021,19 +1432,6 @@ Public Class FormMain
 
         End Select
     End Sub
-
-    Public Const WM_KEYDOWN As Integer = &H100
-    Public Const WM_MOUSEMOVE As Integer = &H200
-    Public Const WM_LBUTTONDOWN As Integer = &H201
-    Public Const WM_RBUTTONDOWN As Integer = &H204
-    Public Const WM_MBUTTONDOWN As Integer = &H207
-
-    Public Const WM_DRAWCLIPBOARD As Integer = &H308
-    Public Const WM_CHANGECBCHAIN As Integer = &H30D
-
-    Public Declare Function ChangeClipboardChain Lib "user32" Alias "ChangeClipboardChain" (ByVal hWndRemove As IntPtr, ByVal hWndNewNext As IntPtr) As Boolean
-    Public Declare Function SetClipboardViewer Lib "user32" Alias "SetClipboardViewer" (ByVal hWndNewViewer As IntPtr) As IntPtr
-    Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As IntPtr, ByVal wMsg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As Integer
 
     Public nextClipboardViewer As IntPtr
     Public HotKeyIsWorking As Boolean
@@ -1181,6 +1579,73 @@ Public Class FormMain
         nextClipboardViewer = SetClipboardViewer(Me.Handle)
     End Sub
 
+    Private Sub RegisterKeys(RegSettings() As String)
+
+        Dim kc As KeysConverter = New KeysConverter()
+        Dim o As Object
+        Dim CheckBool As Boolean
+
+        UnregisterHotKey(Me.Handle, HotKeyID1)
+        UnregisterHotKey(Me.Handle, HotKeyID2)
+
+        If Val(RegSettings(3)) > 0 Then
+            o = kc.ConvertFromString(SCutChar(Val(RegSettings(2))))
+
+            For idx01 As Integer = 1000 To 1999
+                CheckBool = RegisterHotKey(Me.Handle, idx01, MOD_ALT + MOD_CTRL, CType(o, Keys))
+                If CheckBool = True Then
+                    HotKeyID1 = idx01
+                    Exit For
+                End If
+            Next
+            If CheckBool = False Then MSGBOXNEW(Replace(TextStrs(81), "$$$", "1"), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+        End If
+
+        If Val(RegSettings(6)) > 0 Then
+            o = kc.ConvertFromString(SCutChar(Val(RegSettings(5))))
+
+            For idx01 As Integer = 2000 To 2999
+                CheckBool = RegisterHotKey(Me.Handle, idx01, MOD_ALT + MOD_CTRL, CType(o, Keys))
+                If CheckBool = True Then
+                    HotKeyID2 = idx01
+                    Exit For
+                End If
+            Next
+            If CheckBool = False Then MSGBOXNEW(Replace(TextStrs(81), "$$$", "2"), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+        End If
+
+    End Sub
+
+    '============================ Button Works===================================
+
+    Private Sub ButtonCopyAccount_Click(sender As Object, e As EventArgs) Handles ButtonCopyAccount.Click
+
+        If TextBoxNameAddr.Text = "" Then Exit Sub
+        My.Computer.Clipboard.SetText(TextBoxNameAddr.Text)
+        Label_Act_Msg.Text = TextStrs(25)
+
+    End Sub
+
+    Private Sub ButtonCopyReg_Click(sender As Object, e As EventArgs) Handles ButtonCopyReg.Click
+
+        If TextBoxRegMailPhone.Text = "" Then Exit Sub
+        Label_Act_Msg.Text = TextStrs(25)
+        My.Computer.Clipboard.SetText(TextBoxRegMailPhone.Text)
+
+    End Sub
+
+    Private Sub ButtonViewNote_Click(sender As Object, e As EventArgs) Handles ButtonViewNote.Click
+
+        If TextBoxNote2Hid.UseSystemPasswordChar Then
+            ButtonViewNote.Image = b_view_Son_on
+        Else
+            ButtonViewNote.Image = b_view_Son
+        End If
+
+        TextBoxNote2Hid.UseSystemPasswordChar = Not TextBoxNote2Hid.UseSystemPasswordChar
+
+    End Sub
+
     Private Sub ButtonLaunch_Click(sender As Object, e As EventArgs) Handles ButtonLaunch.Click
 
         If TextBoxURL.Text = "" Then
@@ -1269,8 +1734,7 @@ Public Class FormMain
             Exit Sub
         End If
 
-        Dim NowSaveAccName As String = TextBoxTitle.Text
-
+        '========== Crypto Address Detect
         If (TextBoxNameAddr.Text.Length > 20) And VG_CCC_Done Then
             Dim CCC As New CryptoCurrencyChk
             CCC.DetectCurrency(TextBoxNameAddr.Text)
@@ -1287,11 +1751,10 @@ Public Class FormMain
             If MSGBOXNEW(TextStrs(51).Replace("$$$", TextBoxTitle.Text), MsgBoxStyle.OkCancel,
                          TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok Then
 
-                Dim Filename2 As String = Get_New_ACC_Filename(DirName)
 
-                If Not WriteFile(Filename2, AES_KEY_Protected, DERIVED_IDT_Protected) Then
+                If Not WriteFile(Get_New_ACC_Filename(DirName), AES_KEY_Protected, DERIVED_IDT_Protected) Then
                     GetList()
-                    Label_Act_Msg.Text = Replace(TextStrs(20), "$$$", NowSaveAccName)
+                    Label_Act_Msg.Text = Replace(TextStrs(20), "$$$", TextBoxTitle.Text)
                     Exe_Fill_Trash()
                     FullGC()
                     Go_ListBoxIdx(ListBox1.Items.Count - 1)
@@ -1313,7 +1776,7 @@ Public Class FormMain
                         GetList()
                         Go_ListBoxIdx(OLDidx)
                     End If
-                    Label_Act_Msg.Text = Replace(TextStrs(21), "$$$", NowSaveAccName)
+                    Label_Act_Msg.Text = Replace(TextStrs(21), "$$$", TextBoxTitle.Text)
                     Exe_Fill_Trash()
                     FullGC()
                 Else
@@ -1327,7 +1790,7 @@ Public Class FormMain
 
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles ButtonDelete.Click
+    Private Sub ButtonDelete_Click(sender As Object, e As EventArgs) Handles ButtonDelete.Click
 
         Dim NowDeleteAccName As String = TextBoxTitle.Text
 
@@ -1396,6 +1859,8 @@ Public Class FormMain
         Dim DirNameCurrent As String = ""
         Dim AESKeyCurrent(0) As Byte
         Dim DERIVED_IDT_Current(0) As Byte
+        Dim NeedRefresh As Boolean
+        Dim NowSelect As Integer = ListBox1.SelectedIndex
 
         Dim TmpDR As DialogResult
 
@@ -1409,31 +1874,41 @@ Public Class FormMain
 
             Dim Filename2 As String = Get_New_ACC_Filename(DirNameCurrent)
 
-            If DirName <> DirNameCurrent Then
-
-                GetPass()
-                NowPassStatue = 3
-                VG_Data_Done = True
-                VG_Title_Done = True
-
-                ErrFlag = WriteFile(Filename2, AESKeyCurrent, DERIVED_IDT_Current)
-                If Not ErrFlag Then
-                    Select Case Delete_ACC_File(NowProcFile, TextStrs(7) + vbCrLf + vbCrLf + TextStrs(8), False)
-                        Case 2
-                            ErrFlag = True
-                    End Select
-                End If
-
-                If Not ErrFlag Then
-                    Label_Act_Msg.Text = Replace(TextStrs(41), "$$$", NowTransAccName)
+            If DirName = DirNameCurrent Then
+                If MSGBOXNEW(TextStrs(39), MsgBoxStyle.OkCancel, TextStrs(5), Me, PictureGray) = DialogResult.Cancel Then
+                    FullGC()
+                    Exit Sub
                 Else
-                    Label_Act_Msg.Text = TextStrs(67)
-                    MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+                    NeedRefresh = True
                 End If
-
-            Else
-                MSGBOXNEW(TextStrs(39), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
             End If
+
+            GetPass()
+            NowPassStatue = 3
+            VG_Data_Done = True
+            VG_Title_Done = True
+
+            ErrFlag = WriteFile(Filename2, AESKeyCurrent, DERIVED_IDT_Current)
+            If Not ErrFlag Then
+                Select Case Delete_ACC_File(NowProcFile, TextStrs(7) + vbCrLf + vbCrLf + TextStrs(8), False)
+                    Case 0
+                    Case 1
+                        If NeedRefresh Then
+                            GetList()
+                            Go_ListBoxIdx(NowSelect)
+                        End If
+                    Case 2
+                        ErrFlag = True
+                End Select
+            End If
+
+            If Not ErrFlag Then
+                Label_Act_Msg.Text = Replace(TextStrs(41), "$$$", NowTransAccName)
+            Else
+                Label_Act_Msg.Text = TextStrs(67)
+                MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+            End If
+
 
         End If
 
@@ -1464,6 +1939,8 @@ Public Class FormMain
 
     End Sub
 
+    '======================================= Base Main Window Operate ======================
+
     Private lastLocation As Point
     Private isMouseDown As Boolean = False
 
@@ -1485,45 +1962,6 @@ Public Class FormMain
         isMouseDown = False
     End Sub
 
-    Private Sub PictureBoxCATMAN_Click(sender As Object, e As EventArgs) Handles PictureBoxCATMAN.Click
-
-        FormConfig.ComboBoxTimer.SelectedIndex = Val(CAT_setting_Str(0))
-        FormConfig.TB_AC_KEY.SelectedIndex = Val(CAT_setting_Str(2))
-        FormConfig.CB_SIM1.SelectedIndex = Val(CAT_setting_Str(3))
-        FormConfig.TB_PW_KEY.SelectedIndex = Val(CAT_setting_Str(5))
-        FormConfig.CB_SIM2.SelectedIndex = Val(CAT_setting_Str(6))
-
-        FormConfig.FormL = Me.Left + (Me.Width - FormConfig.Width) / 2
-        FormConfig.FormT = Me.Top + (Me.Height - FormConfig.Height) / 2
-        FormConfig.Opacity = Me.Opacity
-
-        MakeWindowsBlur(Me, PictureGray)
-        Dim DR As DialogResult = FormConfig.ShowDialog(Me)
-        PictureGray.Visible = False
-        PictureGray.SendToBack()
-        My.Application.DoEvents()
-
-        If DR = DialogResult.OK Then
-
-            ACTLimitSelectIDX = FormConfig.ComboBoxTimer.SelectedIndex
-            RegisterKeys(CAT_setting_Str)
-            AutoCountDownClose(ACTLimitSelect(CInt(CAT_setting_Str(0))))
-            Write_CatDatas()
-
-        ElseIf DR = DialogResult.Ignore Then
-
-            If FormConfig.OtherWorkMode = 1 Then
-                If ListBox1.Items.Count > 1 Then
-                    TransFullCat()
-                End If
-            ElseIf FormConfig.OtherWorkMode = 2 Then
-                Full_Catalog_Delete()
-            End If
-
-        End If
-
-    End Sub
-
     Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonFin.Click
         End_Program()
     End Sub
@@ -1539,39 +1977,15 @@ Public Class FormMain
         RestartApp2(SecureDesktop, False)
     End Sub
 
-    Private Sub AutoCloseTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles AutoCloseTimer.Tick
-
-        Dim TimeCountDown() As Char
-
-        If ACTLimit > 0 Then
-            PicTimerACT.Visible = True
-            PicTimerINACT.Visible = False
-            ACTCount += 1
-            TimeCountDown = TimeSpan.FromSeconds(ACTLimit - ACTCount + 1).ToString("mm\:ss").ToCharArray
-            PicDIGI_1.Image = DIGI_NUM(Convert.ToInt32(TimeCountDown(0)) - 48)
-            PicDIGI_2.Image = DIGI_NUM(Convert.ToInt32(TimeCountDown(1)) - 48)
-            PicDIGI_3.Image = DIGI_NUM(Convert.ToInt32(TimeCountDown(3)) - 48)
-            PicDIGI_4.Image = DIGI_NUM(Convert.ToInt32(TimeCountDown(4)) - 48)
-
-            If ACTCount > ACTLimit Then
-                RestartApp2(SecureDesktop, False)
-            End If
-        Else
-            PicTimerACT.Visible = False
-            PicTimerINACT.Visible = True
-            PicDIGI_1.Image = DIGI_NUM_N
-            PicDIGI_2.Image = DIGI_NUM_N
-            PicDIGI_3.Image = DIGI_NUM_N
-            PicDIGI_4.Image = DIGI_NUM_N
-        End If
-
-    End Sub
-
     Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
 
-    '==================================================================== ListBox Scrollbar work
+    Private Sub Form1_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        End_Program()
+    End Sub
+
+    '==================================================== ListBox Scrollbar work ===============
 
     Private Sub LSCBU_MouseDown(sender As Object, e As MouseEventArgs) Handles _
         LSCBU.MouseDown, LSCBD.MouseDown, LSCBBACK.MouseDown
@@ -1648,7 +2062,7 @@ Public Class FormMain
         If e.Button = MouseButtons.Left Then
             If LB_Range_Scale > 0 Then
                 BarIsHolding = True
-                Cursor = Cursors.SizeAll ' 更改游標形狀以指示按住按鈕時可以移動它
+                Cursor = Cursors.SizeNS ' 更改游標形狀以指示按住按鈕時可以移動它
             End If
         End If
     End Sub
@@ -1698,6 +2112,8 @@ Public Class FormMain
         ListBox1.SelectedIndex = Gowhere
         GoCorrectPos()
     End Sub
+
+    '====================== Button Visual works =========================
 
     Dim b_Logout_on As New Bitmap(My.Resources.Resource1.button_LOGOUT_on)
     Dim b_Final_on As New Bitmap(My.Resources.Resource1.button_Final_on)
@@ -1787,12 +2203,12 @@ Public Class FormMain
         End Select
     End Sub
 
-    Dim B_L_Save_on As New Bitmap(My.Resources.Resource1.button_L_save_on)
-    Dim B_L_delete_on As New Bitmap(My.Resources.Resource1.button_L_delete_on)
-    Dim B_L_moveUP_on As New Bitmap(My.Resources.Resource1.button_L_moveUP_on)
-    Dim B_L_moveDWN_on As New Bitmap(My.Resources.Resource1.button_L_moveDWN_on)
-    Dim B_L_transKEY_on As New Bitmap(My.Resources.Resource1.button_L_transKEY_on)
-    Dim B_L_fileInfo_on As New Bitmap(My.Resources.Resource1.button_L_fileInfo_on)
+    Dim LBTN_Save_on As New Bitmap(My.Resources.Resource1.button_L_save_on)
+    Dim LBTN_delete_on As New Bitmap(My.Resources.Resource1.button_L_delete_on)
+    Dim LBTN_moveUP_on As New Bitmap(My.Resources.Resource1.button_L_moveUP_on)
+    Dim LBTN_moveDWN_on As New Bitmap(My.Resources.Resource1.button_L_moveDWN_on)
+    Dim LBTN_transKEY_on As New Bitmap(My.Resources.Resource1.button_L_transKEY_on)
+    Dim LBTN_fileInfo_on As New Bitmap(My.Resources.Resource1.button_L_fileInfo_on)
 
     Private Sub L_Mouse_Enter(sender As Object, e As EventArgs) Handles _
         ButtonSave.MouseEnter, ButtonDelete.MouseEnter, ButtonGoUP.MouseEnter, ButtonGoDown.MouseEnter,
@@ -1801,28 +2217,21 @@ Public Class FormMain
         If sender.Enabled = True Then
             Select Case sender.Name
                 Case "ButtonSave"
-                    ButtonSave.Image = B_L_Save_on
+                    ButtonSave.Image = LBTN_Save_on
                 Case "ButtonDelete"
-                    ButtonDelete.Image = B_L_delete_on
+                    ButtonDelete.Image = LBTN_delete_on
                 Case "ButtonGoUP"
-                    ButtonGoUP.Image = B_L_moveUP_on
+                    ButtonGoUP.Image = LBTN_moveUP_on
                 Case "ButtonGoDown"
-                    ButtonGoDown.Image = B_L_moveDWN_on
+                    ButtonGoDown.Image = LBTN_moveDWN_on
                 Case "ButtonTransCatalog"
-                    ButtonTransCatalog.Image = B_L_transKEY_on
+                    ButtonTransCatalog.Image = LBTN_transKEY_on
                 Case "ButtonFileInfo"
-                    ButtonFileInfo.Image = B_L_fileInfo_on
+                    ButtonFileInfo.Image = LBTN_fileInfo_on
             End Select
         End If
 
     End Sub
-
-    Dim B_L_Save As New Bitmap(My.Resources.Resource1.button_L_save)
-    Dim B_L_delete As New Bitmap(My.Resources.Resource1.button_L_delete)
-    Dim B_L_moveUP As New Bitmap(My.Resources.Resource1.button_L_moveUP)
-    Dim B_L_moveDWN As New Bitmap(My.Resources.Resource1.button_L_moveDWN)
-    Dim B_L_transKEY As New Bitmap(My.Resources.Resource1.button_L_transKEY)
-    Dim B_L_fileInfo As New Bitmap(My.Resources.Resource1.button_L_fileInfo)
 
     Private Sub L_Mouse_Leave(sender As Object, e As EventArgs) Handles _
         ButtonSave.MouseLeave, ButtonDelete.MouseLeave, ButtonGoUP.MouseLeave, ButtonGoDown.MouseLeave,
@@ -1831,21 +2240,29 @@ Public Class FormMain
         If sender.Enabled = True Then
             Select Case sender.Name
                 Case "ButtonSave"
-                    ButtonSave.Image = B_L_Save
+                    ButtonSave.Image = LBTN_Save_En
                 Case "ButtonDelete"
-                    ButtonDelete.Image = B_L_delete
+                    ButtonDelete.Image = LBTN_Del_En
                 Case "ButtonGoUP"
-                    ButtonGoUP.Image = B_L_moveUP
+                    ButtonGoUP.Image = LBTN_MoveU_En
                 Case "ButtonGoDown"
-                    ButtonGoDown.Image = B_L_moveDWN
+                    ButtonGoDown.Image = LBTN_MoveD_En
                 Case "ButtonTransCatalog"
-                    ButtonTransCatalog.Image = B_L_transKEY
+                    ButtonTransCatalog.Image = LBTN_TKey_En
                 Case "ButtonFileInfo"
-                    ButtonFileInfo.Image = B_L_fileInfo
+                    ButtonFileInfo.Image = LBTN_FInfo_En
             End Select
         End If
 
     End Sub
+
+    'Private Sub TextBoxNote_Enter(sender As Object, e As EventArgs) Handles TextBoxNote1.Enter
+    '    TextBoxNote1.Multiline = True
+    'End Sub
+
+    'Private Sub TextBoxNote1_Leave(sender As Object, e As EventArgs) Handles TextBoxNote1.Leave
+    '    TextBoxNote1.Multiline = False
+    'End Sub
 End Class
 
 'For Textbox lighton

@@ -15,7 +15,7 @@ Public Class FormLogin
     Public This_Time_DIP() As Byte
     Public This_Time_Salt() As Byte
 
-    Public This_Time_Dir As String
+    Public This_Time_Dir As String = ""
 
     Public SecureDesktopMode As Boolean
     Private SecondSHA256() As Byte
@@ -36,31 +36,41 @@ Public Class FormLogin
     Dim TextBoxPwd2 As New MyTextBox
     Dim TextBoxPwdVerify2 As New MyTextBox
 
+    Dim DbTester As New Timer()
+
+    <DllImport("ntdll.dll", SetLastError:=True)>
+    Private Shared Function NtQueryInformationProcess(processHandle As IntPtr, processInformationClass As Integer, ByRef processInformation As IntPtr, processInformationLength As Integer, ByRef returnLength As Integer) As Integer
+    End Function
+
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        '===== BOX2 For fix Copy-past memory leak
         Me.Controls.Add(TextBoxPwd2)
         TextBoxPwd2.Location = TextBoxPwd.Location
-        TextBoxPwd2.UseSystemPasswordChar = TextBoxPwd.UseSystemPasswordChar
+        TextBoxPwd2.UseSystemPasswordChar = True
         TextBoxPwd2.Size = TextBoxPwd.Size
         TextBoxPwd2.Font = TextBoxPwd.Font
         TextBoxPwd2.ForeColor = TextBoxPwd.ForeColor
         TextBoxPwd2.BackColor = TextBoxPwd.BackColor
         TextBoxPwd2.BorderStyle = TextBoxPwd.BorderStyle
         TextBoxPwd2.BringToFront()
-        AddHandler TextBoxPwd2.KeyDown, AddressOf TextBoxPwd_KeyDown
-        AddHandler TextBoxPwd2.TextChanged, AddressOf TextBoxPwd_TextChanged
+        AddHandler TextBoxPwd2.KeyDown, AddressOf TextBoxPwd2_KeyDown
+        AddHandler TextBoxPwd2.TextChanged, AddressOf TextBoxPwd2_TextChanged
 
         Me.Controls.Add(TextBoxPwdVerify2)
         TextBoxPwdVerify2.Location = TextBoxPwdVerify.Location
-        TextBoxPwdVerify2.UseSystemPasswordChar = TextBoxPwdVerify.UseSystemPasswordChar
+        TextBoxPwdVerify2.UseSystemPasswordChar = True
         TextBoxPwdVerify2.Size = TextBoxPwdVerify.Size
         TextBoxPwdVerify2.Font = TextBoxPwdVerify.Font
         TextBoxPwdVerify2.ForeColor = TextBoxPwdVerify.ForeColor
         TextBoxPwdVerify2.BackColor = TextBoxPwdVerify.BackColor
         TextBoxPwdVerify2.BorderStyle = TextBoxPwdVerify.BorderStyle
         TextBoxPwdVerify2.BringToFront()
-        AddHandler TextBoxPwdVerify2.KeyDown, AddressOf TextBoxPwd_KeyDown
-        AddHandler TextBoxPwdVerify2.TextChanged, AddressOf TextBoxPwd_TextChanged
+        AddHandler TextBoxPwdVerify2.KeyDown, AddressOf TextBoxPwd2_KeyDown
+        AddHandler TextBoxPwdVerify2.TextChanged, AddressOf TextBoxPwd2_TextChanged
+
+        TextBoxPwd.Visible = False
+        TextBoxPwdVerify.Visible = False
 
         Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
         ToolTip1.InitialDelay = 1
@@ -83,7 +93,7 @@ Public Class FormLogin
                 ButtonCancel.Visible = False
                 ButtonFin.Visible = True
 
-            Case 1 ' Non Loging Mode
+            Case 1, 3 ' 1= Transform 3= CSV export
 
                 PictureBoxLogin.Image = My.Resources.Resource1.Title_NORMAL
                 ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
@@ -170,35 +180,32 @@ Public Class FormLogin
             Me.Top = FormT + (FormH - Me.Height) / 2
         End If
 
+        If WorkMode = 3 Then
+            TextBoxPwdVerify2.Text = "-- LOCKED DURING CSV EXPORT MODE --"
+            TextBoxPwdVerify2.TextAlign = HorizontalAlignment.Center
+            TextBoxPwdVerify2.ForeColor = Color.FromArgb(126, 237, 176)
+            TextBoxPwdVerify2.ReadOnly = True
+            TextBoxPwdVerify2.UseSystemPasswordChar = False
+        End If
+
         timerA.Interval = 100
         timerA.Enabled = True
         AddHandler timerA.Tick, AddressOf Timer1_Tick
 
-    End Sub
+        DbTester.Interval = 1000
+        DbTester.Enabled = True
+        AddHandler DbTester.Tick, AddressOf Timer2_Tick
 
-    Private Sub TextBoxPwd_KeyDown(sender As Object, e As KeyEventArgs)
-
-        If (e.KeyCode = Keys.Enter) Then
-            GoNextPre()
-            e.Handled = True
-            e.SuppressKeyPress = True
-        End If
 
     End Sub
 
-    Private Sub TextBoxPwd_TextChanged(sender As Object, e As EventArgs)
-        If Not ClearWorking Then sender.forecolor = EvaPwdStrong(sender)
-    End Sub
-
-    Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonOK.Click
-        GoNextPre()
-    End Sub
+    '=============== Functions and subs 
 
     Private Sub GoNextPre()
 
         Select Case WorkMode
 
-            Case 0, 1
+            Case 0, 1, 3
                 GoNext(System.Text.Encoding.Unicode.GetBytes(TextBoxPwd2.Text), False)
             Case 2
 
@@ -232,6 +239,20 @@ Public Class FormLogin
 
         End Select
 
+    End Sub
+
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs)
+        DbTester.Enabled = False
+        IsDebugged()
+    End Sub
+
+    Public Sub IsDebugged()
+        Dim isRemoteDebuggerPresent As IntPtr = IntPtr.Zero
+        Dim returnLength As Integer
+        NtQueryInformationProcess(System.Diagnostics.Process.GetCurrentProcess().Handle, 7, isRemoteDebuggerPresent, Marshal.SizeOf(isRemoteDebuggerPresent), returnLength)
+        If isRemoteDebuggerPresent <> IntPtr.Zero Then
+            MSGBOXNEW(TextStrs(99), MsgBoxStyle.Critical, TextStrs(100), Me, PictureGray)
+        End If
     End Sub
 
     Private Sub SecondSHA256Sub(ByRef Second_SHA256() As Byte)
@@ -329,6 +350,11 @@ Public Class FormLogin
 
         If Not My.Computer.FileSystem.DirectoryExists(Work_Dir_String) Then
 
+            If WorkMode = 3 Then
+                Me.DialogResult = DialogResult.OK
+                Exit Sub
+            End If
+
             If Not ItsaFile Then
                 If TextBoxPwdVerify2.Text = "" Then
                     MSGBOXNEW(TextStrs(0), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
@@ -355,181 +381,6 @@ Public Class FormLogin
         This_Time_Dir = Work_Dir_String
         Me.DialogResult = DialogResult.OK
 
-    End Sub
-
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs)
-
-        If Control.IsKeyLocked(Keys.CapsLock) Then
-            PicCAP1.Image = CAPon
-        Else
-            PicCAP1.Image = CAPoff
-        End If
-
-    End Sub
-
-    Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
-        Me.DialogResult = DialogResult.Cancel
-    End Sub
-
-    Private Sub Button_Restart_Click(sender As Object, e As EventArgs) Handles Button_Restart.Click
-        Me.DialogResult = DialogResult.Abort
-    End Sub
-
-    Private Sub ButtonHelp_Click(sender As Object, e As EventArgs) Handles ButtonHelp.Click
-
-        If SecureDesktopMode Then
-            MSGBOXNEW(TextStrs(24), MsgBoxStyle.OkOnly, TextStrs(16), Me, PictureGray)
-        Else
-            Try
-                Process.Start(MainWebURL)
-            Catch ex As Exception
-            End Try
-        End If
-
-    End Sub
-
-    Private Sub ButtonMIT_Click(sender As Object, e As EventArgs) Handles PictureBoxMIT.Click
-
-        FormMIT.FormW = Me.Width
-        FormMIT.FormH = Me.Height
-        FormMIT.FormT = Me.Top
-        FormMIT.FormL = Me.Left
-        FormMIT.Opacity = ALLOPACITY
-        MakeWindowsBlur(Me, PictureGray)
-        FormMIT.ShowDialog()
-        UnMakeWindowsBlur(PictureGray)
-        FullGC()
-    End Sub
-
-    Private Sub ButtonFileOpen_Click(sender As Object, e As EventArgs) Handles ButtonFileOpen.Click
-
-        If WorkMode <= 1 Then
-
-            Dim FFE As New FormFileExplorer
-
-            MakeWindowsBlur(Me, PictureGray)
-            FFE.Opacity = Me.Opacity
-
-            If FFE.ShowDialog(Me) = DialogResult.OK Then
-                FFE.Close()
-                UnMakeWindowsBlur(PictureGray)
-                GoNext(FFE.BigByte, True)
-            Else
-                UnMakeWindowsBlur(PictureGray)
-            End If
-            FFE.Dispose()
-
-            Exe_Fill_Trash()
-
-            FullGC()
-        End If
-
-    End Sub
-
-    Private Sub FormLogin_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
-        timerA.Enabled = False
-        timerA.Dispose()
-        WipeBytes(This_Time_DIP)
-        WipeBytes(This_Time_Key)
-    End Sub
-
-    Private Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Integer, ByVal dwExtraInfo As Integer)
-
-    Private Sub PicCAP1_Click(sender As Object, e As EventArgs) Handles PicCAP1.Click
-        Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 1, 0)
-        Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 3, 0)
-    End Sub
-
-    Private Sub ButtonViewPass_Click(sender As Object, e As EventArgs) Handles ButtonViewPass.Click
-        If TextBoxPwd2.UseSystemPasswordChar Then
-            TextBoxPwd2.UseSystemPasswordChar = False
-            TextBoxPwdVerify2.UseSystemPasswordChar = False
-            ButtonViewPass.Image = PWDSHOWon
-        Else
-            TextBoxPwd2.UseSystemPasswordChar = True
-            TextBoxPwdVerify2.UseSystemPasswordChar = True
-            ButtonViewPass.Image = PWDSHOWoff
-        End If
-    End Sub
-
-    Dim SD_OFF As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_OFF)
-    Dim SD_ON As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_ON)
-    Dim RAA_OFF As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_OFF)
-    Dim RAA_ON As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_ON)
-
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBoxSD.Click
-        If IsUseSD Then
-            PictureBoxSD.Image = SD_OFF
-        Else
-            PictureBoxSD.Image = SD_ON
-        End If
-        IsUseSD = Not IsUseSD
-    End Sub
-
-    Private Sub PictureBoxRUNAS_Click(sender As Object, e As EventArgs) Handles PictureBoxRUNAS.Click
-        If IsUseRUNAS Then
-            PictureBoxRUNAS.Image = RAA_OFF
-        Else
-            PictureBoxRUNAS.Image = RAA_ON
-        End If
-        IsUseRUNAS = Not IsUseRUNAS
-    End Sub
-
-    Private Sub PictureBoxGenPwd_Click(sender As Object, e As EventArgs) Handles ButtonGenPwd.Click
-        Dim PWDGMode As Integer
-        If GP_Use_Symbol Then
-            PWDGMode = 1
-        Else
-            PWDGMode = 2
-        End If
-        TextBoxPwd2.Text = Random_Strs(24, 24, PWDGMode)
-        TextBoxPwdVerify2.Text = TextBoxPwd2.Text
-    End Sub
-
-    Private Sub PictureBoxGPUS_Click(sender As Object, e As EventArgs) Handles PictureBoxGPUS.Click
-        If Not GP_Use_Symbol Then
-            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_ON
-        Else
-            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_OFF
-        End If
-        GP_Use_Symbol = Not GP_Use_Symbol
-    End Sub
-
-    Private Sub Button_Restart_MouseHover(sender As Object, e As EventArgs) Handles Button_Restart.MouseHover
-        Button_Restart.Image = My.Resources.Resource1.button_RESTART_On
-    End Sub
-
-    Private Sub Button_Restart_MouseLeave(sender As Object, e As EventArgs) Handles Button_Restart.MouseLeave
-        Button_Restart.Image = My.Resources.Resource1.button_RESTART_Off
-    End Sub
-
-    Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
-        Me.WindowState = FormWindowState.Minimized
-    End Sub
-
-    Private lastLocation As Point
-    Private isMouseDown As Boolean = False
-
-    Private Sub PictureBoxLogin_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBoxLogin.MouseDown
-        ' 紀錄滑鼠按下的位置
-        isMouseDown = True
-        lastLocation = e.Location
-    End Sub
-
-    Private Sub PictureBoxLogin_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBoxLogin.MouseMove
-        ' 當滑鼠左鍵按下時，設定窗體的位置
-        If isMouseDown Then
-            Me.Location = New Point(Me.Location.X + (e.X - lastLocation.X), Me.Location.Y + (e.Y - lastLocation.Y))
-        End If
-    End Sub
-
-    Private Sub PictureBoxLogin_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBoxLogin.MouseUp
-        ' 當滑鼠左鍵釋放時，重設 isMouseDown 變數
-        isMouseDown = False
-    End Sub
-
-    Private Sub ButtonFin_Click(sender As Object, e As EventArgs) Handles ButtonFin.Click
-        Me.DialogResult = DialogResult.Cancel
     End Sub
 
     Private Function CheckBIP39(ByRef BIP39Str As String) As Integer
@@ -649,14 +500,133 @@ Public Class FormLogin
         If SSig Then Score += 3
 
         If Score < 16 Then
-            Return Color.FromArgb(172, 0, 0)
+            Return Color.FromArgb(192, 0, 0)
         ElseIf Score < 28 Then
-            Return Color.FromArgb(124, 124, 0)
+            Return Color.FromArgb(128, 128, 0)
         Else
-            Return Color.FromArgb(0, 172, 0)
+            Return Color.FromArgb(0, 188, 0)
         End If
 
     End Function
+
+    '============== Form control works =================
+
+    Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonOK.Click
+        GoNextPre()
+    End Sub
+
+    Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
+        Me.DialogResult = DialogResult.Cancel
+    End Sub
+
+    Private Sub Button_Restart_Click(sender As Object, e As EventArgs) Handles Button_Restart.Click
+        Me.DialogResult = DialogResult.Abort
+    End Sub
+
+    Private Sub ButtonHelp_Click(sender As Object, e As EventArgs) Handles ButtonHelp.Click
+
+        If SecureDesktopMode Then
+            MSGBOXNEW(TextStrs(24), MsgBoxStyle.OkOnly, TextStrs(16), Me, PictureGray)
+        Else
+            Try
+                Process.Start(MainWebURL)
+            Catch ex As Exception
+            End Try
+        End If
+
+    End Sub
+
+    Private Sub ButtonMIT_Click(sender As Object, e As EventArgs) Handles PictureBoxMIT.Click
+
+        FormMIT.FormW = Me.Width
+        FormMIT.FormH = Me.Height
+        FormMIT.FormT = Me.Top
+        FormMIT.FormL = Me.Left
+        FormMIT.Opacity = ALLOPACITY
+        MakeWindowsBlur(Me, PictureGray)
+        FormMIT.ShowDialog()
+        UnMakeWindowsBlur(PictureGray)
+        FullGC()
+    End Sub
+
+    Private Sub ButtonFileOpen_Click(sender As Object, e As EventArgs) Handles ButtonFileOpen.Click
+
+        Dim FFE As New FormFileExplorer
+
+        MakeWindowsBlur(Me, PictureGray)
+        FFE.Opacity = Me.Opacity
+
+        If FFE.ShowDialog(Me) = DialogResult.OK Then
+            FFE.Close()
+            UnMakeWindowsBlur(PictureGray)
+            GoNext(FFE.BigByte, True)
+        Else
+            UnMakeWindowsBlur(PictureGray)
+        End If
+        FFE.Dispose()
+
+        Exe_Fill_Trash()
+        FullGC()
+
+    End Sub
+
+    Dim PWDSHOWon As New Bitmap(My.Resources.Resource1.PASSWORD_SHOW)
+    Dim PWDSHOWoff As New Bitmap(My.Resources.Resource1.PASSWORD_HIDE)
+
+    Private Sub ButtonViewPass_Click(sender As Object, e As EventArgs) Handles ButtonViewPass.Click
+        If TextBoxPwd2.UseSystemPasswordChar Then
+            TextBoxPwd2.UseSystemPasswordChar = False
+            If WorkMode <> 3 Then TextBoxPwdVerify2.UseSystemPasswordChar = False
+            ButtonViewPass.Image = PWDSHOWon
+        Else
+            TextBoxPwd2.UseSystemPasswordChar = True
+            If WorkMode <> 3 Then TextBoxPwdVerify2.UseSystemPasswordChar = True
+            ButtonViewPass.Image = PWDSHOWoff
+        End If
+    End Sub
+
+    Dim SD_OFF As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_OFF)
+    Dim SD_ON As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_ON)
+    Dim RAA_OFF As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_OFF)
+    Dim RAA_ON As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_ON)
+
+    Private Sub PictureBoxSD_Click(sender As Object, e As EventArgs) Handles PictureBoxSD.Click
+        If IsUseSD Then
+            PictureBoxSD.Image = SD_OFF
+        Else
+            PictureBoxSD.Image = SD_ON
+        End If
+        IsUseSD = Not IsUseSD
+    End Sub
+
+    Private Sub PictureBoxRUNAS_Click(sender As Object, e As EventArgs) Handles PictureBoxRUNAS.Click
+        If IsUseRUNAS Then
+            PictureBoxRUNAS.Image = RAA_OFF
+        Else
+            PictureBoxRUNAS.Image = RAA_ON
+        End If
+        IsUseRUNAS = Not IsUseRUNAS
+    End Sub
+
+    Private Sub PictureBoxGenPwd_Click(sender As Object, e As EventArgs) Handles ButtonGenPwd.Click
+        Dim PWDGMode As Integer
+        If GP_Use_Symbol Then
+            PWDGMode = 1
+        Else
+            PWDGMode = 2
+        End If
+        TextBoxPwd2.Text = Random_Strs(24, 24, PWDGMode)
+        TextBoxPwdVerify2.Text = TextBoxPwd2.Text
+    End Sub
+
+    Private Sub PictureBoxGPUS_Click(sender As Object, e As EventArgs) Handles PictureBoxGPUS.Click
+        If Not GP_Use_Symbol Then
+            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_ON
+        Else
+            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_OFF
+        End If
+        GP_Use_Symbol = Not GP_Use_Symbol
+    End Sub
 
     Private Sub FormLogin_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
 
@@ -672,6 +642,92 @@ Public Class FormLogin
         TextBoxPwdVerify2.Dispose()
 
     End Sub
+
+    Private Sub FormLogin_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        timerA.Enabled = False
+        timerA.Dispose()
+        WipeBytes(This_Time_DIP)
+        WipeBytes(This_Time_Key)
+    End Sub
+
+    '================= BOX2 For fix Copy-past memory leak
+
+    Private Sub TextBoxPwd2_KeyDown(sender As Object, e As KeyEventArgs)
+
+        If (e.KeyCode = Keys.Enter) Then
+            GoNextPre()
+            e.Handled = True
+            e.SuppressKeyPress = True
+        End If
+
+    End Sub
+
+    Private Sub TextBoxPwd2_TextChanged(sender As Object, e As EventArgs)
+        If Not ClearWorking Then sender.forecolor = EvaPwdStrong(sender)
+    End Sub
+
+    '=============== About CAPS Lock function
+
+    Public CAPon As New Bitmap(My.Resources.Resource1.caps_lock_on)
+    Public CAPoff As New Bitmap(My.Resources.Resource1.caps_lock_off)
+
+    Private Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Integer, ByVal dwExtraInfo As Integer)
+
+    Private Sub PicCAP1_Click(sender As Object, e As EventArgs) Handles PicCAP1.Click
+        Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 1, 0)
+        Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 3, 0)
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs)
+
+        If Control.IsKeyLocked(Keys.CapsLock) Then
+            PicCAP1.Image = CAPon
+        Else
+            PicCAP1.Image = CAPoff
+        End If
+
+    End Sub
+
+    ' ====================== Base window operate
+
+    Private lastLocation As Point
+    Private isMouseDown As Boolean = False
+
+    Private Sub Button_Restart_MouseHover(sender As Object, e As EventArgs) Handles Button_Restart.MouseHover
+        Button_Restart.Image = My.Resources.Resource1.button_RESTART_On
+    End Sub
+
+    Private Sub Button_Restart_MouseLeave(sender As Object, e As EventArgs) Handles Button_Restart.MouseLeave
+        Button_Restart.Image = My.Resources.Resource1.button_RESTART_Off
+    End Sub
+
+    Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
+        Me.WindowState = FormWindowState.Minimized
+    End Sub
+
+    Private Sub PictureBoxLogin_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBoxLogin.MouseDown
+        ' 紀錄滑鼠按下的位置
+        isMouseDown = True
+        lastLocation = e.Location
+    End Sub
+
+    Private Sub PictureBoxLogin_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBoxLogin.MouseMove
+        ' 當滑鼠左鍵按下時，設定窗體的位置
+        If isMouseDown Then
+            Me.Location = New Point(Me.Location.X + (e.X - lastLocation.X), Me.Location.Y + (e.Y - lastLocation.Y))
+        End If
+    End Sub
+
+    Private Sub PictureBoxLogin_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBoxLogin.MouseUp
+        ' 當滑鼠左鍵釋放時，重設 isMouseDown 變數
+        isMouseDown = False
+    End Sub
+
+    Private Sub ButtonFin_Click(sender As Object, e As EventArgs) Handles ButtonFin.Click
+        Me.DialogResult = DialogResult.Cancel
+    End Sub
+
+    '================= Button visual work
 
     Dim B_confirm_on As New Bitmap(My.Resources.Resource1.button_confirm_on)
     Dim B_OpenF_on As New Bitmap(My.Resources.Resource1.button_OpenF_on)
@@ -728,6 +784,8 @@ Public Class FormLogin
         End Select
     End Sub
 End Class
+
+'===== BOX2 For fix Copy-past memory leak
 
 Class MyTextBox
     Inherits TextBox
