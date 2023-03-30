@@ -73,7 +73,7 @@ Module SPMP
 
         'Set ProcessSystemCallFilterPolicy =11 (??? undocument? 87error)
         'Set ProcessPayloadRestrictionPolicy =12 (??? undocument? 87error)
-        'Set ProcessChildProcessPolicy = 13 (make restart fail)
+        'Set ProcessChildProcessPolicy = 13 (make process.start fail)
 
         'Set ProcessSideChannelIsolationPolicy = 14 (Win10 1809)
         sp = &B1111 'bit 5 cant use
@@ -90,6 +90,7 @@ Module SPMP
         'MsgBox(New Win32Exception(Marshal.GetLastWin32Error).Message)
 
     End Sub
+
 End Module
 
 Public Module SE01

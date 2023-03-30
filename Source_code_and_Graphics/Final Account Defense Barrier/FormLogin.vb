@@ -242,18 +242,20 @@ Public Class FormLogin
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs)
-        DbTester.Enabled = False
-        IsDebugged()
+#If Not DEBUG Then
+        If IsDebugged() Then
+            DbTester.Enabled = False
+            MSGBOXNEW(TextStrs(99), MsgBoxStyle.Critical, TextStrs(100), Me, PictureGray)
+        End If
+#End If
     End Sub
 
-    Public Sub IsDebugged()
+    Public Function IsDebugged() As Boolean
         Dim isRemoteDebuggerPresent As IntPtr = IntPtr.Zero
         Dim returnLength As Integer
         NtQueryInformationProcess(System.Diagnostics.Process.GetCurrentProcess().Handle, 7, isRemoteDebuggerPresent, Marshal.SizeOf(isRemoteDebuggerPresent), returnLength)
-        If isRemoteDebuggerPresent <> IntPtr.Zero Then
-            MSGBOXNEW(TextStrs(99), MsgBoxStyle.Critical, TextStrs(100), Me, PictureGray)
-        End If
-    End Sub
+        Return isRemoteDebuggerPresent <> IntPtr.Zero
+    End Function
 
     Private Sub SecondSHA256Sub(ByRef Second_SHA256() As Byte)
         Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
@@ -636,6 +638,8 @@ Public Class FormLogin
             End If
         End If
 
+        DbTester.Enabled = False
+        DbTester.Dispose()
         ClearTextBox(TextBoxPwd2)
         ClearTextBox(TextBoxPwdVerify2)
         TextBoxPwd2.Dispose()

@@ -37,6 +37,11 @@ Module Module1
     Public ACTLimitSelect() As Integer = {0, 30, 60, 180, 300, 600, 1800}
 
     Public NowPassStatue As Integer = 0
+    '0=New Account no edit, CurrentAccountPass = "" in init
+    '1=Old File Read, not decrypt
+    '2=Old File Read, decrypted, CurrentAccountPass usable, Not edit
+    '3=Edited
+
     Public CurrentAccountPass() As Byte
     Public Read_File_Pass_Str As String
 
@@ -314,8 +319,19 @@ Module Module1
 
         info.UseShellExecute = True
 
-        If UseSecDesktop Then info.Arguments = "SECUREDESKTOP"
         If Runas Then info.Verb = "runas"
+
+        Dim Arguments() As String = Environment.GetCommandLineArgs()
+
+        Dim NewArgStr As String = ""
+        For Each ArgStr As String In Arguments
+            If ArgStr.ToUpper <> "SECUREDESKTOP" Then NewArgStr += ArgStr + " "
+        Next
+        If UseSecDesktop Then
+            info.Arguments = "SECUREDESKTOP " + NewArgStr
+        Else
+            info.Arguments = NewArgStr
+        End If
 
         Try
             Process.Start(info)

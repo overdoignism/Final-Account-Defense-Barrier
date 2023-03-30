@@ -2,6 +2,7 @@
 'Copyright (c) 2023 overdoingism Labs.
 'https://github.com/overdoignism/Final-Account-Defense-Barrier
 
+Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Threading
@@ -62,11 +63,12 @@ Public Class FormMain
     Dim version As Version = Reflection.Assembly.GetEntryAssembly().GetName().Version
     Dim versionNumber As String = version.Major & "." & version.Minor & "." & version.Build & "." & version.Revision
 
-    '0=New Account no edit, CurrentAccountPass = "" in init
-    '1=Old File Read, not decrypt
-    '2=Old File Read, decrypted, CurrentAccountPass usable, Not edit
-    '3=Edited
     Dim discontinue As Boolean
+    Dim DbTester As New Windows.Forms.Timer()
+
+    <DllImport("ntdll.dll", SetLastError:=True)>
+    Private Shared Function NtQueryInformationProcess(processHandle As IntPtr, processInformationClass As Integer, ByRef processInformation As IntPtr, processInformationLength As Integer, ByRef returnLength As Integer) As Integer
+    End Function
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -229,8 +231,29 @@ Public Class FormMain
         LabelBy.Text = "▎ By overdoingism Lab."
         LABVER.Text = "▎ " + TextStrs(42) + " " + versionNumber
 
+        DbTester.Interval = 1000
+        DbTester.Enabled = True
+        AddHandler DbTester.Tick, AddressOf Timer2_Tick
 
     End Sub
+
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs)
+
+#If Not DEBUG Then
+        If IsDebugged() Then
+            DbTester.Enabled = False
+            MSGBOXNEW(TextStrs(99), MsgBoxStyle.Critical, TextStrs(100), Me, PictureGray)
+        End If
+#End If
+
+    End Sub
+
+    Public Function IsDebugged() As Boolean
+        Dim isRemoteDebuggerPresent As IntPtr = IntPtr.Zero
+        Dim returnLength As Integer
+        NtQueryInformationProcess(System.Diagnostics.Process.GetCurrentProcess().Handle, 7, isRemoteDebuggerPresent, Marshal.SizeOf(isRemoteDebuggerPresent), returnLength)
+        Return isRemoteDebuggerPresent <> IntPtr.Zero
+    End Function
 
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
 
@@ -864,7 +887,6 @@ Public Class FormMain
         PictureGray.Visible = False
         PictureGray.SendToBack()
         My.Application.DoEvents()
-
 
         Select Case DR
             Case DialogResult.OK
@@ -1648,9 +1670,7 @@ Public Class FormMain
 
     Private Sub ButtonLaunch_Click(sender As Object, e As EventArgs) Handles ButtonLaunch.Click
 
-        If TextBoxURL.Text = "" Then
-            Exit Sub
-        End If
+        If TextBoxURL.Text = "" Then Exit Sub
 
         Try
             Process.Start(TextBoxURL.Text)
@@ -2009,7 +2029,7 @@ Public Class FormMain
                 End If
                 GoCorrectPos()
             Else
-                    NowUPorDW = 3
+                NowUPorDW = 3
                 ListBox1.TopIndex += LB_Ration
                 GoCorrectPos()
             End If
