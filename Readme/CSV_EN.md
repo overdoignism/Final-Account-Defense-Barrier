@@ -22,13 +22,14 @@
 * The notes2 field name can be "NOTES2".
 * The registered email and phone field name can be "REGDATA".
 
-### For the rest, please follow the standard CSV format specification.
+### Attenions
 
-1. The title, username and password fields are essential, otherwise it will be judged as a reading failure.
-2. If there is an empty account title, it will be saved as "(?)".
-3. This program does not support multi-line text, line breaks will be converted to ",".
-4. Fields not available in this program will not be entered.
-5. When importing CSV, only new accounts will be generated. Existing data will not be replaced or updated. Please note.
+1. Please follow the standard CSV format specification.
+2. The title, username and password fields are essential, otherwise it will be judged as a reading failure.
+3. If there is an empty account title, it will be saved as "(?)".
+4. This program does not support multi-line text, line breaks will be converted to ",".
+5. Fields not available in this program will not be entered.
+6. When importing CSV, only new accounts will be generated. Existing data will not be replaced or updated.
 
 ## CSV Export
 
