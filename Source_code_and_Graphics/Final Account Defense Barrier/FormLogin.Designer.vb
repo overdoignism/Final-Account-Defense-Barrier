@@ -133,9 +133,9 @@ Partial Class FormLogin
         Me.PictureBoxGPUS.BackColor = System.Drawing.Color.Black
         Me.PictureBoxGPUS.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBoxGPUS.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.USING_SYMBOL_ON
-        Me.PictureBoxGPUS.Location = New System.Drawing.Point(509, 508)
+        Me.PictureBoxGPUS.Location = New System.Drawing.Point(420, 543)
         Me.PictureBoxGPUS.Name = "PictureBoxGPUS"
-        Me.PictureBoxGPUS.Size = New System.Drawing.Size(92, 57)
+        Me.PictureBoxGPUS.Size = New System.Drawing.Size(76, 47)
         Me.PictureBoxGPUS.TabIndex = 87
         Me.PictureBoxGPUS.TabStop = False
         Me.PictureBoxGPUS.Visible = False
@@ -145,7 +145,7 @@ Partial Class FormLogin
         Me.ButtonGenPwd.BackColor = System.Drawing.Color.Black
         Me.ButtonGenPwd.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ButtonGenPwd.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_genpwd
-        Me.ButtonGenPwd.Location = New System.Drawing.Point(509, 573)
+        Me.ButtonGenPwd.Location = New System.Drawing.Point(403, 587)
         Me.ButtonGenPwd.Name = "ButtonGenPwd"
         Me.ButtonGenPwd.Size = New System.Drawing.Size(112, 61)
         Me.ButtonGenPwd.TabIndex = 86
@@ -222,7 +222,7 @@ Partial Class FormLogin
         '
         Me.PictureBoxRUNAS.BackColor = System.Drawing.Color.Black
         Me.PictureBoxRUNAS.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBoxRUNAS.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.RUN_AS_ADMIN_OFF
+        Me.PictureBoxRUNAS.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.RUN_AS_ADMIN_ON
         Me.PictureBoxRUNAS.Location = New System.Drawing.Point(181, 607)
         Me.PictureBoxRUNAS.Name = "PictureBoxRUNAS"
         Me.PictureBoxRUNAS.Size = New System.Drawing.Size(125, 27)
@@ -233,7 +233,7 @@ Partial Class FormLogin
         '
         Me.PictureBoxSD.BackColor = System.Drawing.Color.Black
         Me.PictureBoxSD.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBoxSD.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SECURE_DESKTOP_OFF
+        Me.PictureBoxSD.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SECURE_DESKTOP_ON
         Me.PictureBoxSD.Location = New System.Drawing.Point(181, 573)
         Me.PictureBoxSD.Name = "PictureBoxSD"
         Me.PictureBoxSD.Size = New System.Drawing.Size(125, 27)
@@ -264,7 +264,6 @@ Partial Class FormLogin
         '
         'PictureBoxLogin
         '
-        Me.PictureBoxLogin.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.Title_LOGIN
         Me.PictureBoxLogin.Location = New System.Drawing.Point(0, 0)
         Me.PictureBoxLogin.Name = "PictureBoxLogin"
         Me.PictureBoxLogin.Size = New System.Drawing.Size(538, 717)

@@ -75,10 +75,14 @@ Public Class FormLogin
         Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
         ToolTip1.InitialDelay = 1
 
+        PictureBoxRUNAS.Image = RAA_OFF
+        PictureBoxSD.Image = SD_OFF
+
         Select Case WorkMode
 
             Case 0 ' Login Mode
 
+                PictureBoxLogin.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Title_LOGIN_PNG))
                 ButtonCancel.Image = My.Resources.Resource1.button_Final
                 ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
                 ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(4))
@@ -95,7 +99,7 @@ Public Class FormLogin
 
             Case 1, 3 ' 1= Transform 3= CSV export
 
-                PictureBoxLogin.Image = My.Resources.Resource1.Title_NORMAL
+                PictureBoxLogin.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Title_NORMAL_PNG))
                 ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
                 ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(4))
 
@@ -131,7 +135,7 @@ Public Class FormLogin
                 ButtonCancel.Visible = True
                 ButtonFin.Visible = False
 
-                PictureBoxLogin.Image = My.Resources.Resource1.Title_Password
+                PictureBoxLogin.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Title_Password_PNG))
                 Height = 346
                 PicCAP1.Top -= 201
                 ButtonOK.Top -= 201
@@ -146,8 +150,8 @@ Public Class FormLogin
                 ButtonGenPwd.Top = 265
                 ButtonGenPwd.Left = 277
 
-                PictureBoxGPUS.Left = 408
-                PictureBoxGPUS.Top = 267
+                PictureBoxGPUS.Left = 416
+                PictureBoxGPUS.Top = 272
                 PictureBoxGPUS.Visible = True
 
                 ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(34))
@@ -257,10 +261,12 @@ Public Class FormLogin
         Return isRemoteDebuggerPresent <> IntPtr.Zero
     End Function
 
-    Private Sub SecondSHA256Sub(ByRef Second_SHA256() As Byte)
+    Private Sub SecondSHA256Sub(ByRef Second_SHA256() As Byte, ByRef Prograss As Integer)
         Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
-        For SHA256Times As Integer = 1 To 1000000
-            Second_SHA256 = SHA256_Worker.ComputeHash(Second_SHA256)
+        For Prograss = 1 To 100
+            For SHA256Times As Integer = 1 To 10000
+                Second_SHA256 = SHA256_Worker.ComputeHash(Second_SHA256)
+            Next
         Next
     End Sub
 
@@ -276,7 +282,7 @@ Public Class FormLogin
     Private Sub GoNext(ByRef BigByte() As Byte, ItsaFile As Boolean)
 
         '=========
-        Dim FSalt As New FormHASH
+        Dim FKDF As New FormKDF
         MakeWindowsBlur(Me, PictureGray)
         Me.Enabled = False
         My.Application.DoEvents()
@@ -298,13 +304,13 @@ Public Class FormLogin
         End If
 
         'Dim PB_Value As Integer
-        Dim t1 As New Threading.Thread(Sub() SecondSHA256Sub(SecondSHA256))
-        Dim t2 As New Threading.Thread(Sub() MainSHA256Sub(Password_SHA256_As_Key, FSalt.Progass10))
+        Dim t1 As New Threading.Thread(Sub() SecondSHA256Sub(SecondSHA256, FKDF.Progass10R))
+        Dim t2 As New Threading.Thread(Sub() MainSHA256Sub(Password_SHA256_As_Key, FKDF.Progass10L))
         t1.Start()
         t2.Start()
 
-        FSalt.Opacity = Me.Opacity
-        FSalt.ShowDialog(Me)
+        FKDF.Opacity = Me.Opacity
+        FKDF.ShowDialog(Me)
 
         t1.Join()
         t2.Join()
@@ -314,7 +320,7 @@ Public Class FormLogin
         Dim TheEncLib As New Encode_Libs
 
         UnMakeWindowsBlur(PictureGray)
-        FSalt.Dispose()
+        FKDF.Dispose()
 
         '=====================================================================================
 
@@ -587,10 +593,13 @@ Public Class FormLogin
         End If
     End Sub
 
-    Dim SD_OFF As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_OFF)
+    'Dim SD_OFF As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_OFF)
     Dim SD_ON As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_ON)
-    Dim RAA_OFF As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_OFF)
+    'Dim RAA_OFF As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_OFF)
     Dim RAA_ON As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_ON)
+
+    Dim SD_OFF As Bitmap = Make_Button_Gray(My.Resources.Resource1.SECURE_DESKTOP_ON, -0.4F)
+    Dim RAA_OFF As Bitmap = Make_Button_Gray(My.Resources.Resource1.RUN_AS_ADMIN_ON, -0.4F)
 
     Private Sub PictureBoxSD_Click(sender As Object, e As EventArgs) Handles PictureBoxSD.Click
         If IsUseSD Then
@@ -621,11 +630,13 @@ Public Class FormLogin
         TextBoxPwdVerify2.Text = TextBoxPwd2.Text
     End Sub
 
+    Dim USING_SYMBOL_OFF As Bitmap = Make_Button_Gray(My.Resources.Resource1.USING_SYMBOL_ON, -0.4F)
+
     Private Sub PictureBoxGPUS_Click(sender As Object, e As EventArgs) Handles PictureBoxGPUS.Click
         If Not GP_Use_Symbol Then
             PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_ON
         Else
-            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_OFF
+            PictureBoxGPUS.Image = USING_SYMBOL_OFF
         End If
         GP_Use_Symbol = Not GP_Use_Symbol
     End Sub
@@ -733,12 +744,13 @@ Public Class FormLogin
 
     '================= Button visual work
 
-    Dim B_confirm_on As New Bitmap(My.Resources.Resource1.button_confirm_on)
-    Dim B_OpenF_on As New Bitmap(My.Resources.Resource1.button_OpenF_on)
-    Dim B_Final_on As New Bitmap(My.Resources.Resource1.button_Final_on)
-    Dim B_Cancel_on As New Bitmap(My.Resources.Resource1.button_Cancel_on)
-    Dim B_HELP_on As New Bitmap(My.Resources.Resource1.button_HELP_on)
-    Dim B_genpwd_on As New Bitmap(My.Resources.Resource1.button_genpwd_on)
+    Dim B_Logout_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_LOGOUT)
+    Dim B_Final_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Final)
+    Dim B_HELP_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_HELP)
+    Dim B_confirm_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_confirm)
+    Dim B_OpenF_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_OpenF)
+    Dim B_Cancel_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Cancel)
+    Dim B_genpwd_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_genpwd)
 
     Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
         ButtonOK.MouseEnter, ButtonFileOpen.MouseEnter, ButtonFin.MouseEnter, ButtonCancel.MouseEnter, ButtonHelp.MouseEnter,

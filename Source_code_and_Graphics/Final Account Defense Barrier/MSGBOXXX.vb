@@ -2,7 +2,11 @@
 'Copyright (c) 2023 overdoingism Labs.
 'https://github.com/overdoignism/Final-Account-Defense-Barrier
 
+
+
 Public Class MSGBOXXX
+
+    Dim B_CONF_DI As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_confirm)
 
     Private Sub TextBoxDELETE_TextChanged(sender As Object, e As EventArgs) Handles TextBoxDELETE.TextChanged
 
@@ -11,7 +15,7 @@ Public Class MSGBOXXX
             ButtonOK.Image = My.Resources.Resource1.button_confirm
         Else
             ButtonOK.Enabled = False
-            ButtonOK.Image = My.Resources.Resource1.button_confirm_dis
+            ButtonOK.Image = B_CONF_DI
         End If
 
     End Sub
@@ -53,10 +57,10 @@ Public Class MSGBOXXX
         Me.DialogResult = DialogResult.Cancel
     End Sub
 
-    Dim B_confirm_on As New Bitmap(My.Resources.Resource1.button_confirm_on)
-    Dim B_Cancel_on As New Bitmap(My.Resources.Resource1.button_Cancel_on)
-    Dim B_yes_on As New Bitmap(My.Resources.Resource1.button_yes_on)
-    Dim B_no_on As New Bitmap(My.Resources.Resource1.button_no_on)
+    Dim B_yes_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_yes)
+    Dim B_no_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_no)
+    Dim B_confirm_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_confirm)
+    Dim B_Cancel_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Cancel)
 
     Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
         ButtonOK.MouseEnter, ButtonCancel.MouseEnter, ButtonYes.MouseEnter,

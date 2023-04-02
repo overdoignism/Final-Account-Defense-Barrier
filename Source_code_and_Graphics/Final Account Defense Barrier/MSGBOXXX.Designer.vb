@@ -98,10 +98,9 @@ Partial Class MSGBOXXX
         '
         'LabelMSG
         '
-        Me.LabelMSG.BackColor = System.Drawing.Color.Black
+        Me.LabelMSG.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.LabelMSG.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelMSG.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LabelMSG.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.Message_OK_TXTB
         Me.LabelMSG.Location = New System.Drawing.Point(11, 90)
         Me.LabelMSG.Name = "LabelMSG"
         Me.LabelMSG.Size = New System.Drawing.Size(637, 233)
@@ -113,7 +112,6 @@ Partial Class MSGBOXXX
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.Black
         Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Default
-        Me.PictureBox1.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.Message_OK
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(659, 409)

@@ -103,6 +103,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Security" />
     <Reference Include="System.Security.Cryptography.ProtectedData, Version=7.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -149,10 +150,10 @@
     <Compile Include="FormMIT.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormHASH.Designer.vb">
-      <DependentUpon>FormHASH.vb</DependentUpon>
+    <Compile Include="FormKDF.Designer.vb">
+      <DependentUpon>FormKDF.vb</DependentUpon>
     </Compile>
-    <Compile Include="FormHASH.vb">
+    <Compile Include="FormKDF.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Resource1.Designer.vb">
@@ -242,8 +243,8 @@
     <EmbeddedResource Include="FormMIT.resx">
       <DependentUpon>FormMIT.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormHASH.resx">
-      <DependentUpon>FormHASH.vb</DependentUpon>
+    <EmbeddedResource Include="FormKDF.resx">
+      <DependentUpon>FormKDF.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource1.resx">
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
@@ -271,6 +272,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="AllResource\Load as Bin\BIP39WORD.zip" />
+    <None Include="AllResource\Load as Bin\Message_CRI_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Message_CRI_TXTB_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Message_OK_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Message_OK_TXTB_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Message_VRF_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Message_VRF_TXTB_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\MIT_DOC_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Title_LOGIN_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Title_NORMAL_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Title_Password_PNG.Bin" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -286,8 +298,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AllResource\SECURE DESKTOP ON.png" />
-    <None Include="AllResource\SECURE DESKTOP OFF.png" />
-    <None Include="AllResource\RUN AS ADMIN OFF.png" />
     <None Include="AllResource\RUN AS ADMIN ON.png" />
     <None Include="AllResource\PASSWORD SHOW.png" />
     <None Include="AllResource\PASSWORD HIDE.png" />
@@ -297,29 +307,18 @@
     <None Include="AllResource\button_RESTART_On.png" />
     <None Include="AllResource\button_Cancel.png" />
     <None Include="AllResource\button_Final.png" />
-    <None Include="AllResource\Title_NORMAL.png" />
-    <None Include="AllResource\USING_SYMBOL_OFF.png" />
     <None Include="AllResource\USING_SYMBOL_ON.png" />
-    <None Include="AllResource\Title_Password.png" />
     <None Include="AllResource\button_view.png" />
-    <None Include="AllResource\button_view_on.png" />
     <None Include="AllResource\main.png" />
     <None Include="AllResource\TOPSEC.png" />
     <None Include="AllResource\button_copy_small.png" />
     <None Include="AllResource\button_view_small.png" />
-    <None Include="AllResource\button_view_small_on.png" />
     <None Include="AllResource\button_L_delete.png" />
     <None Include="AllResource\button_L_fileInfo.png" />
     <None Include="AllResource\button_L_moveDWN.png" />
     <None Include="AllResource\button_L_moveUP.png" />
     <None Include="AllResource\button_L_save.png" />
     <None Include="AllResource\button_L_transKEY.png" />
-    <None Include="AllResource\button_L_delete_DI.png" />
-    <None Include="AllResource\button_L_fileInfo_DI.png" />
-    <None Include="AllResource\button_L_moveDWN_DI.png" />
-    <None Include="AllResource\button_L_moveUP_DI.png" />
-    <None Include="AllResource\button_L_save_DI.png" />
-    <None Include="AllResource\button_L_transKEY_DI.png" />
     <None Include="AllResource\button_CATMAN.png" />
     <None Include="AllResource\EPTSLOT_246.png" />
     <None Include="AllResource\EPTSLOT_313.png" />
@@ -341,30 +340,11 @@
     <None Include="AllResource\DIGI_Y_9.png" />
     <None Include="AllResource\TimerID_ACT.png" />
     <None Include="AllResource\TimerID_INACT.png" />
-    <None Include="AllResource\Message_CRI.png" />
-    <None Include="AllResource\Message_CRI_TXTB.png" />
-    <None Include="AllResource\Message_VRF.png" />
-    <None Include="AllResource\Message_VRF_TXTB.png" />
-    <None Include="AllResource\Message_OK.png" />
-    <None Include="AllResource\Message_OK_TXTB.png" />
-    <None Include="AllResource\button_confirm_dis.png" />
     <None Include="AllResource\button_confirm.png" />
     <None Include="AllResource\settings.png" />
     <None Include="AllResource\button_CAT_DEL.png" />
     <None Include="AllResource\button_CAT_TRANS.png" />
-    <None Include="AllResource\hash_00.png" />
-    <None Include="AllResource\hash_01.png" />
-    <None Include="AllResource\hash_02.png" />
-    <None Include="AllResource\hash_03.png" />
-    <None Include="AllResource\hash_04.png" />
-    <None Include="AllResource\hash_05.png" />
-    <None Include="AllResource\hash_06.png" />
-    <None Include="AllResource\hash_07.png" />
-    <None Include="AllResource\hash_08.png" />
-    <None Include="AllResource\hash_09.png" />
-    <None Include="AllResource\hash_10.png" />
     <None Include="AllResource\button_CATMAN_on.png" />
-    <None Include="AllResource\Title_LOGIN.png" />
     <None Include="AllResource\File_expo.png" />
     <None Include="AllResource\button_genpwd.png" />
     <None Include="AllResource\mit_Btn.png" />
@@ -381,35 +361,10 @@
     <None Include="AllResource\SCB_S_DW.png" />
     <None Include="AllResource\SCB_S_UP.png" />
     <None Include="AllResource\SCB_BARV.png" />
-    <None Include="AllResource\button_LOGOUT_on.png" />
-    <None Include="AllResource\button_no_on.png" />
-    <None Include="AllResource\button_OpenF_on.png" />
-    <None Include="AllResource\button_yes_on.png" />
-    <None Include="AllResource\button_cancel_on.png" />
-    <None Include="AllResource\button_confirm_on.png" />
-    <None Include="AllResource\button_Final_on.png" />
-    <None Include="AllResource\button_genpwd_on.png" />
-    <None Include="AllResource\button_HELP_on.png" />
-    <None Include="AllResource\button_OpenF_DI.png" />
-    <None Include="AllResource\button_view_small_Son_on.png" />
-    <None Include="AllResource\button_view_Son_on.png" />
-    <None Include="AllResource\button_COPY_on.png" />
-    <None Include="AllResource\button_copy_small_on.png" />
-    <None Include="AllResource\button_Launch_on.png" />
     <None Include="AllResource\button_view_Son.png" />
-    <None Include="AllResource\button_L_delete_on.png" />
-    <None Include="AllResource\button_L_fileInfo_on.png" />
-    <None Include="AllResource\button_L_moveDWN_on.png" />
-    <None Include="AllResource\button_L_moveUP_on.png" />
-    <None Include="AllResource\button_L_save_on.png" />
-    <None Include="AllResource\button_L_transKEY_on.png" />
-    <None Include="AllResource\Doc01.png" />
-    <None Include="AllResource\Doc02.png" />
-    <None Include="AllResource\Doc03.png" />
     <None Include="AllResource\Arr_Left.png" />
     <None Include="AllResource\Arr_Right.png" />
     <None Include="AllResource\exit_Pic.png" />
-    <None Include="AllResource\CSV_Waiting.png" />
     <None Include="AllResource\button_CAT_CSVIM.png" />
     <None Include="AllResource\button_CAT_CSVIM_on.png" />
     <None Include="AllResource\button_CAT_DEL_on.png" />
@@ -418,6 +373,13 @@
     <None Include="AllResource\button_CAT_CSVEX_on.png" />
     <None Include="AllResource\CSV_IMP.png" />
     <None Include="AllResource\CSV_EXP.png" />
+    <None Include="AllResource\PWD_KDF.png" />
+    <None Include="AllResource\PWD_KDF_LINE.png" />
+    <None Include="AllResource\PWD_KDF_R.png" />
+    <None Include="AllResource\PWD_KDF_C.png" />
+    <None Include="AllResource\PWD_KDF_PASS.png" />
+    <None Include="AllResource\CSV_Waiting.png" />
+    <None Include="AllResource\button_view_small_Son.png" />
     <Content Include="icon_ALL.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -22,21 +22,12 @@ Partial Class FormCSVWorking
     '請勿使用程式碼編輯器進行修改。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ProgLab = New System.Windows.Forms.Label()
         Me.PictureMode = New System.Windows.Forms.PictureBox()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         CType(Me.PictureMode, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.CSV_Waiting
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(452, 142)
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
         '
         'ProgLab
         '
@@ -54,13 +45,22 @@ Partial Class FormCSVWorking
         'PictureMode
         '
         Me.PictureMode.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.CSV_IMP
-        Me.PictureMode.Location = New System.Drawing.Point(298, 46)
+        Me.PictureMode.Location = New System.Drawing.Point(306, 52)
         Me.PictureMode.Name = "PictureMode"
-        Me.PictureMode.Size = New System.Drawing.Size(147, 53)
+        Me.PictureMode.Size = New System.Drawing.Size(135, 41)
         Me.PictureMode.TabIndex = 31
         Me.PictureMode.TabStop = False
         '
-        'CSV_Working
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.CSV_Waiting
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(452, 142)
+        Me.PictureBox1.TabIndex = 0
+        Me.PictureBox1.TabStop = False
+        '
+        'FormCSVWorking
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -72,14 +72,14 @@ Partial Class FormCSVWorking
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "CSV_Working"
+        Me.Name = "FormCSVWorking"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "CSV_Working"
         Me.TopMost = True
         Me.TransparencyKey = System.Drawing.Color.Lime
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureMode, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

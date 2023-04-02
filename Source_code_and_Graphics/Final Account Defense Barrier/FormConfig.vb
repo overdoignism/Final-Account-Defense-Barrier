@@ -122,8 +122,9 @@ Public Class FormConfig
 
     '================================ Button visual work ================
 
-    Dim B_confirm_on As New Bitmap(My.Resources.Resource1.button_confirm_on)
-    Dim B_Cancel_on As New Bitmap(My.Resources.Resource1.button_Cancel_on)
+    Dim B_confirm_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_confirm)
+    Dim B_Cancel_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Cancel)
+
     Dim B_CAT_DEL_on As New Bitmap(My.Resources.Resource1.button_CAT_DEL_on)
     Dim B_CAT_TRA_on As New Bitmap(My.Resources.Resource1.button_CAT_TRANS_on)
     Dim B_CAT_CSVIM_on As New Bitmap(My.Resources.Resource1.button_CAT_CSVIM_on)

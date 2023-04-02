@@ -14,6 +14,7 @@
 *   Love simple things, old-fashioned technology, traditional technology, classic technology.
 *   Love Evangelion (with its style).
 *   Afraid that the popular manager has become the target of hackers, and want to use the unpopular manager.
+*   The program is so small that you can even put it on a floppy disk if you want.
 
 ## Operation Guide
 

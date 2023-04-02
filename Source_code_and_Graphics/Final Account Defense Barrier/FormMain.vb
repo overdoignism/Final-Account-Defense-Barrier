@@ -34,12 +34,13 @@ Public Class FormMain
     Dim LBTN_MoveD_En As New Bitmap(My.Resources.Resource1.button_L_moveDWN)
     Dim LBTN_TKey_En As New Bitmap(My.Resources.Resource1.button_L_transKEY)
     Dim LBTN_FInfo_En As New Bitmap(My.Resources.Resource1.button_L_fileInfo)
-    Dim LBTN_Save_Di As New Bitmap(My.Resources.Resource1.button_L_save_DI)
-    Dim LBTN_Del_Di As New Bitmap(My.Resources.Resource1.button_L_delete_DI)
-    Dim LBTN_MoveU_Di As New Bitmap(My.Resources.Resource1.button_L_moveUP_DI)
-    Dim LBTN_MoveD_Di As New Bitmap(My.Resources.Resource1.button_L_moveDWN_DI)
-    Dim LBTN_TKey_Di As New Bitmap(My.Resources.Resource1.button_L_transKEY_DI)
-    Dim LBTN_FInfo_Di As New Bitmap(My.Resources.Resource1.button_L_fileInfo_DI)
+
+    Dim LBTN_Save_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_save)
+    Dim LBTN_Del_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_delete)
+    Dim LBTN_MoveU_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_moveUP)
+    Dim LBTN_MoveD_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_moveDWN)
+    Dim LBTN_TKey_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_transKEY)
+    Dim LBTN_FInfo_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_fileInfo)
 
     Public DIGI_NUM() As Bitmap = {My.Resources.Resource1.DIGI_Y_0, My.Resources.Resource1.DIGI_Y_1,
     My.Resources.Resource1.DIGI_Y_2, My.Resources.Resource1.DIGI_Y_3, My.Resources.Resource1.DIGI_Y_4,
@@ -1726,7 +1727,7 @@ Public Class FormMain
 
         If NowPassStatue > 1 Then
             Dim FPWDS As New SmallPWDShow
-            PictureBoxPwdVi.Image = My.Resources.Resource1.button_view_small_Son_on
+            PictureBoxPwdVi.Image = b_view_small_Son_on
             FPWDS.InputByte = CurrentAccountPass
             FPWDS.Width = 1
             FPWDS.Height = 1
@@ -2135,15 +2136,17 @@ Public Class FormMain
 
     '====================== Button Visual works =========================
 
-    Dim b_Logout_on As New Bitmap(My.Resources.Resource1.button_LOGOUT_on)
-    Dim b_Final_on As New Bitmap(My.Resources.Resource1.button_Final_on)
-    Dim b_HELP_on As New Bitmap(My.Resources.Resource1.button_HELP_on)
-    Dim b_Launch_on As New Bitmap(My.Resources.Resource1.button_Launch_on)
-    Dim b_COPY_on As New Bitmap(My.Resources.Resource1.button_COPY_on)
-    Dim b_view_small_on As New Bitmap(My.Resources.Resource1.button_view_small_on)
-    Dim b_copy_small_on As New Bitmap(My.Resources.Resource1.button_copy_small_on)
-    Dim b_view_on As New Bitmap(My.Resources.Resource1.button_view_on)
-    Dim b_view_Son_on As New Bitmap(My.Resources.Resource1.button_view_Son_on)
+    Dim b_Logout_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_LOGOUT)
+    Dim b_Final_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Final)
+    Dim b_HELP_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_HELP)
+    Dim b_Launch_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Launch)
+    Dim b_COPY_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_COPY)
+    Dim b_view_small_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_small)
+    Dim b_copy_small_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_copy_small)
+    Dim b_view_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view)
+    Dim b_view_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_Son, 1.1)
+    Dim b_view_small_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_small_Son, 1.1)
+
     Dim b_PictureBoxCATMAN_on As New Bitmap(My.Resources.Resource1.button_CATMAN_on)
 
     Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
@@ -2223,12 +2226,12 @@ Public Class FormMain
         End Select
     End Sub
 
-    Dim LBTN_Save_on As New Bitmap(My.Resources.Resource1.button_L_save_on)
-    Dim LBTN_delete_on As New Bitmap(My.Resources.Resource1.button_L_delete_on)
-    Dim LBTN_moveUP_on As New Bitmap(My.Resources.Resource1.button_L_moveUP_on)
-    Dim LBTN_moveDWN_on As New Bitmap(My.Resources.Resource1.button_L_moveDWN_on)
-    Dim LBTN_transKEY_on As New Bitmap(My.Resources.Resource1.button_L_transKEY_on)
-    Dim LBTN_fileInfo_on As New Bitmap(My.Resources.Resource1.button_L_fileInfo_on)
+    Dim LBTN_Save_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_L_save, 1.2)
+    Dim LBTN_delete_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_L_delete, 1.2)
+    Dim LBTN_moveUP_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_L_moveUP, 1.2)
+    Dim LBTN_moveDWN_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_L_moveDWN, 1.2)
+    Dim LBTN_transKEY_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_L_transKEY, 1.2)
+    Dim LBTN_fileInfo_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_L_fileInfo, 1.2)
 
     Private Sub L_Mouse_Enter(sender As Object, e As EventArgs) Handles _
         ButtonSave.MouseEnter, ButtonDelete.MouseEnter, ButtonGoUP.MouseEnter, ButtonGoDown.MouseEnter,

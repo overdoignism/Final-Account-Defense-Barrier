@@ -86,7 +86,7 @@ Partial Class FormFileExplorer
         '
         Me.ButtonFileOpen.BackColor = System.Drawing.Color.Black
         Me.ButtonFileOpen.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonFileOpen.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_OpenF_DI
+        Me.ButtonFileOpen.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_OpenF
         Me.ButtonFileOpen.Location = New System.Drawing.Point(22, 466)
         Me.ButtonFileOpen.Name = "ButtonFileOpen"
         Me.ButtonFileOpen.Size = New System.Drawing.Size(112, 61)

@@ -59,7 +59,7 @@ Public Class FormFileExplorer
 
         ListBoxFiles.Items.Clear()
         ButtonFileOpen.Enabled = False
-        ButtonFileOpen.Image = My.Resources.Resource1.button_OpenF_DI
+        ButtonFileOpen.Image = B_OpenF_DI
 
         If New_Patch.Length > 3 Then
             ListBoxFiles.Items.Add(UpperDir)
@@ -168,7 +168,7 @@ Public Class FormFileExplorer
 
         If ListBoxFiles.SelectedIndex = -1 Then
             ButtonFileOpen.Enabled = False
-            ButtonFileOpen.Image = My.Resources.Resource1.button_OpenF_DI
+            ButtonFileOpen.Image = B_OpenF_DI
         Else
             ButtonFileOpen.Enabled = True
             ButtonFileOpen.Image = My.Resources.Resource1.button_OpenF
@@ -424,9 +424,9 @@ Public Class FormFileExplorer
     End Sub
 
     '=============== Button Visual Work =========================
-
-    Dim B_OpenF_on As New Bitmap(My.Resources.Resource1.button_OpenF_on)
-    Dim B_Cancel_on As New Bitmap(My.Resources.Resource1.button_Cancel_on)
+    Dim B_OpenF As New Bitmap(My.Resources.Resource1.button_OpenF)
+    Dim B_OpenF_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_OpenF)
+    Dim B_Cancel_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Cancel)
 
     Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
         ButtonFileOpen.MouseEnter, ButtonCancel.MouseEnter
@@ -440,7 +440,7 @@ Public Class FormFileExplorer
 
     End Sub
 
-    Dim B_OpenF_DI As New Bitmap(My.Resources.Resource1.button_OpenF_DI)
+    Dim B_OpenF_DI As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_OpenF)
     Dim B_Cancel As New Bitmap(My.Resources.Resource1.button_Cancel)
 
     Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles _
@@ -449,7 +449,7 @@ Public Class FormFileExplorer
         Select Case sender.Name
             Case "ButtonFileOpen"
                 If ButtonFileOpen.Enabled = True Then
-                    ButtonFileOpen.Image = B_OpenF_on
+                    ButtonFileOpen.Image = B_OpenF
                 Else
                     ButtonFileOpen.Image = B_OpenF_DI
                 End If

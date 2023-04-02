@@ -1,6 +1,6 @@
 ## Final Account Defense Barrier 最終アカウント防御障壁 V1.1
 
-v1.1.8489.40280
+v1.1.8492.32159
 
 (繁中) 一個福音戰士風格的帳號密碼管理程式，基於Windows平台。  
 (English) An Evangelion style account management program, based on the Windows platform.  

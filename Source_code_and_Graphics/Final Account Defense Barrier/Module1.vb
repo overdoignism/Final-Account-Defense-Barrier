@@ -264,6 +264,14 @@ Module Module1
 
     End Function
 
+    Dim MSGBX_IMG_OK As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Message_OK_PNG)))
+    Dim MSGBX_IMG_VRF As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Message_VRF_PNG)))
+    Dim MSGBX_IMG_CRI As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Message_CRI_PNG)))
+
+    Dim MSGBX_IMG_OK_TXTB As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Message_OK_TXTB_PNG)))
+    Dim MSGBX_IMG_VRF_TXTB As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Message_VRF_TXTB_PNG)))
+    Dim MSGBX_IMG_CRI_TXTB As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Message_CRI_TXTB_PNG)))
+
     Public Function MSGBOXNEW(MessageStr As String, BoxType As MsgBoxStyle, BoxTitle As String,
                               ByRef FirerForm As Form, ByRef FFPicBox As PictureBox) As DialogResult
 
@@ -274,28 +282,30 @@ Module Module1
         Select Case BoxType
             Case MsgBoxStyle.OkOnly
                 NeoMSGBOX.ButtonOK.Visible = True
+                NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_OK
+                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_OK_TXTB
             Case MsgBoxStyle.OkCancel, MsgBoxStyle.YesNo
                 NeoMSGBOX.ButtonYes.Visible = True
                 NeoMSGBOX.ButtonNo.Visible = True
-                NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_VRF
-                NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_VRF_TXTB
+                NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_VRF
+                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_VRF_TXTB
             Case MsgBoxStyle.Exclamation
                 NeoMSGBOX.ButtonOK.Visible = True
-                NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_VRF
-                NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_VRF_TXTB
+                NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_VRF
+                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_VRF_TXTB
             Case MsgBoxStyle.Critical
                 NeoMSGBOX.ButtonOK.Visible = True
-                NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_CRI
-                NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_CRI_TXTB
+                NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_CRI
+                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_CRI_TXTB
             Case 65535
                 NeoMSGBOX.ButtonOK.Visible = True
                 NeoMSGBOX.ButtonOK.Enabled = False
-                NeoMSGBOX.ButtonOK.Image = My.Resources.Resource1.button_confirm_dis
+                NeoMSGBOX.ButtonOK.Image = Make_Button_Gray(My.Resources.Resource1.button_confirm)
                 NeoMSGBOX.ButtonOK.Location = New Point(142, NeoMSGBOX.ButtonOK.Location.Y)
                 NeoMSGBOX.ButtonCancel.Visible = True
                 NeoMSGBOX.TextBoxDELETE.Visible = True
-                NeoMSGBOX.PictureBox1.Image = My.Resources.Resource1.Message_VRF
-                NeoMSGBOX.LabelMSG.Image = My.Resources.Resource1.Message_VRF_TXTB
+                NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_VRF
+                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_VRF_TXTB
         End Select
 
         NeoMSGBOX.LabelMSG.Text = MessageStr
@@ -344,16 +354,31 @@ Module Module1
     End Sub
 
     Public Sub Load_BIP39_Word()
-        BIP39_Word(0).BIP39Word = My.Resources.Resource1.BIP39_ENG.Split(",")
-        BIP39_Word(1).BIP39Word = My.Resources.Resource1.BIP39_CZ.Split(",")
-        BIP39_Word(2).BIP39Word = My.Resources.Resource1.BIP39_FR.Split(",")
-        BIP39_Word(3).BIP39Word = My.Resources.Resource1.BIP39_ITA.Split(",")
-        BIP39_Word(4).BIP39Word = My.Resources.Resource1.BIP39_JP.Split(",")
-        BIP39_Word(5).BIP39Word = My.Resources.Resource1.BIP39_KOR.Split(",")
-        BIP39_Word(6).BIP39Word = My.Resources.Resource1.BIP39_POR.Split(",")
-        BIP39_Word(7).BIP39Word = My.Resources.Resource1.BIP39_SPA.Split(",")
-        BIP39_Word(8).BIP39Word = My.Resources.Resource1.BIP39_ZHCN.Split(",")
-        BIP39_Word(9).BIP39Word = My.Resources.Resource1.BIP39_ZHTW.Split(",")
+
+        Dim memoryStream As New IO.MemoryStream()
+        Dim BIP39Text As String = ""
+
+        Using archive As New System.IO.Compression.ZipArchive(New IO.MemoryStream(My.Resources.Resource1.BIP39WORD))
+            For Each entry As System.IO.Compression.ZipArchiveEntry In archive.Entries
+                If entry.Name = "BIP39WORD.txt" Then
+                    Using entryStream As IO.Stream = entry.Open()
+                        entryStream.CopyTo(memoryStream)
+                        memoryStream.Position = 0
+                        Dim sr As New IO.StreamReader(memoryStream, True)
+                        BIP39Text = sr.ReadToEnd()
+                    End Using
+                    Exit For
+                End If
+            Next
+        End Using
+
+        BIP39Text = Replace(BIP39Text, vbCrLf, vbCr)
+        Dim BIP39Text_Arr() As String = BIP39Text.Split(vbCr)
+
+        For IDX01 As Integer = 0 To 9
+            BIP39_Word(IDX01).BIP39Word = BIP39Text_Arr(IDX01).Split(",")
+        Next
+
     End Sub
 
     Public Function GetOkFilename(TheFilename As String) As String
@@ -687,6 +712,64 @@ Module Module1
         WhatImgToPut.SendToBack()
         My.Application.DoEvents()
     End Sub
+
+    Public Function Make_Button_brighter(ByRef Orig_Bitmap As Bitmap, Optional BrightPN As Single = 1.3) As Bitmap
+
+        ' 建立目標圖像的副本
+        Dim targetBitmap As New Bitmap(Orig_Bitmap.Width, Orig_Bitmap.Height)
+
+        ' 創建ColorMatrix，用於調整圖像亮度
+        Dim brightenMatrix As New Imaging.ColorMatrix(New Single()() _
+            {New Single() {BrightPN, 0, 0, 0, 0},
+             New Single() {0, BrightPN, 0, 0, 0},
+             New Single() {0, 0, BrightPN, 0, 0},
+             New Single() {0, 0, 0, 1, 0},
+             New Single() {0.12, 0.12, 0.12, 0, 1}})
+
+        ' 創建ImageAttributes對象，並設定ColorMatrix
+        Dim imageAttributes As New Imaging.ImageAttributes()
+        imageAttributes.SetColorMatrix(brightenMatrix)
+
+        ' 創建Graphics對象，並使用ImageAttributes繪製目標圖像
+        Dim graphics As Graphics = Graphics.FromImage(targetBitmap)
+        graphics.DrawImage(Orig_Bitmap, New Rectangle(0, 0, Orig_Bitmap.Width, Orig_Bitmap.Height), 0, 0, Orig_Bitmap.Width, Orig_Bitmap.Height, GraphicsUnit.Pixel, imageAttributes)
+
+        ' 釋放資源
+        graphics.Dispose()
+
+        ' 顯示調整後的圖像
+        Return targetBitmap
+
+    End Function
+    Public Function Make_Button_Gray(ByRef Orig_Bitmap As Bitmap, Optional LowDimm As Single = 0) As Bitmap
+
+        ' 建立目標圖像的副本
+        Dim targetBitmap As New Bitmap(Orig_Bitmap.Width, Orig_Bitmap.Height)
+
+        ' 創建ColorMatrix，用於調整圖像亮度
+        Dim brightenMatrix As New Imaging.ColorMatrix(New Single()() _
+            {New Single() {0.3F, 0.3F, 0.3F, 0, 0},
+             New Single() {0.59F, 0.59F, 0.59F, 0, 0},
+             New Single() {0.11F, 0.11F, 0.11F, 0, 0},
+             New Single() {0, 0, 0, 1, 0},
+             New Single() {LowDimm, LowDimm, LowDimm, 0, 1}})
+
+        ' 創建ImageAttributes對象，並設定ColorMatrix
+        Dim imageAttributes As New Imaging.ImageAttributes()
+        imageAttributes.SetColorMatrix(brightenMatrix)
+
+        ' 創建Graphics對象，並使用ImageAttributes繪製目標圖像
+        Dim graphics As Graphics = Graphics.FromImage(targetBitmap)
+        graphics.DrawImage(Orig_Bitmap, New Rectangle(0, 0, Orig_Bitmap.Width, Orig_Bitmap.Height), 0, 0, Orig_Bitmap.Width, Orig_Bitmap.Height, GraphicsUnit.Pixel, imageAttributes)
+
+        ' 釋放資源
+        graphics.Dispose()
+
+        ' 顯示調整後的圖像
+        Return targetBitmap
+
+    End Function
+
 
 End Module
 

@@ -27,11 +27,13 @@ Partial Class FormMIT
         Me.DocLeft = New System.Windows.Forms.PictureBox()
         Me.DocRight = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         CType(Me.PictureMIT, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureLICENSE, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DocLeft, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DocRight, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureMIT
@@ -45,10 +47,9 @@ Partial Class FormMIT
         '
         'PictureLICENSE
         '
-        Me.PictureLICENSE.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.Doc01
-        Me.PictureLICENSE.Location = New System.Drawing.Point(14, 44)
+        Me.PictureLICENSE.Location = New System.Drawing.Point(0, 0)
         Me.PictureLICENSE.Name = "PictureLICENSE"
-        Me.PictureLICENSE.Size = New System.Drawing.Size(423, 470)
+        Me.PictureLICENSE.Size = New System.Drawing.Size(1269, 470)
         Me.PictureLICENSE.TabIndex = 84
         Me.PictureLICENSE.TabStop = False
         '
@@ -83,6 +84,14 @@ Partial Class FormMIT
         Me.PictureBox1.TabIndex = 87
         Me.PictureBox1.TabStop = False
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.PictureLICENSE)
+        Me.Panel1.Location = New System.Drawing.Point(14, 44)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(423, 470)
+        Me.Panel1.TabIndex = 88
+        '
         'FormMIT
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -93,7 +102,7 @@ Partial Class FormMIT
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.DocRight)
         Me.Controls.Add(Me.DocLeft)
-        Me.Controls.Add(Me.PictureLICENSE)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.PictureMIT)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
@@ -107,6 +116,7 @@ Partial Class FormMIT
         CType(Me.DocLeft, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DocRight, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -115,4 +125,5 @@ Partial Class FormMIT
     Friend WithEvents DocLeft As PictureBox
     Friend WithEvents DocRight As PictureBox
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents Panel1 As Panel
 End Class
