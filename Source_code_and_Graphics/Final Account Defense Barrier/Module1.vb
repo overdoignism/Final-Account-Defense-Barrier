@@ -546,9 +546,7 @@ Module Module1
     Public Function GetThreadDesktop(dwThreadId As Integer) As IntPtr
     End Function
 
-    <DllImport("kernel32.dll")>
-    Public Function GetCurrentThreadId() As Integer
-    End Function
+    '<DllImport("kernel32.dll")> Public Function GetCurrentThreadId() As Integer    End Function
 
     Enum DESKTOP_ACCESS As UInteger
         DESKTOP_NONE = 0
@@ -594,8 +592,8 @@ Module Module1
         End Select
 
         If FirerForm Is Nothing Then
-
-            Dim Old_hDesktop As IntPtr = GetThreadDesktop(GetCurrentThreadId())
+            'GetCurrentThreadId()
+            Dim Old_hDesktop As IntPtr = GetThreadDesktop(Process.GetCurrentProcess().Threads(0).Id)
             Dim New_hDesktop As IntPtr = CreateDesktop(
                System.Text.Encoding.Unicode.GetString(Security.Cryptography.ProtectedData.Unprotect(
                SeuDeskName, Nothing, DataProtectionScope.CurrentUser)),
@@ -669,10 +667,6 @@ Module Module1
     End Function
 
     '================ For window grayed out visual ==============
-
-    Private Declare Function BitBlt Lib "gdi32" (ByVal hdcDest As IntPtr, ByVal nXDest As Integer,
-    ByVal nYDest As Integer, ByVal nWidth As Integer, ByVal nHeight As Integer, ByVal hdcSrc As IntPtr,
-    ByVal nXSrc As Integer, ByVal nYSrc As Integer, ByVal dwRop As Integer) As Boolean
 
     Public Sub MakeWindowsBlur(ByRef WhatForm As Form, ByRef WhatImgToPut As PictureBox)
 

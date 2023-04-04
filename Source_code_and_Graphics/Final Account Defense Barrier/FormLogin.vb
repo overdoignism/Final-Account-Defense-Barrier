@@ -262,6 +262,7 @@ Public Class FormLogin
     End Function
 
     Private Sub SecondSHA256Sub(ByRef Second_SHA256() As Byte, ByRef Prograss As Integer)
+        Threading.Thread.Sleep(20)
         Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
         For Prograss = 1 To 100
             For SHA256Times As Integer = 1 To 10000
@@ -271,6 +272,7 @@ Public Class FormLogin
     End Sub
 
     Private Sub MainSHA256Sub(ByRef First_SHA256() As Byte, ByRef Prograss As Integer)
+        Threading.Thread.Sleep(20)
         Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
         For Prograss = 1 To 100
             For IDX01 As Integer = 1 To 10000
@@ -283,6 +285,7 @@ Public Class FormLogin
 
         '=========
         Dim FKDF As New FormKDF
+        FKDF.Opacity = Me.Opacity
         MakeWindowsBlur(Me, PictureGray)
         Me.Enabled = False
         My.Application.DoEvents()
@@ -303,13 +306,10 @@ Public Class FormLogin
             Array.Copy(This_Time_Salt, 0, SecondSHA256, SecondSHA256.Length - This_Time_Salt.Length, This_Time_Salt.Length)
         End If
 
-        'Dim PB_Value As Integer
         Dim t1 As New Threading.Thread(Sub() SecondSHA256Sub(SecondSHA256, FKDF.Progass10R))
         Dim t2 As New Threading.Thread(Sub() MainSHA256Sub(Password_SHA256_As_Key, FKDF.Progass10L))
         t1.Start()
         t2.Start()
-
-        FKDF.Opacity = Me.Opacity
         FKDF.ShowDialog(Me)
 
         t1.Join()
@@ -593,9 +593,7 @@ Public Class FormLogin
         End If
     End Sub
 
-    'Dim SD_OFF As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_OFF)
     Dim SD_ON As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_ON)
-    'Dim RAA_OFF As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_OFF)
     Dim RAA_ON As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_ON)
 
     Dim SD_OFF As Bitmap = Make_Button_Gray(My.Resources.Resource1.SECURE_DESKTOP_ON, -0.4F)
@@ -686,7 +684,9 @@ Public Class FormLogin
     Public CAPon As New Bitmap(My.Resources.Resource1.caps_lock_on)
     Public CAPoff As New Bitmap(My.Resources.Resource1.caps_lock_off)
 
-    Private Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Integer, ByVal dwExtraInfo As Integer)
+    <DllImport("user32.dll")>
+    Private Shared Sub keybd_event(ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As UInteger, ByVal dwExtraInfo As UInteger)
+    End Sub
 
     Private Sub PicCAP1_Click(sender As Object, e As EventArgs) Handles PicCAP1.Click
         Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 1, 0)

@@ -66,7 +66,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon_ALL.ico</ApplicationIcon>
+    <ApplicationIcon>fadb4.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -97,6 +97,26 @@
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>45103830FEF7B731CA9C81278B22841D44705849</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Final Account Defense Barrier_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestTimestampUrl>
+    </ManifestTimestampUrl>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -162,12 +182,6 @@
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
     <Compile Include="WhyMSDoesNotDoHisJob.vb" />
-    <Compile Include="SmallPWDShow.Designer.vb">
-      <DependentUpon>SmallPWDShow.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SmallPWDShow.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="MSGBOXXX.Designer.vb">
       <DependentUpon>MSGBOXXX.vb</DependentUpon>
     </Compile>
@@ -251,9 +265,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resource1.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SmallPWDShow.resx">
-      <DependentUpon>SmallPWDShow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MSGBOXXX.resx">
       <DependentUpon>MSGBOXXX.vb</DependentUpon>
@@ -380,7 +391,6 @@
     <None Include="AllResource\PWD_KDF_PASS.png" />
     <None Include="AllResource\CSV_Waiting.png" />
     <None Include="AllResource\button_view_small_Son.png" />
-    <Content Include="icon_ALL.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -394,6 +404,8 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="fadb4.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

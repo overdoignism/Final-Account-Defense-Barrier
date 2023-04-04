@@ -25,7 +25,7 @@ v1.1.8492.32159
 
 [ヘルプ文書🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/README_JP.md)
 
-[歷史版本（繁中only）🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/HISTORY.md)
+[歷史版本（History, ZH-TW only）🔗](https://github.com/overdoignism/Final-Account-Defense-Barrier/blob/main/Readme/HISTORY.md)
 
 ---
 

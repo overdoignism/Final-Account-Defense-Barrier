@@ -180,3 +180,14 @@ Public Module SE01
     End Sub
 
 End Module
+
+
+Public Module WER_Disable
+    <DllImport("wer.dll", CharSet:=CharSet.Unicode)>
+    Public Function WerAddExcludedApplication(ByVal pwzExeName As String, ByVal bAllUsers As Boolean) As Integer
+    End Function
+    Public Sub WER_Dis()
+        Dim currentProcess As Process = Process.GetCurrentProcess()
+        Dim result As Integer = WerAddExcludedApplication(currentProcess.MainModule.FileName, False)
+    End Sub
+End Module

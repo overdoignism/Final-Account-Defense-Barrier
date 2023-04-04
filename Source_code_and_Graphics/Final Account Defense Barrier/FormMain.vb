@@ -106,6 +106,7 @@ Public Class FormMain
 
         SeLock()
         ProcessPriorityUp()
+        WER_Dis()
 
         '===================== Arguments
 
@@ -1376,9 +1377,17 @@ Public Class FormMain
     Public Const WM_HOTKEY As Integer = &H312
     'Public Const WM_LBUTTONDOWN As Integer = &H201
 
-    Public Declare Function ChangeClipboardChain Lib "user32" Alias "ChangeClipboardChain" (ByVal hWndRemove As IntPtr, ByVal hWndNewNext As IntPtr) As Boolean
-    Public Declare Function SetClipboardViewer Lib "user32" Alias "SetClipboardViewer" (ByVal hWndNewViewer As IntPtr) As IntPtr
-    Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As IntPtr, ByVal wMsg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As Integer
+    <DllImport("user32.dll")>
+    Private Shared Function ChangeClipboardChain(ByVal hWndRemove As IntPtr, ByVal hWndNewNext As IntPtr) As Boolean
+    End Function
+
+    <DllImport("user32.dll")>
+    Private Shared Function SetClipboardViewer(ByVal hWndNewViewer As IntPtr) As IntPtr
+    End Function
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto)>
+    Private Shared Function SendMessage(ByVal hwnd As IntPtr, ByVal wMsg As Integer, ByVal wParam As IntPtr, ByVal lParam As IntPtr) As Integer
+    End Function
 
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
 
@@ -1451,7 +1460,6 @@ Public Class FormMain
                 Else
                     SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam)
                 End If
-
 
         End Select
     End Sub
@@ -1726,13 +1734,15 @@ Public Class FormMain
         GetPass()
 
         If NowPassStatue > 1 Then
-            Dim FPWDS As New SmallPWDShow
+            Dim FPWDS As New SmallDecoderPass
             PictureBoxPwdVi.Image = b_view_small_Son_on
+            FPWDS.Workmode = 2
             FPWDS.InputByte = CurrentAccountPass
             FPWDS.Width = 1
             FPWDS.Height = 1
             FPWDS.ShowDialog()
             PictureBoxPwd.Image = FPWDS.PictureBoxPwd.Image
+            My.Application.DoEvents()
             FPWDS.Dispose()
             FullGC()
         End If
@@ -1771,7 +1781,6 @@ Public Class FormMain
         If NowProcFile = "" Then
             If MSGBOXNEW(TextStrs(51).Replace("$$$", TextBoxTitle.Text), MsgBoxStyle.OkCancel,
                          TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok Then
-
 
                 If Not WriteFile(Get_New_ACC_Filename(DirName), AES_KEY_Protected, DERIVED_IDT_Protected) Then
                     GetList()

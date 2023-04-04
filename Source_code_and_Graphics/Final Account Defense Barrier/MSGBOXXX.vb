@@ -3,7 +3,6 @@
 'https://github.com/overdoignism/Final-Account-Defense-Barrier
 
 
-
 Public Class MSGBOXXX
 
     Dim B_CONF_DI As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_confirm)

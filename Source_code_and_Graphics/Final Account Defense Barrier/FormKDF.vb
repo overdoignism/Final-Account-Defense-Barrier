@@ -6,18 +6,17 @@ Public Class FormKDF
 
     Public Progass10L As Integer
     Public Progass10R As Integer
+    Dim PWD_KDF_R As New Bitmap(My.Resources.Resource1.PWD_KDF_R)
+    Dim PWD_KDF_C As New Bitmap(My.Resources.Resource1.PWD_KDF_C)
+    Dim IDXL As Integer = 0
+    Dim IDXL_old As Integer = -1
+    Dim IDXR As Integer = 0
+    Dim IDXR_old As Integer = -1
 
     Private Sub FormSalt_Load(sender As Object, e As EventArgs) Handles Me.Load
 
-        Dim PWD_KDF_R As New Bitmap(My.Resources.Resource1.PWD_KDF_R)
-        Dim PWD_KDF_C As New Bitmap(My.Resources.Resource1.PWD_KDF_C)
-        Dim IDXL, IDXL_old As Integer
-        Dim IDXR, IDXR_old As Integer
-        IDXL_old = -1
-        IDXR_old = -1
-
-
         Me.Visible = True
+        'My.Application.DoEvents()
 
         Do
             IDXL = (Progass10L / 10) + 1

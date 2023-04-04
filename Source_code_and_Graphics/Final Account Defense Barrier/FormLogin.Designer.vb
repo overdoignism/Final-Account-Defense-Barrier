@@ -25,6 +25,7 @@ Partial Class FormLogin
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormLogin))
         Me.TextBoxPwd = New System.Windows.Forms.TextBox()
         Me.TextBoxPwdVerify = New System.Windows.Forms.TextBox()
+        Me.ButtonFin = New System.Windows.Forms.PictureBox()
         Me.PictureSalt = New System.Windows.Forms.PictureBox()
         Me.PicturePMP = New System.Windows.Forms.PictureBox()
         Me.PictureWinMin = New System.Windows.Forms.PictureBox()
@@ -42,7 +43,7 @@ Partial Class FormLogin
         Me.PicCAP1 = New System.Windows.Forms.PictureBox()
         Me.PictureBoxLogin = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
-        Me.ButtonFin = New System.Windows.Forms.PictureBox()
+        CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureSalt, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicturePMP, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -60,7 +61,6 @@ Partial Class FormLogin
         CType(Me.PicCAP1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxLogin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBoxPwd
@@ -93,6 +93,17 @@ Partial Class FormLogin
         Me.TextBoxPwdVerify.Visible = False
         Me.TextBoxPwdVerify.WordWrap = False
         '
+        'ButtonFin
+        '
+        Me.ButtonFin.BackColor = System.Drawing.Color.Black
+        Me.ButtonFin.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonFin.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Final
+        Me.ButtonFin.Location = New System.Drawing.Point(277, 466)
+        Me.ButtonFin.Name = "ButtonFin"
+        Me.ButtonFin.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonFin.TabIndex = 125
+        Me.ButtonFin.TabStop = False
+        '
         'PictureSalt
         '
         Me.PictureSalt.BackColor = System.Drawing.Color.Black
@@ -112,7 +123,7 @@ Partial Class FormLogin
         Me.PicturePMP.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.PMP_ON
         Me.PicturePMP.Location = New System.Drawing.Point(357, 42)
         Me.PicturePMP.Name = "PicturePMP"
-        Me.PicturePMP.Size = New System.Drawing.Size(168, 22)
+        Me.PicturePMP.Size = New System.Drawing.Size(86, 22)
         Me.PicturePMP.TabIndex = 123
         Me.PicturePMP.TabStop = False
         Me.PicturePMP.Visible = False
@@ -266,7 +277,7 @@ Partial Class FormLogin
         '
         Me.PictureBoxLogin.Location = New System.Drawing.Point(0, 0)
         Me.PictureBoxLogin.Name = "PictureBoxLogin"
-        Me.PictureBoxLogin.Size = New System.Drawing.Size(538, 717)
+        Me.PictureBoxLogin.Size = New System.Drawing.Size(536, 717)
         Me.PictureBoxLogin.TabIndex = 52
         Me.PictureBoxLogin.TabStop = False
         '
@@ -279,23 +290,12 @@ Partial Class FormLogin
         Me.PictureGray.TabStop = False
         Me.PictureGray.Visible = False
         '
-        'ButtonFin
-        '
-        Me.ButtonFin.BackColor = System.Drawing.Color.Black
-        Me.ButtonFin.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonFin.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Final
-        Me.ButtonFin.Location = New System.Drawing.Point(277, 466)
-        Me.ButtonFin.Name = "ButtonFin"
-        Me.ButtonFin.Size = New System.Drawing.Size(112, 61)
-        Me.ButtonFin.TabIndex = 125
-        Me.ButtonFin.TabStop = False
-        '
         'FormLogin
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(538, 717)
+        Me.ClientSize = New System.Drawing.Size(536, 717)
         Me.ControlBox = False
         Me.Controls.Add(Me.ButtonFin)
         Me.Controls.Add(Me.PictureSalt)
@@ -328,6 +328,7 @@ Partial Class FormLogin
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Login"
         Me.TransparencyKey = System.Drawing.Color.Lime
+        CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureSalt, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PicturePMP, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureWinMin, System.ComponentModel.ISupportInitialize).EndInit()
@@ -345,7 +346,6 @@ Partial Class FormLogin
         CType(Me.PicCAP1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxLogin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
