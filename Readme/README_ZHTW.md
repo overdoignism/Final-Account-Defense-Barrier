@@ -93,7 +93,7 @@
 
 1.  DPAPI導入，保護執行期常駐機敏資料。
 2.  Memory leak 清洗（防護約 95% 的 Memory leak）。
-3.  Secure Desktop （安全桌面）導入，可抗鍵盤與畫面紀錄器（選用）。
+3.  Secure Desktop （安全桌面）導入，可抗鍵盤與畫面紀錄器。（由於相容性問題，選用。微軟注音請啟用「舊版」選項。）
 4.  剪貼板監視阻斷技術導入（WM攔截）。
 5.  Memory Page Lock 導入，防止機敏資訊被 swap 到 swap file（註6）。
 6.  Windows 執行檔安全緩解政策：ASLR／DEP／StrictHandle／ExtensionPoint／SignaturePolicy／ImageLoad／SideChannelIsolation。
