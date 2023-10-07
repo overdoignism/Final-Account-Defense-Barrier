@@ -35,6 +35,7 @@ Public Class FormLogin
 
     Dim TextBoxPwd2 As New MyTextBox
     Dim TextBoxPwdVerify2 As New MyTextBox
+    Friend TempClipboardStr As String
 
     Dim DbTester As New Timer()
 
@@ -178,6 +179,11 @@ Public Class FormLogin
             Me.CenterToScreen()
             Me.PictureWinMin.Visible = False
             PictureBoxSD.Image = SD_ON
+            TextBoxPwd2.SDMode = True
+            TextBoxPwdVerify2.SDMode = True
+            TextBoxPwd2.TempClipboardStr = TempClipboardStr
+            TextBoxPwdVerify2.TempClipboardStr = TempClipboardStr
+            TempClipboardStr = ""
         Else
             Me.StartPosition = FormStartPosition.Manual
             Me.Left = FormL + (FormW - Me.Width) / 2
@@ -394,7 +400,7 @@ Public Class FormLogin
     Private Function CheckBIP39(ByRef BIP39Str As String) As Integer
 
         Try
-            Dim LotInt() As UInteger
+            Dim LotInt(0) As UInteger
 
             Dim PassLevel As Integer = 0
             'PassLevel 0 : Pass
@@ -647,6 +653,9 @@ Public Class FormLogin
             End If
         End If
 
+        TextBoxPwd2.TempClipboardStr = ""
+        TextBoxPwdVerify2.TempClipboardStr = ""
+
         DbTester.Enabled = False
         DbTester.Dispose()
         ClearTextBox(TextBoxPwd2)
@@ -806,51 +815,31 @@ End Class
 Class MyTextBox
     Inherits TextBox
     Public DetectedPasteIn As Boolean
+    Public SDMode As Boolean
+    Public TempClipboardStr As String = ""
+
     Protected Overrides Sub WndProc(ByRef m As Message)
         ' Trap WM_PASTE
-        If m.Msg = &H302 AndAlso Clipboard.ContainsText() Then
-            Me.Text = GetText()
-            'Clipboard.Clear()
-            DetectedPasteIn = True
+
+        If m.Msg = &H302 Then
+            If Not SDMode Then
+                If Clipboard.ContainsText() Then
+                    Me.Text = GetTextFromClipboard()
+                    DetectedPasteIn = True
+                End If
+            Else
+                If TempClipboardStr <> "" Then
+                    Me.Text = TempClipboardStr
+                    DetectedPasteIn = True
+                End If
+            End If
             Return
         End If
+
         MyBase.WndProc(m)
+
     End Sub
 
-    <DllImport("user32.dll", SetLastError:=True)>
-    Private Shared Function OpenClipboard(ByVal hWndNewOwner As IntPtr) As Boolean
-    End Function
 
-    <DllImport("user32.dll", SetLastError:=True)>
-    Private Shared Function CloseClipboard() As Boolean
-    End Function
-
-    <DllImport("user32.dll", SetLastError:=True)>
-    Private Shared Function GetClipboardData(ByVal uFormat As UInteger) As IntPtr
-    End Function
-
-    <DllImport("kernel32.dll", SetLastError:=True)>
-    Private Shared Function GlobalLock(ByVal hMem As IntPtr) As IntPtr
-    End Function
-
-    <DllImport("kernel32.dll", SetLastError:=True)>
-    Private Shared Function GlobalUnlock(ByVal hMem As IntPtr) As Boolean
-    End Function
-
-    Public Shared Function GetText() As String
-        If Not OpenClipboard(IntPtr.Zero) Then Return Nothing
-
-        Dim handle = GetClipboardData(13)
-        If handle = IntPtr.Zero Then Return Nothing
-
-        Dim pointer = GlobalLock(handle)
-        If pointer = IntPtr.Zero Then Return Nothing
-
-        Dim data = Marshal.PtrToStringUni(pointer)
-        GlobalUnlock(handle)
-        CloseClipboard()
-
-        Return data
-    End Function
 
 End Class

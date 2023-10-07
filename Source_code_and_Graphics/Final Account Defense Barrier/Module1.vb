@@ -565,7 +565,8 @@ Module Module1
 
     Public Function LogInFormWork(TitleStr As String, ByRef ThisTimeDir As String, ByRef ThisTimeKey() As Byte,
                                   ByRef ThisTimeDIP() As Byte, WorkMode As Integer, PwdState As Integer,
-                                  NoNotice As Boolean, ByRef FFPicBox As PictureBox, ByRef WorkSalt() As Byte, Optional ByRef FirerForm As FormMain = Nothing) As DialogResult
+                                  NoNotice As Boolean, ByRef FFPicBox As PictureBox, ByRef WorkSalt() As Byte,
+                                  Optional ByRef FirerForm As FormMain = Nothing) As DialogResult
 
         LogInFormWork = DialogResult.Cancel
         Dim LIFWRtn As DialogResult = DialogResult.Cancel
@@ -593,30 +594,36 @@ Module Module1
 
         If FirerForm Is Nothing Then
             'GetCurrentThreadId()
+            Dim ErrHappend As Boolean = False
             Dim Old_hDesktop As IntPtr = GetThreadDesktop(Process.GetCurrentProcess().Threads(0).Id)
             Dim New_hDesktop As IntPtr = CreateDesktop(
                System.Text.Encoding.Unicode.GetString(Security.Cryptography.ProtectedData.Unprotect(
                SeuDeskName, Nothing, DataProtectionScope.CurrentUser)),
                IntPtr.Zero, IntPtr.Zero, 0, DESKTOP_ACCESS.GENERIC_ALL, IntPtr.Zero)
 
-            If New_hDesktop = 0 Then
-                MsgBox(TextStrs(6), MsgBoxStyle.Critical, TextStrs(5))
-            End If
+            If New_hDesktop = 0 Then MsgBox(TextStrs(6), MsgBoxStyle.Critical, TextStrs(5))
 
             SwitchDesktop(New_hDesktop)
 
             Task.Factory.StartNew(Sub()
 
+                                      LIFW.TempClipboardStr = GetTextFromClipboard()
                                       LIFW.SecureDesktopMode = True
                                       LIFW.IsUseSD = True
                                       SetThreadDesktop(New_hDesktop)
-                                      LIFWRtn = LIFW.ShowDialog()
+                                      Try
+                                          LIFWRtn = LIFW.ShowDialog()
+                                      Catch ex As Exception
+                                          ErrHappend = True
+                                      End Try
                                       SetThreadDesktop(Old_hDesktop)
 
                                   End Sub).Wait()
 
             SwitchDesktop(Old_hDesktop)
             CloseDesktop(New_hDesktop)
+
+            If ErrHappend Then MsgBox(TextStrs(6), MsgBoxStyle.Critical, TextStrs(5))
 
         Else
 
@@ -664,6 +671,45 @@ Module Module1
         LIFW.Close()
         LIFW.Dispose()
 
+    End Function
+
+    '================ Get Clipboard text (for memory leak fix) ===========
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Function OpenClipboard(ByVal hWndNewOwner As IntPtr) As Boolean
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Function CloseClipboard() As Boolean
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Function GetClipboardData(ByVal uFormat As UInteger) As IntPtr
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private Function GlobalLock(ByVal hMem As IntPtr) As IntPtr
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private Function GlobalUnlock(ByVal hMem As IntPtr) As Boolean
+    End Function
+
+    Public Function GetTextFromClipboard() As String
+
+        If Not OpenClipboard(IntPtr.Zero) Then Return Nothing
+
+        Dim handle = GetClipboardData(13)
+        If handle = IntPtr.Zero Then Return Nothing
+
+        Dim pointer = GlobalLock(handle)
+        If pointer = IntPtr.Zero Then Return Nothing
+
+        Dim data = Marshal.PtrToStringUni(pointer)
+        GlobalUnlock(handle)
+        CloseClipboard()
+
+        Return data
     End Function
 
     '================ For window grayed out visual ==============
