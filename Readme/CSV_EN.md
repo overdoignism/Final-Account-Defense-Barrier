@@ -21,6 +21,7 @@
 * The notes field name can be "NOTES", "COMMENTS".
 * The notes2 field name can be "NOTES2".
 * The registered email and phone field name can be "REGDATA".
+* Replace the default hotkey mode with the Send key mode, field name can be "SETS", and set to "1".
 
 ### Attenions
 

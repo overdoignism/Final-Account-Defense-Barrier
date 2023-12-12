@@ -158,6 +158,7 @@ Public Class FormConfig
     Dim B_CAT_CSVIM As New Bitmap(My.Resources.Resource1.button_CAT_CSVIM)
     Dim B_CAT_CSVEX As New Bitmap(My.Resources.Resource1.button_CAT_CSVEX)
 
+
     Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles ButtonOK.MouseLeave,
         ButtonCancel.MouseLeave, ButtonDelCat.MouseLeave, ButtonTransFullCat.MouseLeave,
         ButtonCSVIM.MouseLeave, ButtonCSVEx.MouseLeave

@@ -99,3 +99,4 @@ No account in the catalog. Export abort.
 The saved file name is\n\n$$$\n\nin the application folder.\n\n(Next we will guide you to the file location.)
 Attached debugger detected.\n\nIf you're not programming, it probably means a malicious attack has occurred.\n\nStrongly recommended to stop using and perform anti-virus.
 Critical
+When hotkey enabled, override to "Send key" mode.

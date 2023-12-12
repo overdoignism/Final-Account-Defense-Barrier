@@ -648,8 +648,10 @@ Public Class FormLogin
     Private Sub FormLogin_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
 
         If TextBoxPwd2.DetectedPasteIn Or TextBoxPwdVerify2.DetectedPasteIn Then
+            Close_Clear_Clipper = False
             If MSGBOXNEW(TextStrs(70), MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok Then
-                My.Computer.Clipboard.Clear()
+                'My.Computer.Clipboard.Clear()
+                Close_Clear_Clipper = True
             End If
         End If
 

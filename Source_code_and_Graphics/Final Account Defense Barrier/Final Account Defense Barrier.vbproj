@@ -291,6 +291,7 @@
     <None Include="AllResource\Load as Bin\Message_VRF_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Message_VRF_TXTB_PNG.Bin" />
     <None Include="AllResource\Load as Bin\MIT_DOC_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\SETTINGS_PNG.bin" />
     <None Include="AllResource\Load as Bin\Title_LOGIN_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Title_NORMAL_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Title_Password_PNG.Bin" />
@@ -331,7 +332,6 @@
     <None Include="AllResource\button_L_save.png" />
     <None Include="AllResource\button_L_transKEY.png" />
     <None Include="AllResource\button_CATMAN.png" />
-    <None Include="AllResource\EPTSLOT_246.png" />
     <None Include="AllResource\EPTSLOT_313.png" />
     <None Include="AllResource\EPTSLOT_692.png" />
     <None Include="AllResource\button_Launch.png" />
@@ -352,7 +352,6 @@
     <None Include="AllResource\TimerID_ACT.png" />
     <None Include="AllResource\TimerID_INACT.png" />
     <None Include="AllResource\button_confirm.png" />
-    <None Include="AllResource\settings.png" />
     <None Include="AllResource\button_CAT_DEL.png" />
     <None Include="AllResource\button_CAT_TRANS.png" />
     <None Include="AllResource\button_CATMAN_on.png" />

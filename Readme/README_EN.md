@@ -46,6 +46,7 @@
 ### More Advanced Operations
 
 *   You can set features like "Auto Hotkey", "Automatic Logout When Idle", and "Transfer or Delete All Catalogs" in "Catalog Setting and Management".
+*   If you have problems with using hotkeys for "Copy & Paste" auto input, you can use the "Send key" mode to override for separately accounts. (v1.2 or later)
 *   If you rename the language file to Lang\_MOD.TXT, the interface will display in the corresponding language (Text message only; Graphic part will not change).
 *   You can use the command line parameter "NONOTICE" to hide the NOTICE at the bottom of the window. (Please read it once before hiding.)
 *   You can use the command line parameter "OPACITY,nn" to set the window opacity. (100 = opaque (default), and the initial version is fixed at 93.)

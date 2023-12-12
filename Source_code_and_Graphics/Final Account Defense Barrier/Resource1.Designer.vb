@@ -387,6 +387,26 @@ Namespace My.Resources
         '''<summary>
         '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         '''</summary>
+        Friend Shared ReadOnly Property button_SKM_Off() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_SKM_Off", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
+        Friend Shared ReadOnly Property button_SKM_On() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("button_SKM_On", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''</summary>
         Friend Shared ReadOnly Property button_view() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("button_view", resourceCulture)
@@ -590,16 +610,6 @@ Namespace My.Resources
         Friend Shared ReadOnly Property DIGI_Y_9() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("DIGI_Y_9", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        '''</summary>
-        Friend Shared ReadOnly Property EPTSLOT_246() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("EPTSLOT_246", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -915,12 +925,12 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        '''  查詢類型 System.Byte[] 的當地語系化資源。
         '''</summary>
-        Friend Shared ReadOnly Property settings() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property SETTINGS_PNG() As Byte()
             Get
-                Dim obj As Object = ResourceManager.GetObject("settings", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
+                Dim obj As Object = ResourceManager.GetObject("SETTINGS_PNG", resourceCulture)
+                Return CType(obj,Byte())
             End Get
         End Property
         

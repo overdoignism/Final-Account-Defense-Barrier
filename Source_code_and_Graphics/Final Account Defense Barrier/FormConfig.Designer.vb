@@ -28,22 +28,22 @@ Partial Class FormConfig
         Me.ComboBoxTimer = New System.Windows.Forms.ComboBox()
         Me.TB_AC_KEY = New System.Windows.Forms.ComboBox()
         Me.TB_PW_KEY = New System.Windows.Forms.ComboBox()
+        Me.ButtonCSVEx = New System.Windows.Forms.PictureBox()
+        Me.ButtonCSVIM = New System.Windows.Forms.PictureBox()
         Me.ButtonCancel = New System.Windows.Forms.PictureBox()
         Me.ButtonOK = New System.Windows.Forms.PictureBox()
         Me.ButtonTransFullCat = New System.Windows.Forms.PictureBox()
         Me.ButtonDelCat = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
-        Me.ButtonCSVIM = New System.Windows.Forms.PictureBox()
-        Me.ButtonCSVEx = New System.Windows.Forms.PictureBox()
+        CType(Me.ButtonCSVEx, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ButtonCSVIM, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonTransFullCat, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonDelCat, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ButtonCSVIM, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ButtonCSVEx, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBoxCatalog
@@ -122,6 +122,28 @@ Partial Class FormConfig
         Me.TB_PW_KEY.Size = New System.Drawing.Size(50, 27)
         Me.TB_PW_KEY.TabIndex = 85
         '
+        'ButtonCSVEx
+        '
+        Me.ButtonCSVEx.BackColor = System.Drawing.Color.Black
+        Me.ButtonCSVEx.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonCSVEx.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_CAT_CSVEX
+        Me.ButtonCSVEx.Location = New System.Drawing.Point(569, 178)
+        Me.ButtonCSVEx.Name = "ButtonCSVEx"
+        Me.ButtonCSVEx.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonCSVEx.TabIndex = 107
+        Me.ButtonCSVEx.TabStop = False
+        '
+        'ButtonCSVIM
+        '
+        Me.ButtonCSVIM.BackColor = System.Drawing.Color.Black
+        Me.ButtonCSVIM.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonCSVIM.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_CAT_CSVIM
+        Me.ButtonCSVIM.Location = New System.Drawing.Point(452, 178)
+        Me.ButtonCSVIM.Name = "ButtonCSVIM"
+        Me.ButtonCSVIM.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonCSVIM.TabIndex = 106
+        Me.ButtonCSVIM.TabStop = False
+        '
         'ButtonCancel
         '
         Me.ButtonCancel.BackColor = System.Drawing.Color.Black
@@ -169,7 +191,6 @@ Partial Class FormConfig
         'PictureBox1
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.Black
-        Me.PictureBox1.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.settings
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(717, 418)
@@ -183,28 +204,6 @@ Partial Class FormConfig
         Me.PictureGray.Size = New System.Drawing.Size(717, 418)
         Me.PictureGray.TabIndex = 98
         Me.PictureGray.TabStop = False
-        '
-        'ButtonCSVIM
-        '
-        Me.ButtonCSVIM.BackColor = System.Drawing.Color.Black
-        Me.ButtonCSVIM.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonCSVIM.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_CAT_CSVIM
-        Me.ButtonCSVIM.Location = New System.Drawing.Point(452, 178)
-        Me.ButtonCSVIM.Name = "ButtonCSVIM"
-        Me.ButtonCSVIM.Size = New System.Drawing.Size(112, 61)
-        Me.ButtonCSVIM.TabIndex = 106
-        Me.ButtonCSVIM.TabStop = False
-        '
-        'ButtonCSVEx
-        '
-        Me.ButtonCSVEx.BackColor = System.Drawing.Color.Black
-        Me.ButtonCSVEx.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonCSVEx.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_CAT_CSVEX
-        Me.ButtonCSVEx.Location = New System.Drawing.Point(569, 178)
-        Me.ButtonCSVEx.Name = "ButtonCSVEx"
-        Me.ButtonCSVEx.Size = New System.Drawing.Size(112, 61)
-        Me.ButtonCSVEx.TabIndex = 107
-        Me.ButtonCSVEx.TabStop = False
         '
         'FormConfig
         '
@@ -235,14 +234,14 @@ Partial Class FormConfig
         Me.ShowInTaskbar = False
         Me.Text = "Settings"
         Me.TransparencyKey = System.Drawing.Color.Lime
+        CType(Me.ButtonCSVEx, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ButtonCSVIM, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonTransFullCat, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonDelCat, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ButtonCSVIM, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ButtonCSVEx, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

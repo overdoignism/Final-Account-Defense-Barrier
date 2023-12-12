@@ -42,14 +42,17 @@ Public Class FormMain
     Dim LBTN_TKey_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_transKEY)
     Dim LBTN_FInfo_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_fileInfo)
 
+
+    '==== Auto closer timer
     Public DIGI_NUM() As Bitmap = {My.Resources.Resource1.DIGI_Y_0, My.Resources.Resource1.DIGI_Y_1,
     My.Resources.Resource1.DIGI_Y_2, My.Resources.Resource1.DIGI_Y_3, My.Resources.Resource1.DIGI_Y_4,
     My.Resources.Resource1.DIGI_Y_5, My.Resources.Resource1.DIGI_Y_6, My.Resources.Resource1.DIGI_Y_7,
     My.Resources.Resource1.DIGI_Y_8, My.Resources.Resource1.DIGI_Y_9}
 
     Public DIGI_NUM_N As New Bitmap(My.Resources.Resource1.DIGI_Y__)
-
     Public WithEvents AutoCloseTimer As New Windows.Forms.Timer
+
+    Dim CONFIG_FORM_IMG As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.SETTINGS_PNG)))
 
     '====Listbox scroll bar
     Dim WithEvents LSCB_UPDW As New Windows.Forms.Timer
@@ -165,6 +168,8 @@ Public Class FormMain
         ToolTip1.SetToolTip(TextBoxRegMailPhone, TextStrs(36))
         ToolTip1.SetToolTip(TextBoxNote1, TextStrs(50))
         ToolTip1.SetToolTip(TextBoxNote2Hid, TextStrs(37))
+        ToolTip1.SetToolTip(ButtonHotkeyMode, TextStrs(101))
+
 
         Label_Act_Msg.Text = TextStrs(26)
         ToolTip1.InitialDelay = 1
@@ -278,6 +283,8 @@ Public Class FormMain
         TextBoxRegMailPhone.Text = ""
         TextBoxNote1.Text = ""
         TextBoxNote2Hid.Text = ""
+        TextBox_BHKMHelper.Text = "0"
+        ButtonHotkeyMode.Image = b_SKM_off
 
         If TheIndex >= 0 Then
             ButtonGoUP.Enabled = False
@@ -392,6 +399,8 @@ Public Class FormMain
                             TextBoxNote1.Text = WorkStr2(4) 'Replace(WorkStr2(4), vbLf, vbCrLf)
                             TextBoxRegMailPhone.Text = WorkStr2(5)
                             TextBoxNote2Hid.Text = WorkStr2(6)
+                            TextBox_BHKMHelper.Text = WorkStr2(7)
+                            If TextBox_BHKMHelper.Text = "1" Then ButtonHotkeyMode.Image = b_SKM_on
                         End If
 
                     Else
@@ -478,7 +487,7 @@ Public Class FormMain
 
                     TMPstr1 = INDTstr + vbCr + TextBoxURL.Text + vbCr + TextBoxNameAddr.Text +
                     vbCr + Random_Strs(30, 50, 1) + vbCr + TextBoxNote1.Text + vbCr + TextBoxRegMailPhone.Text +
-                    vbCr + TextBoxNote2Hid.Text + vbCr
+                    vbCr + TextBoxNote2Hid.Text + vbCr + TextBox_BHKMHelper.Text
 
                     TheEncLib.Get_The_IV_ByRND(AES_IV_Use)
 
@@ -883,6 +892,7 @@ Public Class FormMain
         FormConfig.FormL = Me.Left + (Me.Width - FormConfig.Width) / 2
         FormConfig.FormT = Me.Top + (Me.Height - FormConfig.Height) / 2
         FormConfig.Opacity = Me.Opacity
+        FormConfig.PictureBox1.Image = CONFIG_FORM_IMG
 
         MakeWindowsBlur(Me, PictureGray)
         Dim DR As DialogResult = FormConfig.ShowDialog(Me)
@@ -942,7 +952,7 @@ Public Class FormMain
                     End If
 
                     Try
-                        Dim CSV_Head As String = "TITLE,URL,USERNAME,PASSWORD,REGDATA,NOTES,NOTES2"
+                        Dim CSV_Head As String = "TITLE,URL,USERNAME,PASSWORD,REGDATA,NOTES,NOTES2,SETS"
                         Dim CSV_Filename As String = GetOkFilename(LabelCatalog.Text + " - " + Format(Now, "yyyyMMddHHmmss") + ".CSV")
                         Dim TheWriter As IO.StreamWriter = My.Computer.FileSystem.OpenTextFileWriter(CSV_Filename, False)
                         TheWriter.WriteLine(CSV_Head)
@@ -976,7 +986,8 @@ Public Class FormMain
                                 CurrentAccountPass, Nothing, DataProtectionScope.CurrentUser)) + Quo + "," + Quo +
                                 TextBoxRegMailPhone.Text + Quo + "," + Quo +
                                 TextBoxNote1.Text + Quo + "," + Quo +
-                                TextBoxNote2Hid.Text + Quo)
+                                TextBoxNote2Hid.Text + Quo + "," + Quo +
+                                TextBox_BHKMHelper.Text + Quo)
                             End If
 
                         Next
@@ -1018,11 +1029,12 @@ Public Class FormMain
             Dim NOTE_IND() As String = {"NOTES", "COMMENTS"}
             Dim NOTE2_IND() As String = {"NOTES2"}
             Dim REGDATA_IND() As String = {"REGDATA"}
+            Dim SETDATA_IND() As String = {"SETS"}
 
             Dim CSV_head(0) As String
-            Dim CSV_head_IND(0) As Integer '0=nothing 1=Title 2=Username 3=URL 4=Password 5= Note 
+            Dim CSV_head_IND(0) As Integer '0=nothing 1=Title 2=Username 3=URL 4=Password 5=Note
             Dim CSV_head_Count As Integer
-            Dim CSV_head_Chk(7) As Integer
+            Dim CSV_head_Chk(8) As Integer
 
             Dim TmpStr1 As String = Replace(InputStr, vbCrLf, vbCr)
             TmpStr1 = Replace(TmpStr1, vbLf, vbCr)
@@ -1105,7 +1117,15 @@ Public Class FormMain
                             End If
                         Next
                     End If
-
+                    If CSV_head_Chk(8) = 0 Then
+                        For Each TmpStrIND1 As String In SETDATA_IND
+                            If TmpUpCase = TmpStrIND1 Then
+                                CSV_head_IND(IDX01) = 8
+                                CSV_head_Chk(8) = 1
+                                Exit For
+                            End If
+                        Next
+                    End If
                 End If
             Next
 
@@ -1175,6 +1195,8 @@ Public Class FormMain
                         TextBoxRegMailPhone.Text = AllCSV(IDX01)
                     Case 7 'Note2
                         TextBoxNote2Hid.Text = AllCSV(IDX01)
+                    Case 8 'Sets
+                        TextBox_BHKMHelper.Text = AllCSV(IDX01)
                 End Select
 
                 If IDX01 Mod CSV_head.Length = CSV_head.Length - 1 Then
@@ -1331,7 +1353,8 @@ Public Class FormMain
     End Sub
 
     Private Sub TextBoxChanged(sender As Object, e As EventArgs) Handles TextBoxURL.TextChanged,
-            TextBoxNameAddr.TextChanged, TextBoxRegMailPhone.TextChanged, TextBoxNote1.TextChanged, TextBoxNote2Hid.TextChanged
+            TextBoxNameAddr.TextChanged, TextBoxRegMailPhone.TextChanged, TextBoxNote1.TextChanged,
+            TextBoxNote2Hid.TextChanged, TextBox_BHKMHelper.TextChanged
 
         If Not ReadingWorking Then
             VG_Data_Done = True
@@ -1401,11 +1424,23 @@ Public Class FormMain
 
                 Dim id As IntPtr = m.WParam
 
-                Select Case (id.ToString)
+                Dim HotKey_Work1 As Integer = CAT_setting_Str(3)
+                Select Case HotKey_Work1
+                    Case 1, 2, 4
+                        If TextBox_BHKMHelper.Text = "1" Then HotKey_Work1 = 3
+                End Select
+
+                Dim HotKey_Work2 As Integer = CAT_setting_Str(6)
+                Select Case HotKey_Work2
+                    Case 1, 2, 4
+                        If TextBox_BHKMHelper.Text = "1" Then HotKey_Work2 = 3
+                End Select
+
+                Select Case id.ToString
 
                     Case HotKeyID1
 
-                        Select Case Val(CAT_setting_Str(3))
+                        Select Case HotKey_Work1
                             Case 1
                                 CopyOnlyMode(TextBoxNameAddr)
                             Case 2
@@ -1426,8 +1461,7 @@ Public Class FormMain
                             SD.InputByte = CurrentAccountPass
                             SD.ShowDialog()
 
-                            Select Case Val(CAT_setting_Str(6))
-
+                            Select Case HotKey_Work2
                                 Case 1
                                     CopyOnlyMode(SD.TextBoxPWDStr)
                                 Case 2
@@ -2155,13 +2189,15 @@ Public Class FormMain
     Dim b_view_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view)
     Dim b_view_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_Son, 1.1)
     Dim b_view_small_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_small_Son, 1.1)
+    Dim b_SKM_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_SKM_On, 1.1)
+    Dim b_SKM_Soff_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_SKM_Off, 1.1)
 
     Dim b_PictureBoxCATMAN_on As New Bitmap(My.Resources.Resource1.button_CATMAN_on)
 
     Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
         ButtonRestart.MouseEnter, ButtonFin.MouseEnter, ButtonHelp.MouseEnter, ButtonLaunch.MouseEnter,
         ButtonCopyAccount.MouseEnter, PictureBoxPwdVi.MouseEnter, PictureBoxPwdCPY.MouseEnter,
-        ButtonCopyReg.MouseEnter, ButtonViewNote.MouseEnter, PictureBoxCATMAN.MouseEnter
+        ButtonCopyReg.MouseEnter, ButtonViewNote.MouseEnter, PictureBoxCATMAN.MouseEnter, ButtonHotkeyMode.MouseEnter
 
         Select Case sender.Name
             Case "ButtonRestart"
@@ -2188,6 +2224,11 @@ Public Class FormMain
                 End If
             Case "PictureBoxCATMAN"
                 PictureBoxCATMAN.Image = b_PictureBoxCATMAN_on
+            Case "ButtonHotkeyMode"
+
+                If TextBox_BHKMHelper.Text = "0" Then ButtonHotkeyMode.Image = b_SKM_Soff_on
+                If TextBox_BHKMHelper.Text = "1" Then ButtonHotkeyMode.Image = b_SKM_Son_on
+
         End Select
     End Sub
 
@@ -2200,12 +2241,15 @@ Public Class FormMain
     Dim b_copy_small As New Bitmap(My.Resources.Resource1.button_copy_small)
     Dim b_view As New Bitmap(My.Resources.Resource1.button_view)
     Dim b_view_Son As New Bitmap(My.Resources.Resource1.button_view_Son)
+    Dim b_SKM_on As New Bitmap(My.Resources.Resource1.button_SKM_On)
+    Dim b_SKM_off As New Bitmap(My.Resources.Resource1.button_SKM_Off)
     Dim b_PictureBoxCATMAN As New Bitmap(My.Resources.Resource1.button_CATMAN)
 
     Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles _
         ButtonRestart.MouseLeave, ButtonFin.MouseLeave, ButtonHelp.MouseLeave, ButtonLaunch.MouseLeave,
         ButtonCopyAccount.MouseLeave, PictureBoxPwdVi.MouseLeave, PictureBoxPwdCPY.MouseLeave,
-        ButtonCopyReg.MouseLeave, ButtonViewNote.MouseLeave, PictureBoxCATMAN.MouseLeave
+        ButtonCopyReg.MouseLeave, ButtonViewNote.MouseLeave, PictureBoxCATMAN.MouseLeave,
+        ButtonHotkeyMode.MouseLeave
 
         Select Case sender.Name
             Case "ButtonRestart"
@@ -2232,6 +2276,11 @@ Public Class FormMain
                 End If
             Case "PictureBoxCATMAN"
                 PictureBoxCATMAN.Image = b_PictureBoxCATMAN
+            Case "ButtonHotkeyMode"
+                If TextBox_BHKMHelper.Text = "0" Then ButtonHotkeyMode.Image = b_SKM_off
+                If TextBox_BHKMHelper.Text = "1" Then ButtonHotkeyMode.Image = b_SKM_on
+
+
         End Select
     End Sub
 
@@ -2287,6 +2336,19 @@ Public Class FormMain
         End If
 
     End Sub
+
+    Private Sub ButtonHotkeyMode_Click(sender As Object, e As EventArgs) Handles ButtonHotkeyMode.Click
+
+        If TextBox_BHKMHelper.Text = "0" Then
+            ButtonHotkeyMode.Image = b_SKM_Son_on
+            TextBox_BHKMHelper.Text = "1"
+        Else
+            ButtonHotkeyMode.Image = b_SKM_Soff_on
+            TextBox_BHKMHelper.Text = "0"
+        End If
+
+    End Sub
+
 
     'Private Sub TextBoxNote_Enter(sender As Object, e As EventArgs) Handles TextBoxNote1.Enter
     '    TextBoxNote1.Multiline = True

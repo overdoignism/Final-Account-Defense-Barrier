@@ -47,6 +47,8 @@ Module Module1
 
     Public ALLOPACITY As Single = 1.0F
     Public OSver As Integer
+    Public Close_Clear_Clipper As Boolean
+
 
     Public Const MainWebURL As String = "https://github.com/overdoignism/Final-Account-Defense-Barrier"
     Public Const File_Limit As Long = 134217728
@@ -156,7 +158,8 @@ Module Module1
          "No account in the catalog. Export abort.", '97
          "The saved file name is " + vbCrLf + vbCrLf + "$$$" + vbCrLf + vbCrLf + "in the application folder." + vbCrLf + vbCrLf + "(Next we will guide you to the file location.)",
          "Attached debugger detected." + vbCrLf + vbCrLf + "If you're not programming, it probably means a malicious attack has occurred." + vbCrLf + vbCrLf + "Strongly recommended to stop using and perform anti-virus.",
-         "Critical"
+         "Critical",
+         "When hotkey enabled, override to ""Send key"" mode."  '101
     }
 
     Public CoinList() As String = {"-", "BTC", "TRX", "Doge", "LTC", "ETH", "BTC"}
@@ -670,6 +673,10 @@ Module Module1
 
         LIFW.Close()
         LIFW.Dispose()
+
+        If Close_Clear_Clipper Then
+            My.Computer.Clipboard.Clear()
+        End If
 
     End Function
 
