@@ -400,7 +400,11 @@ Public Class FormMain
                             TextBoxRegMailPhone.Text = WorkStr2(5)
                             TextBoxNote2Hid.Text = WorkStr2(6)
                             TextBox_BHKMHelper.Text = WorkStr2(7)
-                            If TextBox_BHKMHelper.Text = "1" Then ButtonHotkeyMode.Image = b_SKM_on
+                            If TextBox_BHKMHelper.Text = "1" Then
+                                ButtonHotkeyMode.Image = b_SKM_on
+                            Else
+                                TextBox_BHKMHelper.Text = "0"
+                            End If
                         End If
 
                     Else
