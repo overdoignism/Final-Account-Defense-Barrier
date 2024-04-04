@@ -133,4 +133,4 @@
 *   **Q:** Why can salting only be done through command line parameters and not in the password input interface?
 *   **A:** "Salting" can be thought of as an additional extension to the password. If you have to manually enter the salt each time, it's better to just make the password longer.
 *   **Q:** Is it possible to customize fonts to beautify the interface?
-*   **A:** Unfortunately, it's not feasible due to security policies. Additional font files could potentially introduce security vulnerabilities to the program1.
+*   **A:** Unfortunately, it's not feasible due to security policies. Additional font files could potentially introduce security vulnerabilities to the program.
