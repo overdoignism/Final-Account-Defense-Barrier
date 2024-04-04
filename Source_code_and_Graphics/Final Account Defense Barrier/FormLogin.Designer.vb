@@ -143,10 +143,10 @@ Partial Class FormLogin
         '
         Me.PictureBoxGPUS.BackColor = System.Drawing.Color.Black
         Me.PictureBoxGPUS.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBoxGPUS.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.USING_SYMBOL_ON
-        Me.PictureBoxGPUS.Location = New System.Drawing.Point(420, 543)
+        Me.PictureBoxGPUS.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.USING_SYMBOL_OFF
+        Me.PictureBoxGPUS.Location = New System.Drawing.Point(414, 543)
         Me.PictureBoxGPUS.Name = "PictureBoxGPUS"
-        Me.PictureBoxGPUS.Size = New System.Drawing.Size(76, 47)
+        Me.PictureBoxGPUS.Size = New System.Drawing.Size(102, 49)
         Me.PictureBoxGPUS.TabIndex = 87
         Me.PictureBoxGPUS.TabStop = False
         Me.PictureBoxGPUS.Visible = False

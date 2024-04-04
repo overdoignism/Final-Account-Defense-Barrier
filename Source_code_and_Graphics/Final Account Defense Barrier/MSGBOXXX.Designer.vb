@@ -23,18 +23,22 @@ Partial Class MSGBOXXX
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TextBoxDELETE = New System.Windows.Forms.TextBox()
-        Me.MSGHEAD = New System.Windows.Forms.Label()
+        Me.Label_Title_Show = New System.Windows.Forms.Label()
         Me.ButtonOK = New System.Windows.Forms.PictureBox()
         Me.ButtonCancel = New System.Windows.Forms.PictureBox()
         Me.ButtonYes = New System.Windows.Forms.PictureBox()
-        Me.LabelMSG = New System.Windows.Forms.Label()
+        Me.Label_Msg_Work = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ButtonNo = New System.Windows.Forms.PictureBox()
+        Me.PicTrueMsg = New System.Windows.Forms.PictureBox()
+        Me.Label_Msg_Show = New System.Windows.Forms.Label()
+        Me.Label_Title_Work = New System.Windows.Forms.Label()
         CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonYes, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonNo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PicTrueMsg, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBoxDELETE
@@ -49,16 +53,16 @@ Partial Class MSGBOXXX
         Me.TextBoxDELETE.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.TextBoxDELETE.Visible = False
         '
-        'MSGHEAD
+        'Label_Title_Show
         '
-        Me.MSGHEAD.BackColor = System.Drawing.Color.Black
-        Me.MSGHEAD.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.MSGHEAD.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.MSGHEAD.Location = New System.Drawing.Point(255, 50)
-        Me.MSGHEAD.Name = "MSGHEAD"
-        Me.MSGHEAD.Size = New System.Drawing.Size(197, 23)
-        Me.MSGHEAD.TabIndex = 92
-        Me.MSGHEAD.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Label_Title_Show.BackColor = System.Drawing.Color.Black
+        Me.Label_Title_Show.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.Label_Title_Show.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label_Title_Show.Location = New System.Drawing.Point(255, 50)
+        Me.Label_Title_Show.Name = "Label_Title_Show"
+        Me.Label_Title_Show.Size = New System.Drawing.Size(197, 23)
+        Me.Label_Title_Show.TabIndex = 92
+        Me.Label_Title_Show.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ButtonOK
         '
@@ -96,17 +100,18 @@ Partial Class MSGBOXXX
         Me.ButtonYes.TabStop = False
         Me.ButtonYes.Visible = False
         '
-        'LabelMSG
+        'Label_Msg_Work
         '
-        Me.LabelMSG.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.LabelMSG.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelMSG.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LabelMSG.Location = New System.Drawing.Point(11, 90)
-        Me.LabelMSG.Name = "LabelMSG"
-        Me.LabelMSG.Size = New System.Drawing.Size(637, 233)
-        Me.LabelMSG.TabIndex = 29
-        Me.LabelMSG.Text = "Message Here"
-        Me.LabelMSG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.Label_Msg_Work.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
+        Me.Label_Msg_Work.Font = New System.Drawing.Font("Arial Narrow", 26.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_Msg_Work.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label_Msg_Work.Location = New System.Drawing.Point(23, 103)
+        Me.Label_Msg_Work.Name = "Label_Msg_Work"
+        Me.Label_Msg_Work.Size = New System.Drawing.Size(1274, 466)
+        Me.Label_Msg_Work.TabIndex = 29
+        Me.Label_Msg_Work.Text = "Message Here"
+        Me.Label_Msg_Work.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.Label_Msg_Work.Visible = False
         '
         'PictureBox1
         '
@@ -130,6 +135,39 @@ Partial Class MSGBOXXX
         Me.ButtonNo.TabStop = False
         Me.ButtonNo.Visible = False
         '
+        'PicTrueMsg
+        '
+        Me.PicTrueMsg.BackColor = System.Drawing.Color.FromArgb(CType(CType(32, Byte), Integer), CType(CType(32, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.PicTrueMsg.Location = New System.Drawing.Point(11, 90)
+        Me.PicTrueMsg.Name = "PicTrueMsg"
+        Me.PicTrueMsg.Size = New System.Drawing.Size(637, 233)
+        Me.PicTrueMsg.TabIndex = 94
+        Me.PicTrueMsg.TabStop = False
+        '
+        'Label_Msg_Show
+        '
+        Me.Label_Msg_Show.BackColor = System.Drawing.Color.FromArgb(CType(CType(32, Byte), Integer), CType(CType(32, Byte), Integer), CType(CType(32, Byte), Integer))
+        Me.Label_Msg_Show.Font = New System.Drawing.Font("Arial", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_Msg_Show.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label_Msg_Show.Location = New System.Drawing.Point(11, 90)
+        Me.Label_Msg_Show.Name = "Label_Msg_Show"
+        Me.Label_Msg_Show.Size = New System.Drawing.Size(637, 233)
+        Me.Label_Msg_Show.TabIndex = 95
+        Me.Label_Msg_Show.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label_Title_Work
+        '
+        Me.Label_Title_Work.BackColor = System.Drawing.Color.Black
+        Me.Label_Title_Work.Font = New System.Drawing.Font("Arial Narrow", 26.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_Title_Work.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label_Title_Work.Location = New System.Drawing.Point(536, 338)
+        Me.Label_Title_Work.Name = "Label_Title_Work"
+        Me.Label_Title_Work.Size = New System.Drawing.Size(394, 46)
+        Me.Label_Title_Work.TabIndex = 96
+        Me.Label_Title_Work.Text = "Text"
+        Me.Label_Title_Work.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Label_Title_Work.Visible = False
+        '
         'MSGBOXXX
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
@@ -137,13 +175,16 @@ Partial Class MSGBOXXX
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(659, 409)
         Me.ControlBox = False
+        Me.Controls.Add(Me.Label_Title_Work)
+        Me.Controls.Add(Me.TextBoxDELETE)
+        Me.Controls.Add(Me.Label_Msg_Show)
+        Me.Controls.Add(Me.PicTrueMsg)
         Me.Controls.Add(Me.ButtonNo)
-        Me.Controls.Add(Me.MSGHEAD)
+        Me.Controls.Add(Me.Label_Title_Show)
         Me.Controls.Add(Me.ButtonOK)
         Me.Controls.Add(Me.ButtonCancel)
         Me.Controls.Add(Me.ButtonYes)
-        Me.Controls.Add(Me.TextBoxDELETE)
-        Me.Controls.Add(Me.LabelMSG)
+        Me.Controls.Add(Me.Label_Msg_Work)
         Me.Controls.Add(Me.PictureBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
@@ -160,16 +201,20 @@ Partial Class MSGBOXXX
         CType(Me.ButtonYes, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonNo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PicTrueMsg, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents LabelMSG As Label
+    Friend WithEvents Label_Msg_Work As Label
     Friend WithEvents TextBoxDELETE As TextBox
     Friend WithEvents ButtonCancel As PictureBox
     Friend WithEvents ButtonYes As PictureBox
     Friend WithEvents ButtonOK As PictureBox
     Friend WithEvents PictureBox1 As PictureBox
-    Friend WithEvents MSGHEAD As Label
+    Friend WithEvents Label_Title_Show As Label
     Friend WithEvents ButtonNo As PictureBox
+    Friend WithEvents PicTrueMsg As PictureBox
+    Friend WithEvents Label_Msg_Show As Label
+    Friend WithEvents Label_Title_Work As Label
 End Class

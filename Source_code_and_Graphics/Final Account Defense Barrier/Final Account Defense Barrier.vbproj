@@ -354,7 +354,6 @@
     <None Include="AllResource\button_confirm.png" />
     <None Include="AllResource\button_CAT_DEL.png" />
     <None Include="AllResource\button_CAT_TRANS.png" />
-    <None Include="AllResource\button_CATMAN_on.png" />
     <None Include="AllResource\File_expo.png" />
     <None Include="AllResource\button_genpwd.png" />
     <None Include="AllResource\mit_Btn.png" />
@@ -371,7 +370,6 @@
     <None Include="AllResource\SCB_S_DW.png" />
     <None Include="AllResource\SCB_S_UP.png" />
     <None Include="AllResource\SCB_BARV.png" />
-    <None Include="AllResource\button_view_Son.png" />
     <None Include="AllResource\Arr_Left.png" />
     <None Include="AllResource\Arr_Right.png" />
     <None Include="AllResource\exit_Pic.png" />
@@ -389,7 +387,6 @@
     <None Include="AllResource\PWD_KDF_C.png" />
     <None Include="AllResource\PWD_KDF_PASS.png" />
     <None Include="AllResource\CSV_Waiting.png" />
-    <None Include="AllResource\button_view_small_Son.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -404,6 +401,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="AllResource\button_HKM_Title.png" />
+    <None Include="AllResource\button_HKO_small_off.png" />
+    <None Include="AllResource\button_HKO_small_on.png" />
+    <Content Include="AllResource\USING_SYMBOL_OFF.png" />
     <Content Include="fadb4.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

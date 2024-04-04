@@ -130,5 +130,7 @@
 *   **A:** Unless the software has a very basic bug, this is probably it. If you want to add or change something, please do it yourself. This is open source.
 *   **Q:** What kind of Japanese are you writing? It's just a bunch of nonsense.
 *   **A:** Actually, with the help of various AI translation tools, it's not difficult to write normal and correct Japanese. The difficulty lies in matching the style of using kanji that is particularly favored in Evangelion. I have tried my best.
-*   **Q:** Q: Why can salting only be done through command line parameters and not in the password input interface?
-*   **A:** A: "Salting" can be thought of as an additional extension to the password. If you have to manually enter the salt each time, it's better to just make the password longer.
+*   **Q:** Why can salting only be done through command line parameters and not in the password input interface?
+*   **A:** "Salting" can be thought of as an additional extension to the password. If you have to manually enter the salt each time, it's better to just make the password longer.
+*   **Q:** Is it possible to customize fonts to beautify the interface?
+*   **A:** Unfortunately, it's not feasible due to security policies. Additional font files could potentially introduce security vulnerabilities to the program1.

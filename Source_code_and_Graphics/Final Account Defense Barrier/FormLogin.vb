@@ -31,7 +31,7 @@ Public Class FormLogin
     Public IsUseSD As Boolean
     Public IsUseRUNAS As Boolean
 
-    Dim GP_Use_Symbol As Boolean = True
+    Dim GP_Use_Symbol As Boolean = False
 
     Dim TextBoxPwd2 As New MyTextBox
     Dim TextBoxPwdVerify2 As New MyTextBox
@@ -151,7 +151,7 @@ Public Class FormLogin
                 ButtonGenPwd.Top = 265
                 ButtonGenPwd.Left = 277
 
-                PictureBoxGPUS.Left = 416
+                PictureBoxGPUS.Left = 407
                 PictureBoxGPUS.Top = 272
                 PictureBoxGPUS.Visible = True
 
@@ -634,13 +634,14 @@ Public Class FormLogin
         TextBoxPwdVerify2.Text = TextBoxPwd2.Text
     End Sub
 
-    Dim USING_SYMBOL_OFF As Bitmap = Make_Button_Gray(My.Resources.Resource1.USING_SYMBOL_ON, -0.4F)
+    'Dim USING_SYMBOL_OFF As Bitmap = My.Resources.Resource1.USING_SYMBOL_ON 'Make_Button_Gray(My.Resources.Resource1.USING_SYMBOL_ON, -0.4F)
+    'Dim USING_SYMBOL_on As Bitmap = My.Resources.Resource1.USING_SYMBOL_OFF 'Make_Button_Gray(My.Resources.Resource1.USING_SYMBOL_ON, -0.4F)
 
     Private Sub PictureBoxGPUS_Click(sender As Object, e As EventArgs) Handles PictureBoxGPUS.Click
         If Not GP_Use_Symbol Then
             PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_ON
         Else
-            PictureBoxGPUS.Image = USING_SYMBOL_OFF
+            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_OFF
         End If
         GP_Use_Symbol = Not GP_Use_Symbol
     End Sub

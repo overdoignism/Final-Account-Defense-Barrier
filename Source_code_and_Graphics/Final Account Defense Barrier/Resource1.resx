@@ -175,9 +175,6 @@
   <data name="PWD_KDF_PASS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\PWD_KDF_PASS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_CATMAN_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_CATMAN_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Message_VRF_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\Load as Bin\Message_VRF_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -286,17 +283,11 @@
   <data name="DIGI_Y_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\DIGI_Y_6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_view_small_Son" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_view_small_Son.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="button_L_fileInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_L_fileInfo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PMP_ON" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\PMP_ON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button_SKM_Off" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_SKM_Off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="caps_lock_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\caps_lock_off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -333,9 +324,6 @@
   </data>
   <data name="button_yes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_yes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button_view_Son" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_view_Son.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -397,10 +385,19 @@
   <data name="Message_OK_TXTB_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\Load as Bin\Message_OK_TXTB_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="button_SKM_On" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_SKM_On.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="SETTINGS_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\Load as Bin\SETTINGS_PNG.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="USING_SYMBOL_OFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>allresource\using_symbol_off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_HKM_Title" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_HKM_Title.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_HKO_small_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_HKO_small_off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_HKO_small_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_HKO_small_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

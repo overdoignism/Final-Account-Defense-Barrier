@@ -20,6 +20,7 @@ Public Class FormMain
     Const Notefile As String = "CATNOTE.SET"
     Const SDesktopArgu As String = "SECUREDESKTOP"
     Const NONOTICEStr As String = "NONOTICE"
+    Const LangFile As String = "Lang_MOD.TXT"
 
     Private VG_Data_Done As Boolean = False
     Private VG_Title_Done As Boolean = False
@@ -28,46 +29,9 @@ Public Class FormMain
 
     Public SecureDesktop As Boolean = False
 
-    Dim LBTN_Save_En As New Bitmap(My.Resources.Resource1.button_L_save)
-    Dim LBTN_Del_En As New Bitmap(My.Resources.Resource1.button_L_delete)
-    Dim LBTN_MoveU_En As New Bitmap(My.Resources.Resource1.button_L_moveUP)
-    Dim LBTN_MoveD_En As New Bitmap(My.Resources.Resource1.button_L_moveDWN)
-    Dim LBTN_TKey_En As New Bitmap(My.Resources.Resource1.button_L_transKEY)
-    Dim LBTN_FInfo_En As New Bitmap(My.Resources.Resource1.button_L_fileInfo)
-
-    Dim LBTN_Save_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_save)
-    Dim LBTN_Del_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_delete)
-    Dim LBTN_MoveU_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_moveUP)
-    Dim LBTN_MoveD_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_moveDWN)
-    Dim LBTN_TKey_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_transKEY)
-    Dim LBTN_FInfo_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_fileInfo)
-
-
-    '==== Auto closer timer
-    Public DIGI_NUM() As Bitmap = {My.Resources.Resource1.DIGI_Y_0, My.Resources.Resource1.DIGI_Y_1,
-    My.Resources.Resource1.DIGI_Y_2, My.Resources.Resource1.DIGI_Y_3, My.Resources.Resource1.DIGI_Y_4,
-    My.Resources.Resource1.DIGI_Y_5, My.Resources.Resource1.DIGI_Y_6, My.Resources.Resource1.DIGI_Y_7,
-    My.Resources.Resource1.DIGI_Y_8, My.Resources.Resource1.DIGI_Y_9}
-
-    Public DIGI_NUM_N As New Bitmap(My.Resources.Resource1.DIGI_Y__)
-    Public WithEvents AutoCloseTimer As New Windows.Forms.Timer
-
-    Dim CONFIG_FORM_IMG As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.SETTINGS_PNG)))
-
-    '====Listbox scroll bar
-    Dim WithEvents LSCB_UPDW As New Windows.Forms.Timer
-    Dim WithEvents LSCB_MSC As New Windows.Forms.Timer
-    Dim NowUPorDW As Integer
-    Dim LB_Ration As Double
-    Dim LB_Range_Scale As Double
-    Dim UpY As Integer
-    Dim DwY As Integer
-    Dim BarIsHolding As Boolean
-
     Dim version As Version = Reflection.Assembly.GetEntryAssembly().GetName().Version
     Dim versionNumber As String = version.Major & "." & version.Minor & "." & version.Build & "." & version.Revision
 
-    Dim discontinue As Boolean
     Dim DbTester As New Windows.Forms.Timer()
 
     <DllImport("ntdll.dll", SetLastError:=True)>
@@ -77,9 +41,9 @@ Public Class FormMain
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Try
-            If My.Computer.FileSystem.FileExists("Lang_MOD.TXT") Then
-                If My.Computer.FileSystem.GetFileInfo("Lang_MOD.TXT").Length <= 51200 Then
-                    Dim IOreader1 As IO.StreamReader = My.Computer.FileSystem.OpenTextFileReader("Lang_MOD.TXT")
+            If My.Computer.FileSystem.FileExists(LangFile) Then
+                If My.Computer.FileSystem.GetFileInfo(LangFile).Length <= 51200 Then
+                    Dim IOreader1 As IO.StreamReader = My.Computer.FileSystem.OpenTextFileReader(LangFile)
 
                     For IDX01 As Integer = 0 To UBound(TextStrs)
                         If Not IOreader1.EndOfStream Then
@@ -95,8 +59,6 @@ Public Class FormMain
             End If
         Catch ex As Exception
         End Try
-
-        Me.CenterToScreen()
 
         Dim osVersion As OperatingSystem = Environment.OSVersion
         OSver = (osVersion.Version.Major * 10) + osVersion.Version.Minor
@@ -152,16 +114,34 @@ Public Class FormMain
         'NoNotice = True 'for test
         'SecureDesktop = True 'for test
 
-        Load_BIP39_Word()
+        '================= Get Monitor Scale
+        GetMonScale(Me)
 
-        Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
+        '========= BIP39 Load
+        Load_BIP39_Word()
 
         'Me.SetStyle(ControlStyles.UserPaint, True)
         'Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         'Me.SetStyle(ControlStyles.DoubleBuffer, True)
         'Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
-        '============= Load text
+        '================================ Login stage =====
+        Me.CenterToScreen()
+        Dim TmpDR As DialogResult
+
+        If SecureDesktop Then
+            TmpDR = LogInFormWork(TextStrs(59), DirName, AES_KEY_Protected, DERIVED_IDT_Protected, 0, Nothing, NoNotice, PictureGray, TheSalt)
+        Else
+            TmpDR = LogInFormWork(TextStrs(59), DirName, AES_KEY_Protected, DERIVED_IDT_Protected, 0, Nothing, NoNotice, PictureGray, TheSalt, Me)
+        End If
+
+        If TmpDR <> DialogResult.OK Then End_Program()
+
+        FullGC()
+        '=============================================
+
+        '============= Set text and tooltip
+        Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
         ToolTip1.SetToolTip(TextBoxTitle, TextStrs(31))
         ToolTip1.SetToolTip(TextBoxURL, TextStrs(32))
         ToolTip1.SetToolTip(TextBoxNameAddr, TextStrs(33))
@@ -169,9 +149,6 @@ Public Class FormMain
         ToolTip1.SetToolTip(TextBoxNote1, TextStrs(50))
         ToolTip1.SetToolTip(TextBoxNote2Hid, TextStrs(37))
         ToolTip1.SetToolTip(ButtonHotkeyMode, TextStrs(101))
-
-
-        Label_Act_Msg.Text = TextStrs(26)
         ToolTip1.InitialDelay = 1
 
         For IDX01 As Integer = 53 To 57
@@ -190,29 +167,7 @@ Public Class FormMain
         '===========================
 
         '====================== Listbox Scrollbar
-        UpY = LSCBU.Top + LSCBU.Height
-        DwY = LSCBD.Top - LSCBBAR.Height + 1
-        LSCB_UPDW.Interval = 150
-        LSCB_UPDW.Enabled = False
-        LSCB_MSC.Interval = 100
-        LSCB_MSC.Enabled = False
-        LB_Ration = ListBox1.ClientRectangle.Height / ListBox1.ItemHeight
-
-        '================================Login stage=====
-        discontinue = False
-
-        Dim TmpDR As DialogResult
-
-        If SecureDesktop Then
-            TmpDR = LogInFormWork(TextStrs(59), DirName, AES_KEY_Protected, DERIVED_IDT_Protected, 0, Nothing, NoNotice, PictureGray, TheSalt)
-        Else
-            TmpDR = LogInFormWork(TextStrs(59), DirName, AES_KEY_Protected, DERIVED_IDT_Protected, 0, Nothing, NoNotice, PictureGray, TheSalt, Me)
-        End If
-
-        If TmpDR <> DialogResult.OK Then End_Program()
-
-        FullGC()
-        '=============================================
+        ListBox_SB_Init()
 
         '===================================== AutoCountDownClose
         AutoCloseTimer.Interval = 1000
@@ -234,13 +189,37 @@ Public Class FormMain
         Read_CatDatas()
         '=================================
 
-        Label_Act_Msg.Text = TextStrs(62)
+        LastAct(TextStrs(62))
         LabelBy.Text = "▎ By overdoingism Lab."
         LABVER.Text = "▎ " + TextStrs(42) + " " + versionNumber
 
         DbTester.Interval = 1000
         DbTester.Enabled = True
         AddHandler DbTester.Tick, AddressOf Timer2_Tick
+
+        '========= Read-only mode
+
+        Select Case CreateLockFile()
+            Case 0
+            Case 1
+                MSGBOXNEW(TextStrs(104) + vbCrLf + vbCrLf + TextStrs(105), MsgBoxStyle.Exclamation, TextStrs(107), Me, PictureGray)
+            Case 2
+                MSGBOXNEW(TextStrs(104) + vbCrLf + vbCrLf + TextStrs(106), MsgBoxStyle.Exclamation, TextStrs(107), Me, PictureGray)
+        End Select
+
+        If Not NotLocked Then
+            PictureBoxPwd.Image = PwdGrayImage
+            PictureBoxPwd.Enabled = False
+            PictureBoxCATMAN.Image = Make_Button_Gray(My.Resources.Resource1.button_CATMAN)
+            PictureBoxCATMAN.Enabled = False
+            TextBoxTitle.ReadOnly = True
+            TextBoxURL.ReadOnly = True
+            TextBoxNameAddr.ReadOnly = True
+            TextBoxRegMailPhone.ReadOnly = True
+            TextBoxNote1.ReadOnly = True
+            TextBoxNote2Hid.ReadOnly = True
+        End If
+        '===========================================
 
     End Sub
 
@@ -284,7 +263,7 @@ Public Class FormMain
         TextBoxNote1.Text = ""
         TextBoxNote2Hid.Text = ""
         TextBox_BHKMHelper.Text = "0"
-        ButtonHotkeyMode.Image = b_SKM_off
+        ButtonHotkeyMode.Image = b_HKO_off
 
         If TheIndex >= 0 Then
             ButtonGoUP.Enabled = False
@@ -317,7 +296,7 @@ Public Class FormMain
             CurrentAccountPass = Security.Cryptography.ProtectedData.
                  Protect(Encoding.Unicode.GetBytes(""), Nothing, DataProtectionScope.CurrentUser)
 
-            Label_Act_Msg.Text = TextStrs(27)
+            LastAct(TextStrs(27))
             GoCorrectPos()
 
             Exit Sub
@@ -326,8 +305,10 @@ Public Class FormMain
 
             Dim AES_IV_USE(15) As Byte
 
-            ButtonDelete.Enabled = True
-            ButtonDelete.Image = LBTN_Del_En
+            If NotLocked Then
+                ButtonDelete.Enabled = True
+                ButtonDelete.Image = LBTN_Del_En
+            End If
 
             NowProcFile = FilesList1(TheIndex).FileName
             If My.Computer.FileSystem.GetFileInfo(NowProcFile).Length > 1048576 Then FilesList1(TheIndex).FileIsBad = True
@@ -401,7 +382,7 @@ Public Class FormMain
                             TextBoxNote2Hid.Text = WorkStr2(6)
                             TextBox_BHKMHelper.Text = WorkStr2(7)
                             If TextBox_BHKMHelper.Text = "1" Then
-                                ButtonHotkeyMode.Image = b_SKM_on
+                                ButtonHotkeyMode.Image = b_HKO_on
                             Else
                                 TextBox_BHKMHelper.Text = "0"
                             End If
@@ -429,23 +410,26 @@ Public Class FormMain
         If ErrFlag Then
             NowPassStatue = 0
             FilesList1(TheIndex).FileIsBad = True
-            Label_Act_Msg.Text = TextStrs(67)
+            LastAct(TextStrs(67))
             MSGBOXNEW(TextStrs(65), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
         Else
 
-            ButtonGoUP.Enabled = True
-            ButtonGoUP.Image = LBTN_MoveU_En
-            ButtonGoDown.Enabled = True
-            ButtonGoDown.Image = LBTN_MoveD_En
-            ButtonTransCatalog.Enabled = True
-            ButtonTransCatalog.Image = LBTN_TKey_En
+            If NotLocked Then
+                ButtonGoUP.Enabled = True
+                ButtonGoUP.Image = LBTN_MoveU_En
+                ButtonGoDown.Enabled = True
+                ButtonGoDown.Image = LBTN_MoveD_En
+                ButtonTransCatalog.Enabled = True
+                ButtonTransCatalog.Image = LBTN_TKey_En
+            End If
+
             ButtonFileInfo.Enabled = True
             ButtonFileInfo.Image = LBTN_FInfo_En
             ButtonCopyReg.Enabled = True
 
             VG_Data_Done = False
             VG_Title_Done = False
-            Label_Act_Msg.Text = Replace(TextStrs(68), "$$$", TextBoxTitle.Text)
+            LastAct(Replace(TextStrs(68), "$$$", TextBoxTitle.Text))
             FullGC()
         End If
 
@@ -457,8 +441,6 @@ Public Class FormMain
 
         WriteFile = False
 
-        Dim confuse01 As String
-        Dim confuse02 As String
         Dim AES_IV_Use(15) As Byte
         Dim TheEncLib As New Encode_Libs
 
@@ -472,9 +454,9 @@ Public Class FormMain
                 If VG_Title_Done Then
 
                     TMPstr0 = TextBoxTitle.Text + vbCr + Random_Strs(30, 50, 1) + vbCr + INDTstr
-                    TheEncLib.Get_The_IV_ByRND(AES_IV_Use)
-                    TMPstr0 = TheEncLib.AES_Encrypt_String_Return_String(TMPstr0, PKey, AES_IV_Use)
-                    TMPstr0 = TMPstr0 + "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
+
+                    TMPstr0 = TheEncLib.AES_Encrypt_String_Return_String(TMPstr0, PKey, AES_IV_Use) +
+                        "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
 
                 Else
                     TMPstr0 = NowTitleStringCpt
@@ -493,10 +475,8 @@ Public Class FormMain
                     vbCr + Random_Strs(30, 50, 1) + vbCr + TextBoxNote1.Text + vbCr + TextBoxRegMailPhone.Text +
                     vbCr + TextBoxNote2Hid.Text + vbCr + TextBox_BHKMHelper.Text
 
-                    TheEncLib.Get_The_IV_ByRND(AES_IV_Use)
-
-                    TMPstr1 = TheEncLib.AES_Encrypt_String_Return_String(TMPstr1, PKey, AES_IV_Use)
-                    TMPstr1 = TMPstr1 + "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
+                    TMPstr1 = TheEncLib.AES_Encrypt_String_Return_String(TMPstr1, PKey, AES_IV_Use) +
+                        "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
 
                 Else
                     TMPstr1 = NowDataStringCpt
@@ -516,17 +496,13 @@ Public Class FormMain
 
                     Dim D01_IDX As Long = Get_RangeRnd_ByRNG(50, 100) + (PwdLength * Get_RangeRnd_ByRNG(2, 5))
                     If D01_IDX > 120 Then D01_IDX = Get_RangeRnd_ByRNG(50, 100)
-                    confuse01 = Random_Strs(D01_IDX, D01_IDX, 1)
 
                     Dim D02_IDX As Long = Get_RangeRnd_ByRNG(50, 100) - (PwdLength * Get_RangeRnd_ByRNG(2, 5))
                     If D02_IDX < 30 Then D02_IDX = Get_RangeRnd_ByRNG(50, 100)
-                    confuse02 = Random_Strs(D02_IDX, D02_IDX, 1)
 
-                    TheEncLib.Get_The_IV_ByRND(AES_IV_Use)
-
-                    TMPstr2 = TheEncLib.AES_Encrypt_String_Return_String(confuse01 + vbCr + SD.TextBoxPWDStr.Text + vbCr + confuse02, PKey, AES_IV_Use)
-
-                    TMPstr2 = TMPstr2 + "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
+                    TMPstr2 = TheEncLib.AES_Encrypt_String_Return_String(Random_Strs(D01_IDX, D01_IDX, 1) + vbCr +
+                        SD.TextBoxPWDStr.Text + vbCr + Random_Strs(D02_IDX, D02_IDX, 1), PKey, AES_IV_Use) +
+                        "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
 
                     SD.Dispose()
                     FullGC()
@@ -665,6 +641,8 @@ Public Class FormMain
 
     End Function
 
+    '===================== Catalog Manager ====================================
+
     Private Sub TransFullCat()
 
         Dim ErrFlag As Boolean = False
@@ -721,7 +699,7 @@ Public Class FormMain
             Me.Enabled = True
 
             If Not ErrFlag Then
-                Label_Act_Msg.Text = TextStrs(43)
+                LastAct(TextStrs(43))
 
                 If MSGBOXNEW(TextStrs(43) + vbCrLf + vbCrLf + TextStrs(10).Replace("$$$", LabelCatalog.Text),
                      MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) <> MsgBoxResult.Cancel Then
@@ -734,7 +712,7 @@ Public Class FormMain
                 End If
 
             Else
-                Label_Act_Msg.Text = TextStrs(67)
+                LastAct(TextStrs(67))
                 MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
             End If
 
@@ -779,8 +757,7 @@ Public Class FormMain
             End Try
 
             If ErrFlag Then
-
-                Label_Act_Msg.Text = TextStrs(67)
+                LastAct(TextStrs(67))
                 MSGBOXNEW(TextStrs(64), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
 
             End If
@@ -790,100 +767,6 @@ Public Class FormMain
         End If
 
     End Sub
-
-    Private Sub Write_CatDatas()
-
-        Try
-            Dim DPNOTE As String = DirName + "\" + Notefile
-            Dim IOWer1 As IO.StreamWriter = My.Computer.FileSystem.OpenTextFileWriter(DPNOTE, False)
-
-            Dim TmpWork As String = FormConfig.TextBoxCatalog.Text + vbCr
-            TmpWork += ACTLimitSelectIDX.ToString + ",0," + CAT_setting_Str(2) + "," + CAT_setting_Str(3)
-            TmpWork += ",0," + CAT_setting_Str(5) + "," + CAT_setting_Str(6)
-
-            Dim TheEncLib As New Encode_Libs
-            Dim AES_IV_Use(15) As Byte
-            TheEncLib.Get_The_IV_ByRND(AES_IV_Use)
-            TmpWork = TheEncLib.AES_Encrypt_String_Return_String(TmpWork, AES_KEY_Protected, AES_IV_Use) +
-                "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
-
-            IOWer1.WriteLine(TmpWork)
-            IOWer1.Close()
-            LabelCatalog.Text = FormConfig.TextBoxCatalog.Text
-            Label_Act_Msg.Text = TextStrs(30)
-        Catch ex As Exception
-            MsgBox(ex.Message, 0, TextStrs(5))
-        End Try
-
-    End Sub
-
-    Private Sub Read_CatDatas()
-
-        GetList()
-
-        ListBox1.SelectedIndex = 0
-
-        Dim CAT_note_File As String
-
-        FormConfig.TB_AC_KEY.SelectedIndex = 1
-        FormConfig.TB_PW_KEY.SelectedIndex = 2
-        FormConfig.CB_SIM1.SelectedIndex = 0
-        FormConfig.CB_SIM2.SelectedIndex = 0
-        FormConfig.ComboBoxTimer.SelectedIndex = 0
-        LabelCatalog.Text = TextStrs(44)
-        FormConfig.TextBoxCatalog.Text = LabelCatalog.Text
-
-        Try
-
-            CAT_note_File = DirName + "\" + Notefile
-
-            If My.Computer.FileSystem.FileExists(CAT_note_File) Then
-
-                If My.Computer.FileSystem.GetFileInfo(CAT_note_File).Length < 102400 Then
-                    Dim IOreader1 As IO.StreamReader = My.Computer.FileSystem.OpenTextFileReader(CAT_note_File)
-                    Dim WorkStr() As String = IOreader1.ReadLine.Split(",")
-                    Dim TmpWorkStr As String, TmpWorkStr2() As String
-
-                    If WorkStr.Length = 2 Then
-
-                        Dim AES_IV_USE(15) As Byte
-                        Dim TheEncLib As New Encode_Libs
-
-                        TheEncLib.StringIn_ByteOut(WorkStr(1), AES_IV_USE)
-
-                        TmpWorkStr = System.Text.Encoding.UTF8.
-                            GetString(TheEncLib.AES_Decrypt_Str_Return_Bytes(WorkStr(0), AES_KEY_Protected, AES_IV_USE))
-
-                        TmpWorkStr2 = TmpWorkStr.Split(vbCr)
-
-                        LabelCatalog.Text = TmpWorkStr2(0)
-                        FormConfig.TextBoxCatalog.Text = LabelCatalog.Text
-
-                        CAT_setting_Str = TmpWorkStr2(1).Split(",")
-
-                        If CAT_setting_Str.Length >= 7 Then
-                            RegisterKeys(CAT_setting_Str)
-                            AutoCountDownClose(ACTLimitSelect(CInt(CAT_setting_Str(0))))
-                        End If
-
-                    End If
-
-                    IOreader1.Close()
-                    IOreader1.Dispose()
-
-                End If
-
-            Else
-                FormConfig.TextBoxCatalog.Text = LabelCatalog.Text
-            End If
-
-        Catch ex As Exception
-            MSGBOXNEW(ex.Message, MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
-        End Try
-
-    End Sub
-
-    '===================== Catalog Manager ====================================
 
     Private Sub PictureBoxCATMAN_Click(sender As Object, e As EventArgs) Handles PictureBoxCATMAN.Click
 
@@ -922,11 +805,11 @@ Public Class FormMain
 
                 If ParseCSV_S1(FormConfig.ReturnCSV) = 0 Then
                     GetList()
-                    Label_Act_Msg.Text = TextStrs(91)
+                    LastAct(TextStrs(91))
                     MSGBOXNEW(TextStrs(91) + vbCrLf + vbCrLf + TextStrs(94), MsgBoxStyle.OkOnly, TextStrs(9), Me, PictureGray)
                     Go_ListBoxIdx(ListBox1.Items.Count - 1)
                 Else
-                    Label_Act_Msg.Text = TextStrs(92)
+                    LastAct(TextStrs(92))
                     MSGBOXNEW(TextStrs(92) + vbCrLf + vbCrLf + TextStrs(93), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
                 End If
 
@@ -1215,11 +1098,11 @@ Public Class FormMain
                     NowPassStatue = 3
 
                     If Not WriteFile(Get_New_ACC_Filename(DirName), AES_KEY_Protected, DERIVED_IDT_Protected) Then
-                        Label_Act_Msg.Text = Replace(TextStrs(20), "$$$", TextBoxTitle.Text)
+                        LastAct(Replace(TextStrs(20), "$$$", TextBoxTitle.Text))
                         CSVW.ProgLab.Text = Str((IDX01 + 1) / CSV_head.Length) + Acc_Counts
                         My.Application.DoEvents()
                     Else
-                        Label_Act_Msg.Text = TextStrs(67)
+                        LastAct(TextStrs(67))
                         MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
                     End If
                 End If
@@ -1297,7 +1180,109 @@ Public Class FormMain
 
     End Sub
 
+    Private Sub Write_CatDatas()
+
+        Try
+            Dim DPNOTE As String = DirName + "\" + Notefile
+            Dim IOWer1 As IO.StreamWriter = My.Computer.FileSystem.OpenTextFileWriter(DPNOTE, False)
+
+            Dim TmpWork As String = FormConfig.TextBoxCatalog.Text + vbCr
+            TmpWork += ACTLimitSelectIDX.ToString + ",0," + CAT_setting_Str(2) + "," + CAT_setting_Str(3)
+            TmpWork += ",0," + CAT_setting_Str(5) + "," + CAT_setting_Str(6)
+
+            Dim TheEncLib As New Encode_Libs
+            Dim AES_IV_Use(15) As Byte
+
+            TmpWork = TheEncLib.AES_Encrypt_String_Return_String(TmpWork, AES_KEY_Protected, AES_IV_Use) +
+                "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
+
+            IOWer1.WriteLine(TmpWork)
+            IOWer1.Close()
+            LabelCatalog.Text = FormConfig.TextBoxCatalog.Text
+            LastAct(TextStrs(30))
+        Catch ex As Exception
+            MSGBOXNEW(ex.Message, MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+        End Try
+
+    End Sub
+
+    Private Sub Read_CatDatas()
+
+        GetList()
+
+        ListBox1.SelectedIndex = 0
+
+        Dim CAT_note_File As String
+
+        FormConfig.TB_AC_KEY.SelectedIndex = 1
+        FormConfig.TB_PW_KEY.SelectedIndex = 2
+        FormConfig.CB_SIM1.SelectedIndex = 0
+        FormConfig.CB_SIM2.SelectedIndex = 0
+        FormConfig.ComboBoxTimer.SelectedIndex = 0
+        LabelCatalog.Text = TextStrs(44)
+        FormConfig.TextBoxCatalog.Text = LabelCatalog.Text
+
+        Try
+
+            CAT_note_File = DirName + "\" + Notefile
+
+            If My.Computer.FileSystem.FileExists(CAT_note_File) Then
+
+                If My.Computer.FileSystem.GetFileInfo(CAT_note_File).Length < 102400 Then
+                    Dim IOreader1 As IO.StreamReader = My.Computer.FileSystem.OpenTextFileReader(CAT_note_File)
+                    Dim WorkStr() As String = IOreader1.ReadLine.Split(",")
+                    Dim TmpWorkStr As String, TmpWorkStr2() As String
+
+                    If WorkStr.Length = 2 Then
+
+                        Dim AES_IV_USE(15) As Byte
+                        Dim TheEncLib As New Encode_Libs
+
+                        TheEncLib.StringIn_ByteOut(WorkStr(1), AES_IV_USE)
+
+                        TmpWorkStr = System.Text.Encoding.UTF8.
+                            GetString(TheEncLib.AES_Decrypt_Str_Return_Bytes(WorkStr(0), AES_KEY_Protected, AES_IV_USE))
+
+                        TmpWorkStr2 = TmpWorkStr.Split(vbCr)
+
+                        LabelCatalog.Text = TmpWorkStr2(0)
+                        FormConfig.TextBoxCatalog.Text = LabelCatalog.Text
+
+                        CAT_setting_Str = TmpWorkStr2(1).Split(",")
+
+                        If CAT_setting_Str.Length >= 7 Then
+                            RegisterKeys(CAT_setting_Str)
+                            AutoCountDownClose(ACTLimitSelect(CInt(CAT_setting_Str(0))))
+                        End If
+
+                    End If
+
+                    IOreader1.Close()
+                    IOreader1.Dispose()
+
+                End If
+
+            Else
+                FormConfig.TextBoxCatalog.Text = LabelCatalog.Text
+            End If
+
+        Catch ex As Exception
+            MSGBOXNEW(ex.Message, MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+        End Try
+
+    End Sub
+
     '============================== Auto CountDown Close ===========
+
+    Public DIGI_NUM() As Bitmap = {My.Resources.Resource1.DIGI_Y_0, My.Resources.Resource1.DIGI_Y_1,
+    My.Resources.Resource1.DIGI_Y_2, My.Resources.Resource1.DIGI_Y_3, My.Resources.Resource1.DIGI_Y_4,
+    My.Resources.Resource1.DIGI_Y_5, My.Resources.Resource1.DIGI_Y_6, My.Resources.Resource1.DIGI_Y_7,
+    My.Resources.Resource1.DIGI_Y_8, My.Resources.Resource1.DIGI_Y_9}
+
+    Public DIGI_NUM_N As New Bitmap(My.Resources.Resource1.DIGI_Y__)
+    Public WithEvents AutoCloseTimer As New Windows.Forms.Timer
+
+    Dim CONFIG_FORM_IMG As New Bitmap(Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.SETTINGS_PNG)))
 
     Private Sub AutoCountDownClose(CountdownSec As Integer) 'Set Auto CountDown Close Timer
 
@@ -1313,7 +1298,6 @@ Public Class FormMain
         End If
 
     End Sub
-
 
     Private Sub AutoCloseTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles AutoCloseTimer.Tick
 
@@ -1345,7 +1329,7 @@ Public Class FormMain
 
     '================== Textbox Works =================================
 
-    Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextBoxNameAddr.TextChanged
+    Private Sub TextBoxNameAddr_TextChanged(sender As Object, e As EventArgs) Handles TextBoxNameAddr.TextChanged
 
         If Not ReadingWorking Then
             VG_CCC_Done = True
@@ -1363,8 +1347,10 @@ Public Class FormMain
         If Not ReadingWorking Then
             VG_Data_Done = True
             If TextBoxTitle.Text <> "" Then
-                ButtonSave.Enabled = True
-                ButtonSave.Image = LBTN_Save_En
+                If NotLocked Then
+                    ButtonSave.Enabled = True
+                    ButtonSave.Image = LBTN_Save_En
+                End If
             End If
         End If
 
@@ -1378,8 +1364,10 @@ Public Class FormMain
                 ButtonSave.Enabled = True
                 ButtonSave.Image = LBTN_Save_En
             Else
-                ButtonSave.Enabled = False
-                ButtonSave.Image = LBTN_Save_Di
+                If NotLocked Then
+                    ButtonSave.Enabled = True
+                    ButtonSave.Image = LBTN_Save_En
+                End If
             End If
         End If
 
@@ -1529,7 +1517,9 @@ Public Class FormMain
         Do
             Try
                 Thread.Sleep(200)
-                My.Computer.Clipboard.SetText(TheTextBox.Text)
+                'My.Computer.Clipboard.SetText(TheTextBox.Text)
+                Dim CPWorker As New ClipboardHelper2
+                CPWorker.SetClipboardText(TheTextBox.Text)
                 Exit Do
             Catch ex As Exception
             End Try
@@ -1571,7 +1561,8 @@ Public Class FormMain
         Do
             Try
                 Thread.Sleep(200)
-                My.Computer.Clipboard.SetText(SB2.ToString)
+                Dim CPWorker As New ClipboardHelper2
+                CPWorker.SetClipboardText(SB2.ToString)
                 Exit Do
             Catch ex As Exception
             End Try
@@ -1599,7 +1590,9 @@ Public Class FormMain
             Do
                 Try
                     Thread.Sleep(200)
-                    My.Computer.Clipboard.SetText(TheTextBox.Text)
+                    'My.Computer.Clipboard.SetText(TheTextBox.Text)
+                    Dim CPWorker As New ClipboardHelper2
+                    CPWorker.SetClipboardText(TheTextBox.Text)
                     Exit Do
                 Catch ex As Exception
                 End Try
@@ -1690,16 +1683,30 @@ Public Class FormMain
     Private Sub ButtonCopyAccount_Click(sender As Object, e As EventArgs) Handles ButtonCopyAccount.Click
 
         If TextBoxNameAddr.Text = "" Then Exit Sub
-        My.Computer.Clipboard.SetText(TextBoxNameAddr.Text)
-        Label_Act_Msg.Text = TextStrs(25)
+
+        Dim CPWorker As New ClipboardHelper2
+
+        If CPWorker.SetClipboardText(TextBoxNameAddr.Text) Then
+            LastAct(TextStrs(25))
+        Else
+            LastAct(TextStrs(102))
+            MSGBOXNEW(TextStrs(102) + vbCrLf + vbCrLf + TextStrs(103), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+        End If
 
     End Sub
 
     Private Sub ButtonCopyReg_Click(sender As Object, e As EventArgs) Handles ButtonCopyReg.Click
 
         If TextBoxRegMailPhone.Text = "" Then Exit Sub
-        Label_Act_Msg.Text = TextStrs(25)
-        My.Computer.Clipboard.SetText(TextBoxRegMailPhone.Text)
+
+        Dim CPWorker As New ClipboardHelper2
+
+        If CPWorker.SetClipboardText(TextBoxRegMailPhone.Text) Then
+            LastAct(TextStrs(25))
+        Else
+            LastAct(TextStrs(102))
+            MSGBOXNEW(TextStrs(102) + vbCrLf + vbCrLf + TextStrs(103), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
+        End If
 
     End Sub
 
@@ -1708,7 +1715,7 @@ Public Class FormMain
         If TextBoxNote2Hid.UseSystemPasswordChar Then
             ButtonViewNote.Image = b_view_Son_on
         Else
-            ButtonViewNote.Image = b_view_Son
+            ButtonViewNote.Image = b_view_on
         End If
 
         TextBoxNote2Hid.UseSystemPasswordChar = Not TextBoxNote2Hid.UseSystemPasswordChar
@@ -1721,7 +1728,7 @@ Public Class FormMain
 
         Try
             Process.Start(TextBoxURL.Text)
-            Label_Act_Msg.Text = TextStrs(49)
+            LastAct(TextStrs(49))
         Catch ex As Exception
             MSGBOXNEW(TextStrs(26), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
         End Try
@@ -1763,7 +1770,7 @@ Public Class FormMain
             SDobj.Dispose()
             FullGC()
             StopClipboardMonitorBlocker()
-            Label_Act_Msg.Text = TextStrs(25)
+            LastAct(TextStrs(25))
         End If
 
     End Sub
@@ -1787,14 +1794,23 @@ Public Class FormMain
     End Sub
 
     Private Sub PictureBoxPwdVi_MouseUp(sender As Object, e As MouseEventArgs) Handles PictureBoxPwdVi.MouseUp
-        PictureBoxPwd.Image = My.Resources.Resource1.TOPSEC
+        If NotLocked Then
+            PictureBoxPwd.Image = My.Resources.Resource1.TOPSEC
+        Else
+            PictureBoxPwd.Image = PwdGrayImage
+        End If
         PictureBoxPwdVi.Image = b_view_small_on
     End Sub
 
     Private Sub PictureBoxPwdVi_MouseLeave(sender As Object, e As EventArgs) Handles PictureBoxPwdVi.MouseLeave
-        PictureBoxPwd.Image = My.Resources.Resource1.TOPSEC
+        If NotLocked Then
+            PictureBoxPwd.Image = My.Resources.Resource1.TOPSEC
+        Else
+            PictureBoxPwd.Image = PwdGrayImage
+        End If
         PictureBoxPwdVi.Image = b_view_small_on
     End Sub
+
 
     Private Sub ButtonSave_Click(sender As Object, e As EventArgs) Handles ButtonSave.Click
 
@@ -1822,12 +1838,12 @@ Public Class FormMain
 
                 If Not WriteFile(Get_New_ACC_Filename(DirName), AES_KEY_Protected, DERIVED_IDT_Protected) Then
                     GetList()
-                    Label_Act_Msg.Text = Replace(TextStrs(20), "$$$", TextBoxTitle.Text)
+                    LastAct(Replace(TextStrs(20), "$$$", TextBoxTitle.Text))
                     Exe_Fill_Trash()
                     FullGC()
                     Go_ListBoxIdx(ListBox1.Items.Count - 1)
                 Else
-                    Label_Act_Msg.Text = TextStrs(67)
+                    LastAct(TextStrs(67))
                     MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
                 End If
 
@@ -1844,11 +1860,11 @@ Public Class FormMain
                         GetList()
                         Go_ListBoxIdx(OLDidx)
                     End If
-                    Label_Act_Msg.Text = Replace(TextStrs(21), "$$$", TextBoxTitle.Text)
+                    LastAct(Replace(TextStrs(21), "$$$", TextBoxTitle.Text))
                     Exe_Fill_Trash()
                     FullGC()
                 Else
-                    Label_Act_Msg.Text = TextStrs(67)
+                    LastAct(TextStrs(67))
                     MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
                 End If
 
@@ -1864,10 +1880,10 @@ Public Class FormMain
 
         Select Case Delete_ACC_File(NowProcFile, TextStrs(8), False)
             Case 0
-                Label_Act_Msg.Text = Replace(TextStrs(40), "$$$", NowDeleteAccName)
+                LastAct(Replace(TextStrs(40), "$$$", NowDeleteAccName))
             Case 1
             Case 2
-                Label_Act_Msg.Text = TextStrs(67)
+                LastAct(TextStrs(67))
                 MSGBOXNEW(TextStrs(48), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
         End Select
 
@@ -1877,6 +1893,7 @@ Public Class FormMain
 
         Dim UpperFilename As String
         Dim NowSelect As Integer = ListBox1.SelectedIndex
+        Dim NowWorkName As String = ListBox1.Items(NowSelect)
 
         If NowSelect >= 2 Then
 
@@ -1887,7 +1904,7 @@ Public Class FormMain
 
             GetList()
             Go_ListBoxIdx(NowSelect - 1)
-            Label_Act_Msg.Text = TextStrs(28)
+            LastAct(Replace(TextStrs(28), "$$$", NowWorkName))
         Else
             Exit Sub
         End If
@@ -1898,6 +1915,7 @@ Public Class FormMain
 
         Dim LowerFilename As String
         Dim NowSelect As Integer = ListBox1.SelectedIndex
+        Dim NowWorkName As String = ListBox1.Items(NowSelect)
 
         If NowSelect < ListBox1.Items.Count - 1 Then
 
@@ -1908,7 +1926,7 @@ Public Class FormMain
 
             GetList()
             Go_ListBoxIdx(NowSelect + 1)
-            Label_Act_Msg.Text = TextStrs(29)
+            LastAct(Replace(TextStrs(29), "$$$", NowWorkName))
 
         Else
             Exit Sub
@@ -1971,12 +1989,11 @@ Public Class FormMain
             End If
 
             If Not ErrFlag Then
-                Label_Act_Msg.Text = Replace(TextStrs(41), "$$$", NowTransAccName)
+                LastAct(Replace(TextStrs(41), "$$$", NowTransAccName))
             Else
-                Label_Act_Msg.Text = TextStrs(67)
+                LastAct(TextStrs(67))
                 MSGBOXNEW(TextStrs(66), MsgBoxStyle.Critical, TextStrs(5), Me, PictureGray)
             End If
-
 
         End If
 
@@ -2053,7 +2070,26 @@ Public Class FormMain
         End_Program()
     End Sub
 
-    '==================================================== ListBox Scrollbar work ===============
+    '================================ ListBox Scrollbar work ===============
+
+    Dim WithEvents LSCB_UPDW As New Windows.Forms.Timer
+    Dim WithEvents LSCB_MSC As New Windows.Forms.Timer
+    Dim NowUPorDW As Integer
+    Dim LB_Ration As Double
+    Dim LB_Range_Scale As Double
+    Dim UpY As Integer
+    Dim DwY As Integer
+    Dim BarIsHolding As Boolean
+
+    Private Sub ListBox_SB_Init()
+        UpY = LSCBU.Top + LSCBU.Height
+        DwY = LSCBD.Top - LSCBBAR.Height + 1
+        LSCB_UPDW.Interval = 150
+        LSCB_UPDW.Enabled = False
+        LSCB_MSC.Interval = 100
+        LSCB_MSC.Enabled = False
+        LB_Ration = ListBox1.ClientRectangle.Height / ListBox1.ItemHeight
+    End Sub
 
     Private Sub LSCBU_MouseDown(sender As Object, e As MouseEventArgs) Handles _
         LSCBU.MouseDown, LSCBD.MouseDown, LSCBBACK.MouseDown
@@ -2181,22 +2217,56 @@ Public Class FormMain
         GoCorrectPos()
     End Sub
 
+    '====================== Last action
+
+    Private Sub LastAct(Str As String)
+
+        Label_Act_Last.Text = DateTime.Now.ToString("HH:mm:ss")
+        Label_Act_Work.Text = Str
+
+        Dim ActWork As New Bitmap(Label_Act_Work.Width, Label_Act_Work.Height)
+        Dim NewRec As Rectangle
+        NewRec.Width = Label_Act_Work.Width
+        NewRec.Height = Label_Act_Work.Height
+        Label_Act_Work.DrawToBitmap(ActWork, NewRec)
+        Label_Act_Show.Image = ResizeBitmap(ActWork, 0.5, 0.5)
+
+    End Sub
+
     '====================== Button Visual works =========================
+
+    Dim b_Logout As New Bitmap(My.Resources.Resource1.button_LOGOUT)
+    Dim b_Final As New Bitmap(My.Resources.Resource1.button_Final)
+    Dim b_HELP As New Bitmap(My.Resources.Resource1.button_HELP)
+    Dim b_Launch As New Bitmap(My.Resources.Resource1.button_Launch)
+    Dim b_COPY As New Bitmap(My.Resources.Resource1.button_COPY)
+    Dim b_view_small As New Bitmap(My.Resources.Resource1.button_view_small)
+    Dim b_copy_small As New Bitmap(My.Resources.Resource1.button_copy_small)
+    Dim b_view As New Bitmap(My.Resources.Resource1.button_view)
+    Dim b_HKO_on As New Bitmap(My.Resources.Resource1.button_HKO_small_on)
+    Dim b_HKO_off As New Bitmap(My.Resources.Resource1.button_HKO_small_off)
+    Dim b_PictureBoxCATMAN As New Bitmap(My.Resources.Resource1.button_CATMAN)
 
     Dim b_Logout_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_LOGOUT)
     Dim b_Final_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Final)
     Dim b_HELP_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_HELP)
     Dim b_Launch_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Launch)
     Dim b_COPY_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_COPY)
-    Dim b_view_small_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_small)
     Dim b_copy_small_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_copy_small)
-    Dim b_view_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view)
-    Dim b_view_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_Son, 1.1)
-    Dim b_view_small_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_small_Son, 1.1)
-    Dim b_SKM_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_SKM_On, 1.1)
-    Dim b_SKM_Soff_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_SKM_Off, 1.1)
 
-    Dim b_PictureBoxCATMAN_on As New Bitmap(My.Resources.Resource1.button_CATMAN_on)
+    Dim b_view_small_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view_small)
+    Dim b_view_small_Son As Bitmap = Make_Button_HueChange(My.Resources.Resource1.button_view_small, 315) 'Not actully use
+    Dim b_view_small_Son_on As Bitmap = Make_Button_brighter(b_view_small_Son, 1.1)
+
+    Dim b_view_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_view)
+    Dim b_view_Son As Bitmap = Make_Button_HueChange(My.Resources.Resource1.button_view, 315)
+    Dim b_view_Son_on As Bitmap = Make_Button_brighter(b_view_Son, 1.1)
+
+    Dim b_HKO_Soff_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_HKO_small_off, 1.1)
+    Dim b_HKO_Son_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_HKO_small_on, 1.1)
+
+    Dim b_PictureBoxCATMAN_on As Bitmap = Make_Button_brighter(Make_Button_HueChange(b_PictureBoxCATMAN, 15), 1.1)
+
 
     Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
         ButtonRestart.MouseEnter, ButtonFin.MouseEnter, ButtonHelp.MouseEnter, ButtonLaunch.MouseEnter,
@@ -2230,30 +2300,16 @@ Public Class FormMain
                 PictureBoxCATMAN.Image = b_PictureBoxCATMAN_on
             Case "ButtonHotkeyMode"
 
-                If TextBox_BHKMHelper.Text = "0" Then ButtonHotkeyMode.Image = b_SKM_Soff_on
-                If TextBox_BHKMHelper.Text = "1" Then ButtonHotkeyMode.Image = b_SKM_Son_on
+                If TextBox_BHKMHelper.Text = "0" Then ButtonHotkeyMode.Image = b_HKO_Soff_on
+                If TextBox_BHKMHelper.Text = "1" Then ButtonHotkeyMode.Image = b_HKO_Son_on
 
         End Select
     End Sub
 
-    Dim b_Logout As New Bitmap(My.Resources.Resource1.button_LOGOUT)
-    Dim b_Final As New Bitmap(My.Resources.Resource1.button_Final)
-    Dim b_HELP As New Bitmap(My.Resources.Resource1.button_HELP)
-    Dim b_Launch As New Bitmap(My.Resources.Resource1.button_Launch)
-    Dim b_COPY As New Bitmap(My.Resources.Resource1.button_COPY)
-    Dim b_view_small As New Bitmap(My.Resources.Resource1.button_view_small)
-    Dim b_copy_small As New Bitmap(My.Resources.Resource1.button_copy_small)
-    Dim b_view As New Bitmap(My.Resources.Resource1.button_view)
-    Dim b_view_Son As New Bitmap(My.Resources.Resource1.button_view_Son)
-    Dim b_SKM_on As New Bitmap(My.Resources.Resource1.button_SKM_On)
-    Dim b_SKM_off As New Bitmap(My.Resources.Resource1.button_SKM_Off)
-    Dim b_PictureBoxCATMAN As New Bitmap(My.Resources.Resource1.button_CATMAN)
-
     Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles _
         ButtonRestart.MouseLeave, ButtonFin.MouseLeave, ButtonHelp.MouseLeave, ButtonLaunch.MouseLeave,
         ButtonCopyAccount.MouseLeave, PictureBoxPwdVi.MouseLeave, PictureBoxPwdCPY.MouseLeave,
-        ButtonCopyReg.MouseLeave, ButtonViewNote.MouseLeave, PictureBoxCATMAN.MouseLeave,
-        ButtonHotkeyMode.MouseLeave
+        ButtonCopyReg.MouseLeave, ButtonViewNote.MouseLeave, PictureBoxCATMAN.MouseLeave, ButtonHotkeyMode.MouseLeave
 
         Select Case sender.Name
             Case "ButtonRestart"
@@ -2281,12 +2337,25 @@ Public Class FormMain
             Case "PictureBoxCATMAN"
                 PictureBoxCATMAN.Image = b_PictureBoxCATMAN
             Case "ButtonHotkeyMode"
-                If TextBox_BHKMHelper.Text = "0" Then ButtonHotkeyMode.Image = b_SKM_off
-                If TextBox_BHKMHelper.Text = "1" Then ButtonHotkeyMode.Image = b_SKM_on
-
+                If TextBox_BHKMHelper.Text = "0" Then ButtonHotkeyMode.Image = b_HKO_off
+                If TextBox_BHKMHelper.Text = "1" Then ButtonHotkeyMode.Image = b_HKO_on
 
         End Select
     End Sub
+
+    Dim LBTN_Save_En As New Bitmap(My.Resources.Resource1.button_L_save)
+    Dim LBTN_Del_En As New Bitmap(My.Resources.Resource1.button_L_delete)
+    Dim LBTN_MoveU_En As New Bitmap(My.Resources.Resource1.button_L_moveUP)
+    Dim LBTN_MoveD_En As New Bitmap(My.Resources.Resource1.button_L_moveDWN)
+    Dim LBTN_TKey_En As New Bitmap(My.Resources.Resource1.button_L_transKEY)
+    Dim LBTN_FInfo_En As New Bitmap(My.Resources.Resource1.button_L_fileInfo)
+
+    Dim LBTN_Save_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_save)
+    Dim LBTN_Del_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_delete)
+    Dim LBTN_MoveU_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_moveUP)
+    Dim LBTN_MoveD_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_moveDWN)
+    Dim LBTN_TKey_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_transKEY)
+    Dim LBTN_FInfo_Di As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_L_fileInfo)
 
     Dim LBTN_Save_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_L_save, 1.2)
     Dim LBTN_delete_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_L_delete, 1.2)
@@ -2344,10 +2413,10 @@ Public Class FormMain
     Private Sub ButtonHotkeyMode_Click(sender As Object, e As EventArgs) Handles ButtonHotkeyMode.Click
 
         If TextBox_BHKMHelper.Text = "0" Then
-            ButtonHotkeyMode.Image = b_SKM_Son_on
+            ButtonHotkeyMode.Image = b_HKO_Son_on
             TextBox_BHKMHelper.Text = "1"
         Else
-            ButtonHotkeyMode.Image = b_SKM_Soff_on
+            ButtonHotkeyMode.Image = b_HKO_Soff_on
             TextBox_BHKMHelper.Text = "0"
         End If
 

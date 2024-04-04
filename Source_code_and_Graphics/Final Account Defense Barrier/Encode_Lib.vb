@@ -12,6 +12,7 @@ Public Class Encode_Libs : Implements IDisposable
 
     Public Overloads Function AES_Encrypt_String_Return_String(ByRef Input_String As String, ByRef AES_Key() As Byte, ByRef AES_IV() As Byte) As String
 
+        Get_The_IV_By_SHA512(Input_String, AES_IV)
         AES_Encrypt_String_Return_String = AES_Encrypt_Byte_Return_String(Encoding.GetEncoding("UTF-8").GetBytes(Input_String), AES_Key, AES_IV)
 
     End Function
@@ -107,28 +108,28 @@ Public Class Encode_Libs : Implements IDisposable
 
     End Function
 
-    'Not use yet
-    Public Function Get_The_IV_BySHA512(ByRef inputStr As String) As Byte()
+    Private Sub Get_The_IV_By_SHA512(ByRef inputStr As String, ByRef InByte() As Byte)
 
         Dim SHA512_Worker As New Security.Cryptography.SHA512CryptoServiceProvider
+        Dim inputStr_ToByte() As Byte = Encoding.UTF8.GetBytes(inputStr)
 
-        Dim WorkBytes512b(0) As Byte
-        Dim WorkBytes16(0) As Byte
+        Dim WorkBytes512b() As Byte = inputStr_ToByte
 
-        StringIn_ByteOut(inputStr, WorkBytes512b)
+        For IDX01 As Integer = 0 To inputStr_ToByte.Length - 1
+            inputStr_ToByte(IDX01) = 0
+        Next
 
-        For IDX01 As Integer = 0 To 1023
+        For IDX01 As Integer = 0 To 255
             WorkBytes512b = SHA512_Worker.ComputeHash(WorkBytes512b)
         Next
 
-        Buffer.BlockCopy(WorkBytes512b, 0, WorkBytes16, 0, 16)
+        Buffer.BlockCopy(WorkBytes512b, 0, InByte, 0, 16)
         SHA512_Worker.Dispose()
 
-        Return WorkBytes16
+    End Sub
 
-    End Function
-
-    Public Sub Get_The_IV_ByRND(ByRef TheIV() As Byte)
+    'The Old way
+    Public Sub Get_The_IV_By_RND(ByRef TheIV() As Byte)
         Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
         rng.GetBytes(TheIV)
         rng.Dispose()

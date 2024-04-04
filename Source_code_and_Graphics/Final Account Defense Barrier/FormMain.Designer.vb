@@ -29,12 +29,16 @@ Partial Class FormMain
         Me.TextBoxNameAddr = New System.Windows.Forms.TextBox()
         Me.TextBoxRegMailPhone = New System.Windows.Forms.TextBox()
         Me.TextBoxNote2Hid = New System.Windows.Forms.TextBox()
-        Me.Label_Act_Msg = New System.Windows.Forms.Label()
+        Me.Label_Act_Show = New System.Windows.Forms.Label()
         Me.TextBoxNote1 = New System.Windows.Forms.TextBox()
         Me.LabelCatalog = New System.Windows.Forms.Label()
         Me.LABVER = New System.Windows.Forms.Label()
         Me.LabelBy = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.TextBox_BHKMHelper = New System.Windows.Forms.TextBox()
+        Me.Label_Act_Last = New System.Windows.Forms.Label()
+        Me.Label_Act_Work = New System.Windows.Forms.Label()
+        Me.ButtonHotkeyMode = New System.Windows.Forms.PictureBox()
         Me.LSCBBAR = New System.Windows.Forms.PictureBox()
         Me.LSCBD = New System.Windows.Forms.PictureBox()
         Me.LSCBU = New System.Windows.Forms.PictureBox()
@@ -51,7 +55,7 @@ Partial Class FormMain
         Me.ButtonFin = New System.Windows.Forms.PictureBox()
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
-        Me.ButtonHotkeyMode = New System.Windows.Forms.PictureBox()
+        Me.ButtonHotkeyTitle = New System.Windows.Forms.PictureBox()
         Me.PictureBoxCATMAN = New System.Windows.Forms.PictureBox()
         Me.ButtonSave = New System.Windows.Forms.PictureBox()
         Me.ButtonFileInfo = New System.Windows.Forms.PictureBox()
@@ -68,8 +72,8 @@ Partial Class FormMain
         Me.PictureBoxPwd = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
-        Me.TextBox_BHKMHelper = New System.Windows.Forms.TextBox()
         Me.Panel1.SuspendLayout()
+        CType(Me.ButtonHotkeyMode, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LSCBBAR, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LSCBD, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LSCBU, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -86,7 +90,7 @@ Partial Class FormMain
         CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ButtonHotkeyMode, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ButtonHotkeyTitle, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxCATMAN, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonSave, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonFileInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -175,18 +179,17 @@ Partial Class FormMain
         Me.TextBoxNote2Hid.TabIndex = 12
         Me.TextBoxNote2Hid.UseSystemPasswordChar = True
         '
-        'Label_Act_Msg
+        'Label_Act_Show
         '
-        Me.Label_Act_Msg.AutoEllipsis = True
-        Me.Label_Act_Msg.BackColor = System.Drawing.Color.Black
-        Me.Label_Act_Msg.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label_Act_Msg.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.Label_Act_Msg.Location = New System.Drawing.Point(24, 655)
-        Me.Label_Act_Msg.Name = "Label_Act_Msg"
-        Me.Label_Act_Msg.Size = New System.Drawing.Size(291, 19)
-        Me.Label_Act_Msg.TabIndex = 29
-        Me.Label_Act_Msg.Text = "(none)"
-        Me.Label_Act_Msg.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Label_Act_Show.AutoEllipsis = True
+        Me.Label_Act_Show.BackColor = System.Drawing.Color.FromArgb(CType(CType(42, Byte), Integer), CType(CType(42, Byte), Integer), CType(CType(22, Byte), Integer))
+        Me.Label_Act_Show.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_Act_Show.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label_Act_Show.Location = New System.Drawing.Point(23, 655)
+        Me.Label_Act_Show.Name = "Label_Act_Show"
+        Me.Label_Act_Show.Size = New System.Drawing.Size(291, 19)
+        Me.Label_Act_Show.TabIndex = 29
+        Me.Label_Act_Show.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'TextBoxNote1
         '
@@ -239,6 +242,56 @@ Partial Class FormMain
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(265, 266)
         Me.Panel1.TabIndex = 122
+        '
+        'TextBox_BHKMHelper
+        '
+        Me.TextBox_BHKMHelper.BackColor = System.Drawing.Color.FromArgb(CType(CType(42, Byte), Integer), CType(CType(22, Byte), Integer), CType(CType(22, Byte), Integer))
+        Me.TextBox_BHKMHelper.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox_BHKMHelper.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox_BHKMHelper.ForeColor = System.Drawing.Color.FromArgb(CType(CType(126, Byte), Integer), CType(CType(237, Byte), Integer), CType(CType(176, Byte), Integer))
+        Me.TextBox_BHKMHelper.Location = New System.Drawing.Point(891, 8)
+        Me.TextBox_BHKMHelper.Name = "TextBox_BHKMHelper"
+        Me.TextBox_BHKMHelper.Size = New System.Drawing.Size(68, 19)
+        Me.TextBox_BHKMHelper.TabIndex = 127
+        Me.TextBox_BHKMHelper.Text = "0"
+        Me.TextBox_BHKMHelper.Visible = False
+        '
+        'Label_Act_Last
+        '
+        Me.Label_Act_Last.AutoEllipsis = True
+        Me.Label_Act_Last.BackColor = System.Drawing.Color.FromArgb(CType(CType(252, Byte), Integer), CType(CType(170, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label_Act_Last.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_Act_Last.ForeColor = System.Drawing.Color.Black
+        Me.Label_Act_Last.Location = New System.Drawing.Point(204, 620)
+        Me.Label_Act_Last.Name = "Label_Act_Last"
+        Me.Label_Act_Last.Size = New System.Drawing.Size(108, 20)
+        Me.Label_Act_Last.TabIndex = 128
+        Me.Label_Act_Last.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label_Act_Work
+        '
+        Me.Label_Act_Work.AutoEllipsis = True
+        Me.Label_Act_Work.BackColor = System.Drawing.Color.FromArgb(CType(CType(42, Byte), Integer), CType(CType(42, Byte), Integer), CType(CType(22, Byte), Integer))
+        Me.Label_Act_Work.Font = New System.Drawing.Font("Arial Narrow", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label_Act_Work.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label_Act_Work.Location = New System.Drawing.Point(460, 670)
+        Me.Label_Act_Work.Name = "Label_Act_Work"
+        Me.Label_Act_Work.Size = New System.Drawing.Size(582, 38)
+        Me.Label_Act_Work.TabIndex = 129
+        Me.Label_Act_Work.Text = "(none)"
+        Me.Label_Act_Work.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.Label_Act_Work.Visible = False
+        '
+        'ButtonHotkeyMode
+        '
+        Me.ButtonHotkeyMode.BackColor = System.Drawing.Color.Black
+        Me.ButtonHotkeyMode.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonHotkeyMode.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_HKO_small_off
+        Me.ButtonHotkeyMode.Location = New System.Drawing.Point(869, 84)
+        Me.ButtonHotkeyMode.Name = "ButtonHotkeyMode"
+        Me.ButtonHotkeyMode.Size = New System.Drawing.Size(112, 28)
+        Me.ButtonHotkeyMode.TabIndex = 133
+        Me.ButtonHotkeyMode.TabStop = False
         '
         'LSCBBAR
         '
@@ -413,25 +466,25 @@ Partial Class FormMain
         Me.PictureBox3.TabIndex = 106
         Me.PictureBox3.TabStop = False
         '
-        'ButtonHotkeyMode
+        'ButtonHotkeyTitle
         '
-        Me.ButtonHotkeyMode.BackColor = System.Drawing.Color.Black
-        Me.ButtonHotkeyMode.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.ButtonHotkeyMode.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_SKM_Off
-        Me.ButtonHotkeyMode.Location = New System.Drawing.Point(871, 51)
-        Me.ButtonHotkeyMode.Name = "ButtonHotkeyMode"
-        Me.ButtonHotkeyMode.Size = New System.Drawing.Size(112, 61)
-        Me.ButtonHotkeyMode.TabIndex = 105
-        Me.ButtonHotkeyMode.TabStop = False
+        Me.ButtonHotkeyTitle.BackColor = System.Drawing.Color.Black
+        Me.ButtonHotkeyTitle.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ButtonHotkeyTitle.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_HKM_Title
+        Me.ButtonHotkeyTitle.Location = New System.Drawing.Point(871, 51)
+        Me.ButtonHotkeyTitle.Name = "ButtonHotkeyTitle"
+        Me.ButtonHotkeyTitle.Size = New System.Drawing.Size(112, 28)
+        Me.ButtonHotkeyTitle.TabIndex = 105
+        Me.ButtonHotkeyTitle.TabStop = False
         '
         'PictureBoxCATMAN
         '
         Me.PictureBoxCATMAN.BackColor = System.Drawing.Color.Black
         Me.PictureBoxCATMAN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBoxCATMAN.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_CATMAN
-        Me.PictureBoxCATMAN.Location = New System.Drawing.Point(26, 117)
+        Me.PictureBoxCATMAN.Location = New System.Drawing.Point(32, 122)
         Me.PictureBoxCATMAN.Name = "PictureBoxCATMAN"
-        Me.PictureBoxCATMAN.Size = New System.Drawing.Size(170, 64)
+        Me.PictureBoxCATMAN.Size = New System.Drawing.Size(158, 54)
         Me.PictureBoxCATMAN.TabIndex = 104
         Me.PictureBoxCATMAN.TabStop = False
         '
@@ -517,7 +570,7 @@ Partial Class FormMain
         Me.PictureBoxPwdCPY.BackColor = System.Drawing.Color.Black
         Me.PictureBoxPwdCPY.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBoxPwdCPY.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_copy_small
-        Me.PictureBoxPwdCPY.Location = New System.Drawing.Point(871, 321)
+        Me.PictureBoxPwdCPY.Location = New System.Drawing.Point(871, 322)
         Me.PictureBoxPwdCPY.Name = "PictureBoxPwdCPY"
         Me.PictureBoxPwdCPY.Size = New System.Drawing.Size(112, 28)
         Me.PictureBoxPwdCPY.TabIndex = 96
@@ -582,7 +635,7 @@ Partial Class FormMain
         Me.PictureBox2.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.main
         Me.PictureBox2.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(995, 698)
+        Me.PictureBox2.Size = New System.Drawing.Size(993, 696)
         Me.PictureBox2.TabIndex = 42
         Me.PictureBox2.TabStop = False
         '
@@ -595,26 +648,16 @@ Partial Class FormMain
         Me.PictureGray.TabStop = False
         Me.PictureGray.Visible = False
         '
-        'TextBox_BHKMHelper
-        '
-        Me.TextBox_BHKMHelper.BackColor = System.Drawing.Color.FromArgb(CType(CType(42, Byte), Integer), CType(CType(22, Byte), Integer), CType(CType(22, Byte), Integer))
-        Me.TextBox_BHKMHelper.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox_BHKMHelper.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox_BHKMHelper.ForeColor = System.Drawing.Color.FromArgb(CType(CType(126, Byte), Integer), CType(CType(237, Byte), Integer), CType(CType(176, Byte), Integer))
-        Me.TextBox_BHKMHelper.Location = New System.Drawing.Point(891, 8)
-        Me.TextBox_BHKMHelper.Name = "TextBox_BHKMHelper"
-        Me.TextBox_BHKMHelper.Size = New System.Drawing.Size(68, 19)
-        Me.TextBox_BHKMHelper.TabIndex = 127
-        Me.TextBox_BHKMHelper.Text = "0"
-        Me.TextBox_BHKMHelper.Visible = False
-        '
         'FormMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.ClientSize = New System.Drawing.Size(995, 698)
+        Me.ClientSize = New System.Drawing.Size(993, 696)
         Me.ControlBox = False
+        Me.Controls.Add(Me.ButtonHotkeyMode)
+        Me.Controls.Add(Me.Label_Act_Work)
+        Me.Controls.Add(Me.Label_Act_Last)
         Me.Controls.Add(Me.TextBox_BHKMHelper)
         Me.Controls.Add(Me.LSCBBAR)
         Me.Controls.Add(Me.LSCBD)
@@ -636,7 +679,7 @@ Partial Class FormMain
         Me.Controls.Add(Me.ButtonFin)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.PictureBox3)
-        Me.Controls.Add(Me.ButtonHotkeyMode)
+        Me.Controls.Add(Me.ButtonHotkeyTitle)
         Me.Controls.Add(Me.PictureBoxCATMAN)
         Me.Controls.Add(Me.ButtonSave)
         Me.Controls.Add(Me.ButtonFileInfo)
@@ -652,7 +695,7 @@ Partial Class FormMain
         Me.Controls.Add(Me.ButtonCopyAccount)
         Me.Controls.Add(Me.PictureBoxPwd)
         Me.Controls.Add(Me.TextBoxNote1)
-        Me.Controls.Add(Me.Label_Act_Msg)
+        Me.Controls.Add(Me.Label_Act_Show)
         Me.Controls.Add(Me.TextBoxNote2Hid)
         Me.Controls.Add(Me.TextBoxRegMailPhone)
         Me.Controls.Add(Me.TextBoxNameAddr)
@@ -668,6 +711,7 @@ Partial Class FormMain
         Me.Text = "FADB"
         Me.TransparencyKey = System.Drawing.Color.Lime
         Me.Panel1.ResumeLayout(False)
+        CType(Me.ButtonHotkeyMode, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LSCBBAR, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LSCBD, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LSCBU, System.ComponentModel.ISupportInitialize).EndInit()
@@ -684,7 +728,7 @@ Partial Class FormMain
         CType(Me.ButtonFin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ButtonHotkeyMode, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ButtonHotkeyTitle, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxCATMAN, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonSave, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonFileInfo, System.ComponentModel.ISupportInitialize).EndInit()
@@ -712,7 +756,7 @@ Partial Class FormMain
     Friend WithEvents TextBoxNameAddr As TextBox
     Friend WithEvents TextBoxRegMailPhone As TextBox
     Friend WithEvents TextBoxNote2Hid As TextBox
-    Friend WithEvents Label_Act_Msg As Label
+    Friend WithEvents Label_Act_Show As Label
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents TextBoxNote1 As TextBox
     Friend WithEvents PictureBoxPwd As PictureBox
@@ -729,7 +773,7 @@ Partial Class FormMain
     Friend WithEvents ButtonFileInfo As PictureBox
     Friend WithEvents ButtonSave As PictureBox
     Friend WithEvents PictureBoxCATMAN As PictureBox
-    Friend WithEvents ButtonHotkeyMode As PictureBox
+    Friend WithEvents ButtonHotkeyTitle As PictureBox
     Friend WithEvents PictureBox3 As PictureBox
     Friend WithEvents PictureBox4 As PictureBox
     Friend WithEvents ButtonHelp As PictureBox
@@ -752,4 +796,7 @@ Partial Class FormMain
     Friend WithEvents LSCBU As PictureBox
     Friend WithEvents LSCBBACK As PictureBox
     Friend WithEvents TextBox_BHKMHelper As TextBox
+    Friend WithEvents Label_Act_Last As Label
+    Friend WithEvents Label_Act_Work As Label
+    Friend WithEvents ButtonHotkeyMode As PictureBox
 End Class

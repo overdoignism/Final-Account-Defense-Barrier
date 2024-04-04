@@ -2,6 +2,7 @@
 'Copyright (c) 2023 overdoingism Labs.
 'https://github.com/overdoignism/Final-Account-Defense-Barrier
 
+Imports System.IO
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
 
@@ -86,8 +87,8 @@ Module Module1
         "Copied.",
         "Unable to launch:" + vbCrLf + vbCrLf + "The path (file/URL) could not be resolved or does not exist.", '26
         "(New account)",
-        "Move Up.",
-        "Move Down.",
+        """$$$"" Move Up.",
+        """$$$"" Move Down.",
         "Category settings updated.",
         "Title. This field is required.",'31
         "URL or program path.",
@@ -124,7 +125,7 @@ Module Module1
         "The Windows version is too low to enable" + vbCrLf + vbCrLf + """Process Mitigation Policy"" security measures." + vbCrLf + vbCrLf + "At least Windows 8 or Windows Server 2012 or later versions are required." + vbCrLf + vbCrLf + "(It is recommended to use Windows 10 version 20H2 or later)",
         "Some files or directory could not be deleted." + vbCrLf + vbCrLf + "Please check if you have appropriate permissions.",
         "The file is inaccessible." + vbCrLf + vbCrLf + "Maybe permissions insufficient, or corruption / misplacement.",
-        "File write failed." + vbCrLf + vbCrLf + "Insufficient access rights or disk error.",
+        "File write failed." + vbCrLf + vbCrLf + "Insufficient permissions or disk error.",
         "(Some error happend)",'67
         "Account ""$$$"" opened.",'68
         "Catalog password input", '69
@@ -159,7 +160,13 @@ Module Module1
          "The saved file name is " + vbCrLf + vbCrLf + "$$$" + vbCrLf + vbCrLf + "in the application folder." + vbCrLf + vbCrLf + "(Next we will guide you to the file location.)",
          "Attached debugger detected." + vbCrLf + vbCrLf + "If you're not programming, it probably means a malicious attack has occurred." + vbCrLf + vbCrLf + "Strongly recommended to stop using and perform anti-virus.",
          "Critical",
-         "When hotkey enabled, override to ""Send key"" mode."  '101
+         "When hotkey enabled, override to ""Send key"" mode.",  '101
+         "Copying failed.",
+         "May be caused by a clipboard utility, malware, or antivirus.",
+         "Switch to read-only mode.", '104
+         "Multiple instances detected. Writing locked to prevent conflicts.",
+         "Insufficient permissions to write to file.",
+         "Attention"
     }
 
     Public CoinList() As String = {"-", "BTC", "TRX", "Doge", "LTC", "ETH", "BTC"}
@@ -226,8 +233,13 @@ Module Module1
         Try
             UnregisterHotKey(FormMain.Handle, HotKeyID1)
             UnregisterHotKey(FormMain.Handle, HotKeyID2)
+
+            If NotLockEd Then LockFile.Close()
+            IO.File.Delete(LockFilePath)
+
         Catch ex As Exception
         End Try
+
         End
 
     End Sub
@@ -280,26 +292,26 @@ Module Module1
 
         Dim NeoMSGBOX As New MSGBOXXX
         Dim ReturnDR As DialogResult
+        NeoMSGBOX.Opacity = ALLOPACITY
 
-        NeoMSGBOX.MSGHEAD.Text = BoxTitle
         Select Case BoxType
             Case MsgBoxStyle.OkOnly
                 NeoMSGBOX.ButtonOK.Visible = True
                 NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_OK
-                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_OK_TXTB
+                NeoMSGBOX.Label_Msg_Work.Image = ResizeBitmap(MSGBX_IMG_OK_TXTB, 2, 2)
             Case MsgBoxStyle.OkCancel, MsgBoxStyle.YesNo
                 NeoMSGBOX.ButtonYes.Visible = True
                 NeoMSGBOX.ButtonNo.Visible = True
                 NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_VRF
-                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_VRF_TXTB
+                NeoMSGBOX.Label_Msg_Work.Image = ResizeBitmap(MSGBX_IMG_VRF_TXTB, 2, 2)
             Case MsgBoxStyle.Exclamation
                 NeoMSGBOX.ButtonOK.Visible = True
                 NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_VRF
-                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_VRF_TXTB
+                NeoMSGBOX.Label_Msg_Work.Image = ResizeBitmap(MSGBX_IMG_VRF_TXTB, 2, 2)
             Case MsgBoxStyle.Critical
                 NeoMSGBOX.ButtonOK.Visible = True
                 NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_CRI
-                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_CRI_TXTB
+                NeoMSGBOX.Label_Msg_Work.Image = ResizeBitmap(MSGBX_IMG_CRI_TXTB, 2, 2)
             Case 65535
                 NeoMSGBOX.ButtonOK.Visible = True
                 NeoMSGBOX.ButtonOK.Enabled = False
@@ -308,11 +320,24 @@ Module Module1
                 NeoMSGBOX.ButtonCancel.Visible = True
                 NeoMSGBOX.TextBoxDELETE.Visible = True
                 NeoMSGBOX.PictureBox1.Image = MSGBX_IMG_VRF
-                NeoMSGBOX.LabelMSG.Image = MSGBX_IMG_VRF_TXTB
+                NeoMSGBOX.Label_Msg_Work.Image = ResizeBitmap(MSGBX_IMG_VRF_TXTB, 2, 2)
         End Select
 
-        NeoMSGBOX.LabelMSG.Text = MessageStr
-        NeoMSGBOX.Opacity = ALLOPACITY
+        NeoMSGBOX.Label_Msg_Work.Text = MessageStr
+        Dim NeoMsgLabWork As New Bitmap(NeoMSGBOX.Label_Msg_Work.Width, NeoMSGBOX.Label_Msg_Work.Height)
+        Dim NewRec As Rectangle
+        NewRec.Width = NeoMSGBOX.Label_Msg_Work.Width
+        NewRec.Height = NeoMSGBOX.Label_Msg_Work.Height
+        NeoMSGBOX.Label_Msg_Work.DrawToBitmap(NeoMsgLabWork, NewRec)
+        NeoMSGBOX.Label_Msg_Show.Image = ResizeBitmap(NeoMsgLabWork, 0.5, 0.5)
+
+        NeoMSGBOX.Label_Title_Work.Text = BoxTitle
+        Dim NeoMsgTitleWork As New Bitmap(NeoMSGBOX.Label_Title_Work.Width, NeoMSGBOX.Label_Title_Work.Height)
+        Dim NewRec2 As Rectangle
+        NewRec2.Width = NeoMSGBOX.Label_Title_Work.Width
+        NewRec2.Height = NeoMSGBOX.Label_Title_Work.Height
+        NeoMSGBOX.Label_Title_Work.DrawToBitmap(NeoMsgTitleWork, NewRec)
+        NeoMSGBOX.Label_Title_Show.Image = ResizeBitmap(NeoMsgTitleWork, 0.5, 0.5)
 
         MakeWindowsBlur(FirerForm, FFPicBox)
         ReturnDR = NeoMSGBOX.ShowDialog(FirerForm)
@@ -324,6 +349,20 @@ Module Module1
 
         Return ReturnDR
 
+    End Function
+
+    Public Function ResizeBitmap(originalBitmap As Bitmap, ScaleX As Single, ScaleY As Single) As Bitmap
+        Dim newWidth As Integer = originalBitmap.Width * ScaleX
+        Dim newHeight As Integer = originalBitmap.Height * ScaleY
+
+        Dim resizedBitmap As New Bitmap(newWidth, newHeight)
+
+        Using g As Graphics = Graphics.FromImage(resizedBitmap)
+            g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+            g.DrawImage(originalBitmap, New Rectangle(0, 0, newWidth, newHeight))
+        End Using
+
+        Return resizedBitmap
     End Function
 
     Public Sub RestartApp2(UseSecDesktop As Boolean, Runas As Boolean)
@@ -721,12 +760,61 @@ Module Module1
 
     '================ For window grayed out visual ==============
 
+    <DllImport("Shcore.dll", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    Public Function GetScaleFactorForMonitor(hMon As IntPtr, ByRef pScale As DEVICE_SCALE_FACTOR) As Integer 'HRESULT
+    End Function
+
+    <DllImport("User32.dll", SetLastError:=True, CharSet:=CharSet.Unicode)>
+    Public Function MonitorFromWindow(ByVal hwnd As IntPtr, ByVal dwFlags As Integer) As IntPtr
+    End Function
+
+    Public Enum DEVICE_SCALE_FACTOR
+        SCALE_100_PERCENT = 100
+        SCALE_120_PERCENT = 120
+        SCALE_125_PERCENT = 125
+        SCALE_140_PERCENT = 140
+        SCALE_150_PERCENT = 150
+        SCALE_160_PERCENT = 160
+        SCALE_175_PERCENT = 175
+        SCALE_180_PERCENT = 180
+        SCALE_200_PERCENT = 200
+        SCALE_225_PERCENT = 225
+        SCALE_250_PERCENT = 250
+        SCALE_300_PERCENT = 300
+        SCALE_350_PERCENT = 350
+        SCALE_400_PERCENT = 400
+        SCALE_450_PERCENT = 450
+        SCALE_500_PERCENT = 500
+    End Enum
+
+    Public Const MONITOR_DEFAULTTONULL As Integer = &H0
+    Public Const MONITOR_DEFAULTTOPRIMARY As Integer = &H1
+    Public Const MONITOR_DEFAULTTONEAREST As Integer = &H2
+
+    Public ScaleFolat As Single = 1.0F
+
+    Public Sub GetMonScale(ByRef WhatForm As Form)
+
+        Dim hMon As IntPtr = MonitorFromWindow(WhatForm.Handle, MONITOR_DEFAULTTOPRIMARY)
+        Dim scaleFactor As DEVICE_SCALE_FACTOR
+        GetScaleFactorForMonitor(hMon, scaleFactor)
+        ScaleFolat = scaleFactor / 100
+
+    End Sub
+
     Public Sub MakeWindowsBlur(ByRef WhatForm As Form, ByRef WhatImgToPut As PictureBox)
 
-        Dim bmpOrg As New Bitmap(WhatForm.Width, WhatForm.Height)
+        Dim NewPos As Point
+        NewPos.X = WhatForm.Location.X * ScaleFolat
+        NewPos.Y = WhatForm.Location.Y * ScaleFolat
+        Dim NewSize As Size
+        NewSize.Width = WhatForm.Size.Width * ScaleFolat
+        NewSize.Height = WhatForm.Size.Height * ScaleFolat
+
+        Dim bmpOrg As New Bitmap(NewSize.Width, NewSize.Height)
 
         Using g1 As Graphics = Graphics.FromImage(bmpOrg)
-            g1.CopyFromScreen(WhatForm.Location, Point.Empty, WhatForm.Size)
+            g1.CopyFromScreen(NewPos, Point.Empty, NewSize)
         End Using
 
         Dim newBitmap As Bitmap = New Bitmap(bmpOrg.Width, bmpOrg.Height)
@@ -745,6 +833,7 @@ Module Module1
         Dim imageAttributes As New Imaging.ImageAttributes()
         imageAttributes.SetColorMatrix(colorMatrix)
 
+        bmpOrg = ResizeBitmap(bmpOrg, 1 / ScaleFolat, 1 / ScaleFolat)
         '使用Graphics將原始圖片繪製到Bitmap中，同時應用ImageAttributes
         g.DrawImage(bmpOrg, New Rectangle(0, 0, bmpOrg.Width, bmpOrg.Height), 0, 0, bmpOrg.Width, bmpOrg.Height, GraphicsUnit.Pixel, imageAttributes)
 
@@ -817,6 +906,82 @@ Module Module1
 
     End Function
 
+    Public Function Make_Button_HueChange(ByVal Orig_Bitmap As Bitmap, HueAngle As Single) As Bitmap
+
+        ' 建立目標圖像的副本
+        Dim r As Double = HueAngle * Math.PI / 180 ' degrees to radians
+
+        ' 創建ColorMatrix，用於調整圖像亮度
+        Dim theta As Single = HueAngle / 360 * 2 * Math.PI ' Degrees --> Radians
+        Dim c As Single = Math.Cos(theta)
+        Dim s As Single = Math.Sin(theta)
+
+        Dim A00 As Single = 0.213 + 0.787 * c - 0.213 * s
+        Dim A01 As Single = 0.213 - 0.213 * c + 0.413 * s
+        Dim A02 As Single = 0.213 - 0.213 * c - 0.787 * s
+
+        Dim A10 As Single = 0.715 - 0.715 * c - 0.715 * s
+        Dim A11 As Single = 0.715 + 0.285 * c + 0.14 * s
+        Dim A12 As Single = 0.715 - 0.715 * c + 0.715 * s
+
+        Dim A20 As Single = 0.072 - 0.072 * c + 0.928 * s
+        Dim A21 As Single = 0.072 - 0.072 * c - 0.283 * s
+        Dim A22 As Single = 0.072 + 0.928 * c + 0.072 * s
+
+        ' 建立目標圖像的副本
+        Dim targetBitmap As New Bitmap(Orig_Bitmap.Width, Orig_Bitmap.Height)
+
+        ' 創建ColorMatrix，用於調整圖像亮度
+        Dim hueMatrix As New Imaging.ColorMatrix(New Single()() _
+            {New Single() {A00, A01, A02, 0, 0},
+             New Single() {A10, A11, A12, 0, 0},
+             New Single() {A20, A21, A22, 0, 0},
+             New Single() {0, 0, 0, 1, 0},
+             New Single() {0, 0, 0, 0, 1}})
+
+        ' 創建ImageAttributes對象，並設定ColorMatrix
+        Dim imageAttributes As New Imaging.ImageAttributes()
+        imageAttributes.SetColorMatrix(hueMatrix)
+
+        ' 創建Graphics對象，並使用ImageAttributes繪製目標圖像
+        Dim graphics As Graphics = Graphics.FromImage(targetBitmap)
+        graphics.DrawImage(Orig_Bitmap, New Rectangle(0, 0, Orig_Bitmap.Width, Orig_Bitmap.Height), 0, 0, Orig_Bitmap.Width, Orig_Bitmap.Height, GraphicsUnit.Pixel, imageAttributes)
+
+        ' 釋放資源
+        graphics.Dispose()
+
+        ' 顯示調整後的圖像
+        Return targetBitmap
+
+
+    End Function
+
+    '============ Read-only mode
+
+    Public LockFile As IO.StreamWriter
+    Public NotLocked As Boolean
+    Public LockFilePath As String
+    Public PwdGrayImage As Bitmap = Make_Button_Gray(My.Resources.Resource1.TOPSEC)
+
+    Function CreateLockFile() As Integer
+        LockFilePath = DirName + "\FADB.lock"
+        Try
+
+            LockFile = IO.File.CreateText(LockFilePath)
+            NotLocked = True
+            Return 0
+
+        Catch e As Exception
+
+            Select Case e.HResult And &HFFFF
+                Case 32
+                    Return 1
+                Case Else
+                    Return 2
+            End Select
+
+        End Try
+    End Function
 
 End Module
 
@@ -840,4 +1005,77 @@ Public Class DetectActivityMessageFilter
         Return False
     End Function
 
+End Class
+
+'=============== Clipboard using Win32 API
+
+Public Class ClipboardHelper2
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function OpenClipboard(hWndNewOwner As IntPtr) As Boolean
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function EmptyClipboard() As Boolean
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function CloseClipboard() As Boolean
+    End Function
+
+    <DllImport("user32.dll", SetLastError:=True)>
+    Private Shared Function SetClipboardData(uFormat As Integer, hMem As IntPtr) As IntPtr
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private Shared Function GlobalAlloc(uFlags As Integer, dwBytes As Integer) As IntPtr
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private Shared Function GlobalLock(hMem As IntPtr) As IntPtr
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private Shared Function GlobalUnlock(hMem As IntPtr) As Boolean
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private Shared Function GlobalFree(hMem As IntPtr) As IntPtr
+    End Function
+
+    Private Const CF_UNICODETEXT As Integer = 13
+    Private Const GMEM_MOVEABLE As Integer = &H2
+    Private Const GMEM_ZEROINIT As Integer = &H40
+
+    Public Function SetClipboardText(text As String) As Boolean
+        If Not OpenClipboard(IntPtr.Zero) Then
+            Return False
+        End If
+
+        EmptyClipboard()
+
+        Dim hGlobal As IntPtr = GlobalAlloc(GMEM_MOVEABLE Or GMEM_ZEROINIT, (text.Length + 1) * 2)
+        If hGlobal = IntPtr.Zero Then
+            CloseClipboard()
+            Return False
+        End If
+
+        Dim pText As IntPtr = GlobalLock(hGlobal)
+        If pText = IntPtr.Zero Then
+            GlobalFree(hGlobal)
+            CloseClipboard()
+            Return False
+        End If
+
+        Marshal.Copy(text.ToCharArray(), 0, pText, text.Length)
+        GlobalUnlock(hGlobal)
+
+        If SetClipboardData(CF_UNICODETEXT, hGlobal) = IntPtr.Zero Then
+            GlobalFree(hGlobal)
+            CloseClipboard()
+            Return False
+        End If
+
+        CloseClipboard()
+        Return True
+    End Function
 End Class

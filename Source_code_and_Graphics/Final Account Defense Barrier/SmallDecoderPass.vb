@@ -20,7 +20,12 @@ Public Class SmallDecoderPass
         Select Case Workmode
             Case 0
             Case 1
-                If TextBoxPWDStr.Text <> "" Then My.Computer.Clipboard.SetText(TextBoxPWDStr.Text)
+                If TextBoxPWDStr.Text <> "" Then
+
+                    Dim CPWorker As New ClipboardHelper2
+                    CPWorker.SetClipboardText(TextBoxPWDStr.Text)
+
+                End If
             Case 2
                 GenPic(TextBoxPWDStr)
         End Select

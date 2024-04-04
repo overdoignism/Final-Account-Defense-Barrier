@@ -26,8 +26,8 @@ The web browser can't be opened in secure desktop mode.\n\nYou can open it in th
 Copied.
 Unable to launch:\n\nThe path (file/URL) could not be resolved or does not exist.
 (New account)
-Move Up.
-Move Down.
+""$$$"" Move Up.
+""$$$"" Move Down.
 Category settings updated.
 Title. This field is required.
 URL or program path.
@@ -100,3 +100,9 @@ The saved file name is\n\n$$$\n\nin the application folder.\n\n(Next we will gui
 Attached debugger detected.\n\nIf you're not programming, it probably means a malicious attack has occurred.\n\nStrongly recommended to stop using and perform anti-virus.
 Critical
 When hotkey enabled, override to "Send key" mode.
+Copying failed.
+May be caused by a clipboard utility, malware, or antivirus.
+Switch to read-only mode.
+Multiple instances detected. Writing locked to prevent conflicts.
+Insufficient permissions to write to file.
+Attention
