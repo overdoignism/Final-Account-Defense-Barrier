@@ -181,9 +181,6 @@ Public Class FormMain
         '===========================================================
 
         '=====================Init Catalog setting
-        UnregisterHotKey(Me.Handle, HotKeyID1)
-        UnregisterHotKey(Me.Handle, HotKeyID2)
-
         ReDim CAT_setting_Str(6)
         CAT_setting_Str(5) = "1"
         Read_CatDatas()
@@ -2229,7 +2226,7 @@ Public Class FormMain
         NewRec.Width = Label_Act_Work.Width
         NewRec.Height = Label_Act_Work.Height
         Label_Act_Work.DrawToBitmap(ActWork, NewRec)
-        Label_Act_Show.Image = ResizeBitmap(ActWork, 0.5, 0.5)
+        Label_Act_Show.Image = ResizeBitmap(ActWork, 0.4166, 0.5)
 
     End Sub
 

@@ -276,7 +276,7 @@ Partial Class FormMain
         Me.Label_Act_Work.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.Label_Act_Work.Location = New System.Drawing.Point(460, 670)
         Me.Label_Act_Work.Name = "Label_Act_Work"
-        Me.Label_Act_Work.Size = New System.Drawing.Size(582, 38)
+        Me.Label_Act_Work.Size = New System.Drawing.Size(698, 38)
         Me.Label_Act_Work.TabIndex = 129
         Me.Label_Act_Work.Text = "(none)"
         Me.Label_Act_Work.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -287,7 +287,7 @@ Partial Class FormMain
         Me.ButtonHotkeyMode.BackColor = System.Drawing.Color.Black
         Me.ButtonHotkeyMode.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ButtonHotkeyMode.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_HKO_small_off
-        Me.ButtonHotkeyMode.Location = New System.Drawing.Point(869, 84)
+        Me.ButtonHotkeyMode.Location = New System.Drawing.Point(871, 84)
         Me.ButtonHotkeyMode.Name = "ButtonHotkeyMode"
         Me.ButtonHotkeyMode.Size = New System.Drawing.Size(112, 28)
         Me.ButtonHotkeyMode.TabIndex = 133
