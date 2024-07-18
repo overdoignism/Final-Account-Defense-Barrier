@@ -84,7 +84,7 @@
 ### **About Encryption and Storage (Core Security Technology)**
 
 1.  The catalog password is hash 2 million times with SHA256, which is equivalent to increasing the password by 3.5 digits. (Note 1)
-2.  The final archive is encrypted with AES256 CBC mode, PKCS7 padding, and a random IV (Note 2).
+2.  The final archive is encrypted using AES-256 in CBC mode with PKCS7 padding, and the hash value generates the IV (Note 2).
 3.  Random data of varying lengths is added to the archive to obfuscate the real data and password length.
 4.  Any file can be used as the password. The maximum size is 128MB.
 5.  Automatic zero-fill rewrite function for files (when saving/deleting) (Note 3).
@@ -108,7 +108,7 @@
 ### Notes
 
 1.  This is KDF, and is only effective against brute-force guessing attacks. To resist rainbow table attacks, salting is necessary.
-2.  IV Random values are not from data hashing, but are re-encrypted only after data modification.
+2.  The IV random value comes from the original data hash; versions 1.2 or earlier use a system random value.
 3.  Not guaranteed to work, especially on disks with special features such as compression enabled. In addition, the nature of SSDs also allows data to remain on the physical layer, and to be completely secure, full disk space rewriting (search for Wipe Free Space) is required.
 4.  As this is an open-source program, a fixed salting method is meaningless and must be determined by the user. In addition, different salting methods cannot be transfer between catalogs, so please be aware of this.
 5.  This type of security measure is to defend against hackers or Trojan invasion. It works better with administrator privileges. **But you should know that all this is just better than nothing and the most important thing is to ensure that your computer never be hacked.**
