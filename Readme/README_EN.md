@@ -26,15 +26,15 @@
 ### Getting Started
 
 *   Place this program in a prepared folder.
-*   Open the program, and you¡¦ll see a password input screen. Create a secure, memorable password to use as the encryption key seed.
+*   Open the program, and youÂ¡Â¦ll see a password input screen. Create a secure, memorable password to use as the encryption key seed.
 *   Enter it twice and press Confirm to begin.
 *   The password entered here will correspond to a catalog, which can hold multiple accounts.
 *   To access this catalog in the future, simply enter this password. For different catalogs, enter different passwords.
-*   You can also select a file instead of a password (use Open file). The filename doesn¡¦t matter, but the file content must match exactly.
+*   You can also select a file instead of a password (use Open file). The filename doesnÂ¡Â¦t matter, but the file content must match exactly.
 
 ### Basic Operations
 
-*   After entering the program, you¡¦ll see a list on the left with "New account" at the top. Click it to add a new account.
+*   After entering the program, youÂ¡Â¦ll see a list on the left with "New account" at the top. Click it to add a new account.
 *   Then, enter your account information in the middle panel. Hovering over each field with the mouse cursor will show a detailed explanation.
 *   Only the "Title" is required. Once completed, click "Save" to add it, and it will appear in the list on the left.
 *   To reorder, use the "Move up/down" buttons, and hold down for continuous movement.
@@ -74,7 +74,7 @@
 3. "OPACITY:nn" sets window opacity (100 = fully opaque (default)).
 4. "SALT:xx.." sets the salt, allowing any characters except spaces and colons.
 5. "LANG:filename" loads a custom language file. (Effective for text messages only)
-6. "KDF:n" sets the default KDF mode (1 = MAGI_Crypt / 2 = Legacy (v1.3) / 3 = RFC2898).
+6. "KDF:n" sets the default KDF mode (1 = MAGI-Crypt / 2 = Legacy (v1.3) / 3 = RFC2898).
 
 ## For Developers
 
@@ -97,7 +97,7 @@
 2.  A standalone executable file, with no third-party library used.
 3.  Fully offline capable, operable in isolated system environments.
 
-### New KDF Algorithm: MAGI-Crypt (For more details, please read [Introduction to MAGI-Crypt](MAGIC.md)](zh-TW only))
+### New KDF Algorithm: MAGI-Crypt (For more details, please read [Introduction to MAGI-Crypt](MAGIC.md)(zh-TW only))
 
 * A new KDF algorithm, "MAGI-Crypt" (Memory-hard Algorithm Guard Improve), was introduced in version 2.0.
 * Enhanced from 2 million SHA-256 hashes to 8 million SHA-512 hashes.
@@ -137,7 +137,7 @@
 
 ### Notes
 
-1.  No actual attacks are expected against this software¡Xit's simply "Just for fun."
+1.  No actual attacks are expected against this softwareÂ¡Xit's simply "Just for fun."
 2.  Applies only to traditional hard drives without compression enabled. For complete security, full disk wiping (Wipe Free Space) is required.
 3.  Catalogs with different salts cannot be interchanged. Please use CSV import/export for exchange as necessary.
 4.  Running with administrator privileges is recommended for better protection. Most importantly, the system itself must remain secure and unbreached.
@@ -147,9 +147,9 @@
 ## **Q&A**
 
 *   **Q:** Why did you write this software?
-*   **A:** Originally it was for my personal use, but later I decided to share it and see if I could make some friends.˜­
+*   **A:** Originally it was for my personal use, but later I decided to share it and see if I could make some friends.Â˜Â­
 *   **Q:** Why not use a GPU-resistant hash like Argon2 and instead write MAGI-Crypt?
-*   **A:** The simplest reason is that SHA-512 is a built-in function, so there¡¦s no need to handle third-party libraries or add DLLs.
+*   **A:** The simplest reason is that SHA-512 is a built-in function, so thereÂ¡Â¦s no need to handle third-party libraries or add DLLs.
 *   **Q:** Will there be a version for mobile devices or cross-platform use?
 *   **A:** I am not familiar with mobile app development and have no need for it, so there won't be one.
 *   **Q:** The online virus scanning said there are viruses?
