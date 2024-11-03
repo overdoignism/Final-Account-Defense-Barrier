@@ -24,18 +24,17 @@ Partial Class SmallDecoderAES
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
-        'SmallDecodeAES
+        'SmallDecoderAES
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(38, 27)
+        Me.ClientSize = New System.Drawing.Size(28, 29)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "SmallDecodeAES"
+        Me.Name = "SmallDecoderAES"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.Text = "SmallDecodeAES"
         Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
         Me.ResumeLayout(False)
 

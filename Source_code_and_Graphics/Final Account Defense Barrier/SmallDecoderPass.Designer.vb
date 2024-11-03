@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class SmallDecoderPass
     Inherits System.Windows.Forms.Form
 
     'Form 覆寫 Dispose 以清除元件清單。
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,52 +20,24 @@ Partial Class SmallDecoderPass
     '注意: 以下為 Windows Form 設計工具所需的程序
     '可以使用 Windows Form 設計工具進行修改。
     '請勿使用程式碼編輯器進行修改。
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.TextBoxPWDStr = New System.Windows.Forms.TextBox()
-        Me.PictureBoxPwd = New System.Windows.Forms.PictureBox()
-        CType(Me.PictureBoxPwd, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'TextBoxPWDStr
-        '
-        Me.TextBoxPWDStr.Location = New System.Drawing.Point(12, 12)
-        Me.TextBoxPWDStr.Name = "TextBoxPWDStr"
-        Me.TextBoxPWDStr.PasswordChar = Global.Microsoft.VisualBasic.ChrW(9733)
-        Me.TextBoxPWDStr.Size = New System.Drawing.Size(45, 22)
-        Me.TextBoxPWDStr.TabIndex = 0
-        Me.TextBoxPWDStr.Visible = False
-        '
-        'PictureBoxPwd
-        '
-        Me.PictureBoxPwd.Location = New System.Drawing.Point(12, 40)
-        Me.PictureBoxPwd.Name = "PictureBoxPwd"
-        Me.PictureBoxPwd.Size = New System.Drawing.Size(505, 22)
-        Me.PictureBoxPwd.TabIndex = 1
-        Me.PictureBoxPwd.TabStop = False
-        Me.PictureBoxPwd.Visible = False
         '
         'SmallDecoderPass
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(69, 74)
-        Me.Controls.Add(Me.PictureBoxPwd)
-        Me.Controls.Add(Me.TextBoxPWDStr)
+        Me.ClientSize = New System.Drawing.Size(32, 28)
+        Me.ControlBox = False
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "SmallDecoderPass"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.Text = "SmallDecoder"
         Me.WindowState = System.Windows.Forms.FormWindowState.Minimized
-        CType(Me.PictureBoxPwd, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents TextBoxPWDStr As TextBox
-    Friend WithEvents PictureBoxPwd As PictureBox
 End Class

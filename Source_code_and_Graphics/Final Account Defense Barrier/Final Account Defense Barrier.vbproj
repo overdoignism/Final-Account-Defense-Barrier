@@ -37,7 +37,8 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Final Account Defense Barrier.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <Prefer32Bit>true</Prefer32Bit>
     <CodeAnalysisRuleSet>
@@ -50,7 +51,8 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Final Account Defense Barrier.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -76,7 +78,8 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>Final Account Defense Barrier.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -85,7 +88,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DocumentationFile>Final Account Defense Barrier.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>none</DebugType>
@@ -124,6 +128,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Security" />
     <Reference Include="System.Security.Cryptography.ProtectedData, Version=7.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -150,14 +155,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CryptoCurrencyChk.vb" />
+    <Compile Include="CryptoCurrencyWork.vb" />
     <Compile Include="FormCSVWorking.Designer.vb">
       <DependentUpon>FormCSVWorking.vb</DependentUpon>
     </Compile>
     <Compile Include="FormCSVWorking.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Encode_Lib.vb" />
     <Compile Include="FormConfig.Designer.vb">
       <DependentUpon>FormConfig.vb</DependentUpon>
     </Compile>
@@ -176,11 +180,20 @@
     <Compile Include="FormKDF.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="LanguageModule.vb" />
     <Compile Include="Resource1.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
+    <Compile Include="SmallProtect.Designer.vb">
+      <DependentUpon>SmallProtect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SmallProtect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SmallSecurityWorks.vb" />
+    <Compile Include="VisualModule.vb" />
     <Compile Include="WhyMSDoesNotDoHisJob.vb" />
     <Compile Include="MSGBOXXX.Designer.vb">
       <DependentUpon>MSGBOXXX.vb</DependentUpon>
@@ -207,7 +220,7 @@
     <Compile Include="FormLogin.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Module1.vb" />
+    <Compile Include="CommonModule.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -281,20 +294,21 @@
     <EmbeddedResource Include="SmallDecoderPass.resx">
       <DependentUpon>SmallDecoderPass.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SmallProtect.resx">
+      <DependentUpon>SmallProtect.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AllResource\Load as Bin\BIP39WORD.zip" />
+    <None Include="AllResource\Load as Bin\Doc01P_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Doc02P_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\Doc03P_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Message_CRI_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Message_CRI_TXTB_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Message_OK_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Message_OK_TXTB_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Message_VRF_PNG.Bin" />
     <None Include="AllResource\Load as Bin\Message_VRF_TXTB_PNG.Bin" />
-    <None Include="AllResource\Load as Bin\MIT_DOC_PNG.Bin" />
-    <None Include="AllResource\Load as Bin\SETTINGS_PNG.bin" />
-    <None Include="AllResource\Load as Bin\Title_LOGIN_PNG.Bin" />
-    <None Include="AllResource\Load as Bin\Title_NORMAL_PNG.Bin" />
-    <None Include="AllResource\Load as Bin\Title_Password_PNG.Bin" />
+    <None Include="AllResource\Load as Bin\TXTFile.zip" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -309,19 +323,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AllResource\SECURE DESKTOP ON.png" />
-    <None Include="AllResource\RUN AS ADMIN ON.png" />
     <None Include="AllResource\PASSWORD SHOW.png" />
     <None Include="AllResource\PASSWORD HIDE.png" />
     <None Include="AllResource\caps_lock_off.png" />
     <None Include="AllResource\caps_lock_on.png" />
-    <None Include="AllResource\button_RESTART_Off.png" />
-    <None Include="AllResource\button_RESTART_On.png" />
     <None Include="AllResource\button_Cancel.png" />
     <None Include="AllResource\button_Final.png" />
-    <None Include="AllResource\USING_SYMBOL_ON.png" />
     <None Include="AllResource\button_view.png" />
-    <None Include="AllResource\main.png" />
     <None Include="AllResource\TOPSEC.png" />
     <None Include="AllResource\button_copy_small.png" />
     <None Include="AllResource\button_view_small.png" />
@@ -354,16 +362,12 @@
     <None Include="AllResource\button_confirm.png" />
     <None Include="AllResource\button_CAT_DEL.png" />
     <None Include="AllResource\button_CAT_TRANS.png" />
-    <None Include="AllResource\File_expo.png" />
     <None Include="AllResource\button_genpwd.png" />
     <None Include="AllResource\mit_Btn.png" />
     <None Include="AllResource\button_OpenF.png" />
     <None Include="AllResource\mit_lic.png" />
     <None Include="AllResource\WinMin.png" />
-    <None Include="AllResource\PMP_OFF.png" />
-    <None Include="AllResource\PMP_ON.png" />
     <None Include="AllResource\SALT_ADD.png" />
-    <None Include="AllResource\SALT_NO.png" />
     <None Include="AllResource\button_no.png" />
     <None Include="AllResource\button_yes.png" />
     <None Include="AllResource\SCB_BAR.png" />
@@ -371,17 +375,11 @@
     <None Include="AllResource\SCB_S_UP.png" />
     <None Include="AllResource\SCB_BARV.png" />
     <None Include="AllResource\Arr_Left.png" />
-    <None Include="AllResource\Arr_Right.png" />
     <None Include="AllResource\exit_Pic.png" />
     <None Include="AllResource\button_CAT_CSVIM.png" />
-    <None Include="AllResource\button_CAT_CSVIM_on.png" />
-    <None Include="AllResource\button_CAT_DEL_on.png" />
-    <None Include="AllResource\button_CAT_TRANS_on.png" />
     <None Include="AllResource\button_CAT_CSVEX.png" />
-    <None Include="AllResource\button_CAT_CSVEX_on.png" />
     <None Include="AllResource\CSV_IMP.png" />
     <None Include="AllResource\CSV_EXP.png" />
-    <None Include="AllResource\PWD_KDF.png" />
     <None Include="AllResource\PWD_KDF_LINE.png" />
     <None Include="AllResource\PWD_KDF_R.png" />
     <None Include="AllResource\PWD_KDF_C.png" />
@@ -404,7 +402,31 @@
     <None Include="AllResource\button_HKM_Title.png" />
     <None Include="AllResource\button_HKO_small_off.png" />
     <None Include="AllResource\button_HKO_small_on.png" />
-    <Content Include="AllResource\USING_SYMBOL_OFF.png" />
+    <None Include="AllResource\Read_Only_Img.png" />
+    <None Include="AllResource\PFWS_OFF.png" />
+    <None Include="AllResource\PFWS_ON.png" />
+    <None Include="AllResource\PFWS_RA.png" />
+    <None Include="AllResource\button_security_check.png" />
+    <None Include="AllResource\Title_LOGIN.png" />
+    <None Include="AllResource\Title_NORMAL.png" />
+    <None Include="AllResource\Title_Password.png" />
+    <None Include="AllResource\Form_Config.png" />
+    <None Include="AllResource\PWD_KDF.png" />
+    <None Include="AllResource\Form_Main.png" />
+    <None Include="AllResource\Timer.png" />
+    <None Include="AllResource\Lang-arr.png" />
+    <None Include="AllResource\Lang-en.png" />
+    <None Include="AllResource\Lang-jp.png" />
+    <None Include="AllResource\Lang-load.png" />
+    <None Include="AllResource\Lang-zhtw.png" />
+    <None Include="AllResource\Lang-zhcn.png" />
+    <None Include="AllResource\File_expo_New.png" />
+    <None Include="AllResource\NextClick.png" />
+    <None Include="AllResource\PWD_Gen.png" />
+    <None Include="AllResource\KDFT_Types.png" />
+    <None Include="AllResource\KDFS-Types.png" />
+    <None Include="AllResource\button_CAT_on.png" />
+    <None Include="AllResource\CBOX_AR.png" />
     <Content Include="fadb4.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

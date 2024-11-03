@@ -1,4 +1,4 @@
-## **Claim**
+## Claim
 
 1.  This program is licensed under MIT License. It is a free and open source software, so the author does not assume any direct or indirect responsibility, please evaluate it yourself and use it after you can accept it.
 2.  The fonts used in the UI graphic of this program are "Zen Antique" and "DSEG Font Family (v0.46)" , both licensed under SIL Open Font License v1.1.
@@ -18,22 +18,28 @@
 
 ## Operation Guide
 
+### For Users Upgrading from v1.3
+
+*   When logging in, select the Legacy KDF. After login, it's recommended to transfer to MAGI-Crypt.
+*   If you wish to use non-admin permissions, run the included No_Admin.bat file and modify it as needed.
+
 ### Getting Started
 
-*   Put the program in a prepared folder.
-*   Open the program and you will see an interface for entering a password. Think of a secure and memorable password, enter it twice, and click "Confirm" to get started.
-*   The password you enter here will become the encrypted "key seed" and directly correspond to a unique "Catalog", which can manage multiple accounts.
-*   To open this catalog in the future, simply enter this password. Just type it in once.
-*   Similarly, if you want to add different groups of catalogs, just enter different passwords.
-*   It is also possible to choose a file instead of a password (use Open file). The file name is not important, but the contents of the file cannot be changed at all.
+*   Place this program in a prepared folder.
+*   Open the program, and you¡¦ll see a password input screen. Create a secure, memorable password to use as the encryption key seed.
+*   Enter it twice and press Confirm to begin.
+*   The password entered here will correspond to a catalog, which can hold multiple accounts.
+*   To access this catalog in the future, simply enter this password. For different catalogs, enter different passwords.
+*   You can also select a file instead of a password (use Open file). The filename doesn¡¦t matter, but the file content must match exactly.
 
 ### Basic Operations
 
-*   Once you get into it, there is a list on the left side. At the top is "New Account", click it to add an account.
-*   Then enter your account information into the right column. If you donâ€™t understand the meaning, you can let the mouse stay on it, and there will be an explanation.
-*   You don't need to fill in all the fields except the title. When you are done, click "Save" to finish adding your account and it will appear in the list.
-*   If you want to reorder, you can use the "Move Up/Down" button, and if you want to delete, click "Delete".
-*   To switch to another catalog, use the "Logout" button. To exit, click the "Finish" button.
+*   After entering the program, you¡¦ll see a list on the left with "New account" at the top. Click it to add a new account.
+*   Then, enter your account information in the middle panel. Hovering over each field with the mouse cursor will show a detailed explanation.
+*   Only the "Title" is required. Once completed, click "Save" to add it, and it will appear in the list on the left.
+*   To reorder, use the "Move up/down" buttons, and hold down for continuous movement.
+*   To delete, click "Delete."
+*   To switch catalogs, use the "Logout" button; to exit, use the "Finish" button.
 
 ### Advanced Operations
 
@@ -45,11 +51,11 @@
 
 ### More Advanced Operations
 
-*   You can set features like "Auto Hotkey", "Automatic Logout When Idle", and "Transfer or Delete All Catalogs" in "Catalog Setting and Management".
-*   If you have problems with using hotkeys for "Copy & Paste" auto input, you can use the "Send key" mode to override for separately accounts. (v1.2 or later)
-*   If you rename the language file to Lang\_MOD.TXT, the interface will display in the corresponding language (Text message only; Graphic part will not change).
-*   You can use the command line parameter "NONOTICE" to hide the NOTICE at the bottom of the window. (Please read it once before hiding.)
-*   You can use the command line parameter "OPACITY,nn" to set the window opacity. (100 = opaque (default), and the initial version is fixed at 93.)
+*   In "Catalog Setting", you can configure features like "Hotkey Input", "Automatic logout", "Transfer/Delete", and "CSV import/export".
+*   If some websites do not allow "Copy & Paste" for input, you can specify the "Sendkey" mode for individual accounts in "Sendkey override".
+*   In the login screen, enable the "A.T. Field" feature to enhance program security (Note 1).
+*   Click "Security Check" to obtain a security check report.
+*   If you need to run without administrator permissions, use the included No_Admin.bat file and modify it as needed.
 
 ### Cryptocurrency related Operations
 
@@ -61,44 +67,68 @@
 *  Generally, simply copy the main program along with the generated folders and files. You can choose to compress, save to a USB drive, or upload to the cloud.
 *  For CSV import/export, please read the document "[CSV Inport/Export](CSV_EN.md)".
 
-### Enhanced security operations
+### Command Line Arguments Summary
 
-*  On the the program start, there is a "Secure Desktop" option. After selecting it and restart, the secure desktop function can be enabled. This function can also be set as a shortcut with the parameter "SECUREDESKTOP".
-*  If you select "RUN AS ADMIN" and then restart, you can raise the administrator privileges to make the program more secure.
-*  You can set the salt by using the command-line parameter SALT,xx.. ( The login form will display "SALT".)
+1. "NOSECDESK" disables the secure desktop. (Use if there are conflicts with certain antivirus software)
+2. "ALLOWCAP" allows screen capture. (Use when remote control software is needed)
+3. "OPACITY:nn" sets window opacity (100 = fully opaque (default)).
+4. "SALT:xx.." sets the salt, allowing any characters except spaces and colons.
+5. "LANG:filename" loads a custom language file. (Effective for text messages only)
+6. "KDF:n" sets the default KDF mode (1 = MAGI_Crypt / 2 = Legacy (v1.3) / 3 = RFC2898).
 
-### Command line parameter list
+## For Developers
 
-1. "SECUREDESKTOP" to enable secure desktop.
-2. "NONOTICE" turns off NOTICE under the login window.
-3. "OPACITY,nn" sets the opacity of the window (100 = opaque (default)).
-4. "SALT,xx..." Set salt, use any text except space and comma.
+### About Custom Language Files
 
-## **About Security Technology**
+1. To create a custom language file, locate `\Final Account Defense Barrier\AllResource\Load as Bin\TXTFile\LanguageFile.csv`.
+2. Use spreadsheet software to extract a column and save it as a plain text file.
+3. After translating, save it as a plain text file without CSV formatting (UTF-8).
+4. If there are blank lines, please keep them.
 
-### **About the intrinsic safety of the program**
+### About TXTFile.zip
+
+* This file is used to store plain text data. It is recommended to use 7-Zip with Deflate mode, level 9, and word size 256 for compression.
+
+## About Security Technology
+
+### About the intrinsic safety of the program
 
 1.  Open source, licensed under MIT license.
-2.  A standalone executable file, with no third-party library used (only Microsoft's official DPAPI library).
+2.  A standalone executable file, with no third-party library used.
+3.  Fully offline capable, operable in isolated system environments.
 
-### **About Encryption and Storage (Core Security Technology)**
+### New KDF Algorithm: MAGI-Crypt (For more details, please read [Introduction to MAGI-Crypt](MAGIC.md)](zh-TW only))
 
-1.  The catalog password is hash 2 million times with SHA256, which is equivalent to increasing the password by 3.5 digits. (Note 1)
-2.  The final archive is encrypted using AES-256 in CBC mode with PKCS7 padding, and the hash value generates the IV (Note 2).
-3.  Random data of varying lengths is added to the archive to obfuscate the real data and password length.
-4.  Any file can be used as the password. The maximum size is 128MB.
-5.  Automatic zero-fill rewrite function for files (when saving/deleting) (Note 3).
-6.  You can use salt (optional) (Note 4).
+* A new KDF algorithm, "MAGI-Crypt" (Memory-hard Algorithm Guard Improve), was introduced in version 2.0.
+* Enhanced from 2 million SHA-256 hashes to 8 million SHA-512 hashes.
+* Adds "memory-hard" resistance to brute-force attacks, requiring 256MB memory allocation during KDF with substantial random, unaligned read/write operations.
+* Execution speed is nearly unchanged compared to the previous KDF version (using 4 or more CPU cores).
 
-### **About Program Security Technology (Note 5)**
+### A.T. Field Protection Mode (Administrator Task Field)(Note 1)
 
-1.  DPAPI is used to protect sensitive data during runtime.
-2.  Memory leak cleaning (protects against approximately 95% of memory leaks).
-3.  Secure Desktop mode is available, which is resistant to keyboard and screen recorders (optional).
-4.  Clipboard monitoring and blocking technology is used (WM interception).
-5.  Memory Page Lock is used to prevent sensitive information from being swapped to the swap file (Note 6).
-6.  Windows executable security mitigation policies: ASLR/DEP/StrictHandle/ExtensionPoint/SignaturePolicy/ImageLoad/SideChannelIsolation.
-7.  Hybrid hotkey automatic input mode.
+* Scheduled via Task Scheduler to place the program in a protected state at startup, preventing it from being replaced, moved, or tampered with.
+* Applies only to the executable file itself, excluding account data. (This data can only be damaged or deleted, not tampered with. To protect data, please set permissions and backups yourself.)
+
+### About Encryption and Storage (Core Security Technology)
+
+1.  Final storage is encrypted in AES256 CBC mode with PKCS7 padding, with the hash value generating the IV.
+2.  Saved data includes variable-length random data to obfuscate the actual data and password length.
+3.  Any file can be used as a password, with a maximum length of 128MB.
+4.  Automatic zero-overwrite function for files (upon save/delete) (Note 2).
+5.  Salt addition is optional (Note 3).
+
+### About Program Security Technology (Note 4)
+
+1.  Memory cleaning protects against approximately 95% of memory retention issues.
+2.  Secure Desktop implemented to resist keyloggers and screen recorders (Note 5).
+3.  Clipboard monitoring block technology (WM intercept) introduced.
+4.  SeLockMemoryPrivilege (Note 6) and Windows error report disabled.
+5.  Windows program security mitigation policy.
+6.  Windows file signature verification.
+7.  Screen capture is prohibited.
+8.  Debugger and Loader detection.
+9.  Hybrid hotkey auto-input mode.
+10.  Protected with DPAPI.
 
 ### About Operating Safety Features
 
@@ -107,19 +137,19 @@
 
 ### Notes
 
-1.  This is KDF, and is only effective against brute-force guessing attacks. To resist rainbow table attacks, salting is necessary.
-2.  The IV random value comes from the original data hash; versions 1.2 or earlier use a system random value.
-3.  Not guaranteed to work, especially on disks with special features such as compression enabled. In addition, the nature of SSDs also allows data to remain on the physical layer, and to be completely secure, full disk space rewriting (search for Wipe Free Space) is required.
-4.  As this is an open-source program, a fixed salting method is meaningless and must be determined by the user. In addition, different salting methods cannot be transfer between catalogs, so please be aware of this.
-5.  This type of security measure is to defend against hackers or Trojan invasion. It works better with administrator privileges. **But you should know that all this is just better than nothing and the most important thing is to ensure that your computer never be hacked.**
-6.  Users need to enable the "Security Policy" in Windows.
+1.  No actual attacks are expected against this software¡Xit's simply "Just for fun."
+2.  Applies only to traditional hard drives without compression enabled. For complete security, full disk wiping (Wipe Free Space) is required.
+3.  Catalogs with different salts cannot be interchanged. Please use CSV import/export for exchange as necessary.
+4.  Running with administrator privileges is recommended for better protection. Most importantly, the system itself must remain secure and unbreached.
+5.  If you encounter compatibility issues, refer to the "Command Line Arguments" to disable the Secure Desktop feature.
+6.  Users must enable SeLockMemoryPrivilege in Windows "Security Policies." Honestly, its effectiveness is unclear; for Windows, this setting may be merely advisory.
 
 ## **Q&A**
 
 *   **Q:** Why did you write this software?
-*   **A:** Originally it was for my personal use, but later I decided to share it and see if I could make some friends. _**I have no friends, and I couldn't even find someone to help me test the program. My life is so lonely...**_ ðŸ˜­
-*   **Q:** Why didn't you use Argon2 or other anti-GPU hashing algorithms, but chose traditional SHA-256 for salting?
-*   **A:** The simplest reason is that SHA-256 is a built-in function, so there's no need to deal with third-party libraries Â or worry about whether it has been tested historically. And even if it's relatively anti-GPU, I don't believe it can resist ASIC.
+*   **A:** Originally it was for my personal use, but later I decided to share it and see if I could make some friends.˜­
+*   **Q:** Why not use a GPU-resistant hash like Argon2 and instead write MAGI-Crypt?
+*   **A:** The simplest reason is that SHA-512 is a built-in function, so there¡¦s no need to handle third-party libraries or add DLLs.
 *   **Q:** Will there be a version for mobile devices or cross-platform use?
 *   **A:** I am not familiar with mobile app development and have no need for it, so there won't be one.
 *   **Q:** The online virus scanning said there are viruses?

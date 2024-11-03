@@ -5,7 +5,7 @@
 Imports System.ComponentModel
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
-Imports System.Security.Principal
+'Imports System.Security.Principal
 
 Public Class FormLogin
 
@@ -14,149 +14,203 @@ Public Class FormLogin
     Public This_Time_Key() As Byte
     Public This_Time_DIP() As Byte
     Public This_Time_Salt() As Byte
-
     Public This_Time_Dir As String = ""
 
-    Public SecureDesktopMode As Boolean
-    Private SecondSHA256() As Byte
-    Dim timerA As New Timer()
+    Friend Sys_Chk_Login As SystemChecklist
+
+    Dim CapMonTimer As New Timer()
     Private AES_IV_Start() As Byte
 
     Public LoginStart As Boolean
     Public PassByte() As Byte
     Public Note2Str As String
-    Public WorkMode As Integer '0=Login 1=NonLogin 2=Password
+    Public WorkMode As Integer '0=Login 1=NonLogin 2=Password 3=CSV Export
+
+    Public PwdShow As Boolean = False
+    Dim GP_Use_Symbol As Integer = 1 '1=All 2=Txt+Num 3=Num
+
     Public PwdState As Integer
-
-    Public IsUseSD As Boolean
-    Public IsUseRUNAS As Boolean
-
-    Dim GP_Use_Symbol As Boolean = False
-
     Dim TextBoxPwd2 As New MyTextBox
     Dim TextBoxPwdVerify2 As New MyTextBox
+
+    Public Close_Clear_Clipper As Boolean
     Friend TempClipboardStr As String
 
-    Dim DbTester As New Timer()
+    Dim ToolTip1 As New System.Windows.Forms.ToolTip()
 
-    <DllImport("ntdll.dll", SetLastError:=True)>
-    Private Shared Function NtQueryInformationProcess(processHandle As IntPtr, processInformationClass As Integer, ByRef processInformation As IntPtr, processInformationLength As Integer, ByRef returnLength As Integer) As Integer
-    End Function
+    Dim Debug_Tester As New Timer()
 
-    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Dim KDF_Mode_ForExp As Integer = Sys_Chk_Login._KDF_Type
 
-        '===== BOX2 For fix Copy-past memory leak
+    Dim SSWorker As New SmallSecurtiyWorkers
+
+    Private Sub FormLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        If Not Sys_Chk_Login.Screen_Capture_Allowed Then 'Disable Screen Capture
+            SetWindowDisplayAffinity(Me.Handle, WDA_EXCLUDEFROMCAPTURE)
+        End If
+
+        Me.Opacity = Sys_Chk_Login._OpacitySng
+
+        '===== BOX2 For fix Copy-past MRI
         Me.Controls.Add(TextBoxPwd2)
         TextBoxPwd2.Location = TextBoxPwd.Location
-        TextBoxPwd2.UseSystemPasswordChar = True
         TextBoxPwd2.Size = TextBoxPwd.Size
         TextBoxPwd2.Font = TextBoxPwd.Font
         TextBoxPwd2.ForeColor = TextBoxPwd.ForeColor
         TextBoxPwd2.BackColor = TextBoxPwd.BackColor
         TextBoxPwd2.BorderStyle = TextBoxPwd.BorderStyle
+        TextBoxPwd2.PasswordChar = "●"
         TextBoxPwd2.BringToFront()
         AddHandler TextBoxPwd2.KeyDown, AddressOf TextBoxPwd2_KeyDown
         AddHandler TextBoxPwd2.TextChanged, AddressOf TextBoxPwd2_TextChanged
 
         Me.Controls.Add(TextBoxPwdVerify2)
         TextBoxPwdVerify2.Location = TextBoxPwdVerify.Location
-        TextBoxPwdVerify2.UseSystemPasswordChar = True
         TextBoxPwdVerify2.Size = TextBoxPwdVerify.Size
         TextBoxPwdVerify2.Font = TextBoxPwdVerify.Font
         TextBoxPwdVerify2.ForeColor = TextBoxPwdVerify.ForeColor
         TextBoxPwdVerify2.BackColor = TextBoxPwdVerify.BackColor
         TextBoxPwdVerify2.BorderStyle = TextBoxPwdVerify.BorderStyle
+        TextBoxPwdVerify2.PasswordChar = "●"
         TextBoxPwdVerify2.BringToFront()
         AddHandler TextBoxPwdVerify2.KeyDown, AddressOf TextBoxPwd2_KeyDown
         AddHandler TextBoxPwdVerify2.TextChanged, AddressOf TextBoxPwd2_TextChanged
 
         TextBoxPwd.Visible = False
         TextBoxPwdVerify.Visible = False
+        TextBoxPLocked.Visible = False
+        ButtonOK.Image = B_confirm_Dis
 
-        Dim ToolTip1 As System.Windows.Forms.ToolTip = New System.Windows.Forms.ToolTip()
         ToolTip1.InitialDelay = 1
-
-        PictureBoxRUNAS.Image = RAA_OFF
-        PictureBoxSD.Image = SD_OFF
 
         Select Case WorkMode
 
             Case 0 ' Login Mode
 
-                PictureBoxLogin.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Title_LOGIN_PNG))
-                ButtonCancel.Image = My.Resources.Resource1.button_Final
-                ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
-                ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(4))
+                Dim t7 As New Threading.Thread(Sub() Load_Bitmap_For_Threads(7)) 'FormFileExp
+                t7.Start()
 
-                Dim RAAMode As Boolean = New WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)
-                PictureBoxRUNAS.Enabled = Not RAAMode
-                If RAAMode Then PictureBoxRUNAS.Image = RAA_ON
+                'Old Code: v1.3
+                'PictureBoxLogin.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Title_NORMAL_PNG))
+                Load_Bitmap_For_Threads(0)
+                PictureBoxLogin.Image = FormLoginBitmap0
+
+                ButtonCancel.Image = My.Resources.Resource1.button_Final
+
                 If This_Time_Salt IsNot Nothing Then PictureSalt.Image = My.Resources.Resource1.SALT_ADD
-                If OSver < 62 Then PicturePMP.Image = My.Resources.Resource1.PMP_OFF
-                PicturePMP.Visible = True
+                PicLang.Visible = True
                 PictureSalt.Visible = True
                 ButtonCancel.Visible = False
                 ButtonFin.Visible = True
+                ButtonPFWS.Visible = True
+
+                If Sys_Chk.Running_Admin Then
+                    ButtonPFWS.Enabled = True
+                    If Sys_Chk.Use_ATField = False Then
+                        ButtonPFWS.Image = B_PFWSoff
+                    Else
+                        ButtonPFWS.Image = B_PFWSon
+                    End If
+                Else
+                    ButtonPFWS.Image = The_Shine_Visual_Filter2(My.Resources.Resource1.PFWS_RA)
+                End If
+
+                'Multi Language
+
+                If LIdx < 4 Then
+                    ButtonRightArr.Image = B_LangR
+                    ButtonRightArr.Visible = True
+                    PicLang.Image = GetBitmapFromCode(LIdx)
+                    PicLang.Visible = True
+                Else
+                    PicLangLoad.Top += 28
+                    PicLangLoad.Visible = True
+                End If
+
+                ToolTip1.SetToolTip(TextBoxPwd2, LangStrs(LIdx, UsingTxt.Lo_Login_tt1))
+                ToolTip1.SetToolTip(TextBoxPwdVerify2, LangStrs(LIdx, UsingTxt.Lo_Login_tt2))
+                ToolTip1.SetToolTip(ButtonMIT, LangStrs(LIdx, UsingTxt.MIT_Tol))
+
+                t7.Join()
 
             Case 1, 3 ' 1= Transform 3= CSV export
 
-                PictureBoxLogin.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Title_NORMAL_PNG))
-                ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(3))
-                ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(4))
+                PictureBoxLogin.Image = FormLoginBitmap13
+                ToolTip1.SetToolTip(TextBoxPwd2, LangStrs(LIdx, UsingTxt.Lo_Login_tt1))
+                ToolTip1.SetToolTip(TextBoxPwdVerify2, LangStrs(LIdx, UsingTxt.Lo_Login_tt2))
 
-                PictureBoxSD.Visible = False
-                PictureBoxRUNAS.Visible = False
-                PictureBoxMIT.Visible = False
-                Button_Restart.Visible = False
-                ButtonHelp.Visible = False
-                PictureWinMin.Visible = False
+                ButtonMIT.Visible = False
+                ButtonHAGP.Visible = False
+                ButtonWinMin.Visible = False
                 ButtonCancel.Visible = True
                 ButtonFin.Visible = False
 
-                Height = 346
-                PicCAP1.Top -= 201
-                ButtonOK.Top -= 201
-                ButtonFileOpen.Top -= 201
+                If WorkMode = 3 Then
+                    TextBoxPLocked.Text = "-- NOT USED IN CSV EXPORT MODE --"
+                    TextBoxPLocked.TextAlign = HorizontalAlignment.Center
+                    TextBoxPLocked.ForeColor = Color.FromArgb(126, 237, 176)
+                    TextBoxPLocked.ReadOnly = True
+                    TextBoxPLocked.Visible = True
+                    TextBoxPLocked.SelectionStart = 0
+                    TextBoxPwdVerify2.Visible = False
+                    TextBoxPLocked.TabIndex = 2
+                    TextBoxPwd2.TabIndex = 1
+                    PicSelect.Visible = False
+                    ButtonRightArr2.Visible = False
+                    Me.Height = 334
+                ElseIf WorkMode = 1 Then
+
+                    Me.Height = 374
+                    PicSelect.Top = 343
+                    ButtonRightArr2.Top = 342
+                    KDF_Mode_ForExp = Sys_Chk_Login._KDF_Type
+                    PicSelect.Image = My.Resources.Resource1.KDFS_Types
+
+                End If
+
+                ButtonCaps.Top -= 201
+                TextBoxPLocked.Top -= 201
                 ButtonViewPass.Top -= 201
                 TextBoxPwd2.Top -= 201
                 TextBoxPwdVerify2.Top -= 201
-                ButtonCancel.Top -= 201
                 PictureSalt.Top -= 201
+
+                ButtonOK.Top -= 201
+                ButtonFileOpen.Top -= 201
+                ButtonCancel.Top -= 201
+
                 If This_Time_Salt IsNot Nothing Then PictureSalt.Visible = True
 
             Case 2 ' Password Mode
 
-                PictureBoxSD.Visible = False
-                PictureBoxRUNAS.Visible = False
-                PictureBoxMIT.Visible = False
-                Button_Restart.Visible = False
-                ButtonHelp.Visible = False
+                ButtonMIT.Visible = False
                 ButtonFileOpen.Visible = False
-                PictureWinMin.Visible = False
+                ButtonWinMin.Visible = False
                 ButtonCancel.Visible = True
                 ButtonFin.Visible = False
 
-                PictureBoxLogin.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Title_Password_PNG))
-                Height = 346
-                PicCAP1.Top -= 201
-                ButtonOK.Top -= 201
+                PictureBoxLogin.Image = FormLoginBitmap2
+                Height = 374
+                ButtonCaps.Top -= 201
                 ButtonViewPass.Top -= 201
                 TextBoxPwd2.Top -= 201
                 TextBoxPwdVerify2.Top -= 201
 
-                ButtonCancel.Top = 265
-                ButtonCancel.Left = 148
+                ButtonCancel.Top = 260
+                ButtonCancel.Left = 147
+                ButtonOK.Top -= 201
 
-                ButtonGenPwd.Visible = True
-                ButtonGenPwd.Top = 265
-                ButtonGenPwd.Left = 277
+                ButtonHAGP.Visible = True
+                ButtonHAGP.Image = B_genpwd
+                ButtonHAGP.Top = 260
+                ButtonHAGP.Left = 276
 
-                PictureBoxGPUS.Left = 407
-                PictureBoxGPUS.Top = 272
-                PictureBoxGPUS.Visible = True
+                PicSelect.Top = 343
+                ButtonRightArr2.Top = 342
 
-                ToolTip1.SetToolTip(TextBoxPwd2, TextStrs(34))
-                ToolTip1.SetToolTip(TextBoxPwdVerify2, TextStrs(35))
+                ToolTip1.SetToolTip(TextBoxPwd2, LangStrs(LIdx, UsingTxt.TT_Pw))
+                ToolTip1.SetToolTip(TextBoxPwdVerify2, LangStrs(LIdx, UsingTxt.TT_Pv))
 
                 '0=New Account, CurrentAccountPass = "" in init
                 '1=Old File Read, not decrypt
@@ -175,10 +229,9 @@ Public Class FormLogin
 
         End Select
 
-        If SecureDesktopMode = True Then
+        If Sys_Chk_Login.Use_Secure_Desktop = True Then
             Me.CenterToScreen()
-            Me.PictureWinMin.Visible = False
-            PictureBoxSD.Image = SD_ON
+            Me.ButtonWinMin.Visible = False
             TextBoxPwd2.SDMode = True
             TextBoxPwdVerify2.SDMode = True
             TextBoxPwd2.TempClipboardStr = TempClipboardStr
@@ -190,53 +243,77 @@ Public Class FormLogin
             Me.Top = FormT + (FormH - Me.Height) / 2
         End If
 
-        If WorkMode = 3 Then
-            TextBoxPwdVerify2.Text = "-- LOCKED DURING CSV EXPORT MODE --"
-            TextBoxPwdVerify2.TextAlign = HorizontalAlignment.Center
-            TextBoxPwdVerify2.ForeColor = Color.FromArgb(126, 237, 176)
-            TextBoxPwdVerify2.ReadOnly = True
-            TextBoxPwdVerify2.UseSystemPasswordChar = False
+        Me.Icon = FormMain.Icon
+
+        CapMonTimer.Interval = 100
+        CapMonTimer.Enabled = True
+        AddHandler CapMonTimer.Tick, AddressOf CapMonTimer_Tick
+
+        Debug_Tester.Interval = 1000
+        Debug_Tester.Enabled = True
+        AddHandler Debug_Tester.Tick, AddressOf Debug_Tester_Tick
+
+        SetForegroundWindow(Me.Handle)
+
+        'Dim g As Graphics = Me.CreateGraphics()
+        'MessageBox.Show(g.PageUnit.ToString())
+        'Application.VisualStyleState = VisualStyles.VisualStyleState.NoneEnabled
+
+    End Sub
+
+    <DllImport("user32.dll")>
+    Private Shared Function SetForegroundWindow(hWnd As IntPtr) As Boolean
+    End Function
+
+    Private Sub Debug_Tester_Tick(sender As Object, e As EventArgs)
+
+        If Not Sys_Chk_Login.HasDebugger Then
+            Sys_Chk_Login.HasDebugger = IsDebugged()
         End If
 
-        timerA.Interval = 100
-        timerA.Enabled = True
-        AddHandler timerA.Tick, AddressOf Timer1_Tick
+        If Sys_Chk_Login.HasDebugger And Not Sys_Chk_Login.HasDebugger_Warned Then
+            Sys_Chk_Login.HasDebugger_Warned = True
+            MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_dbg), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+        End If
 
-        DbTester.Interval = 1000
-        DbTester.Enabled = True
-        AddHandler DbTester.Tick, AddressOf Timer2_Tick
-
+        If Sys_Chk_Login.Found_Bad_MSFile And Not Sys_Chk_Login.Found_Bad_MSFile_Warned Then
+            Sys_Chk_Login.Found_Bad_MSFile_Warned = True
+            MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_bwf), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+        End If
 
     End Sub
 
     '=============== Functions and subs 
-
     Private Sub GoNextPre()
+
+        If TextBoxPwd2.Text.Length = 0 Then Exit Sub
 
         Select Case WorkMode
 
-            Case 0, 1, 3
-                GoNext(System.Text.Encoding.Unicode.GetBytes(TextBoxPwd2.Text), False)
+            Case 0, 3
+                GoNext(System.Text.Encoding.Unicode.GetBytes(TextBoxPwd2.Text), False, Sys_Chk._KDF_Type)
+            Case 1
+                GoNext(System.Text.Encoding.Unicode.GetBytes(TextBoxPwd2.Text), False, KDF_Mode_ForExp)
             Case 2
 
                 If String.CompareOrdinal(TextBoxPwd2.Text, TextBoxPwdVerify2.Text) <> 0 Then
                     If TextBoxPwdVerify2.Text = "" Then
 
-                        Select Case CheckBIP39(TextBoxPwd2.Text)
+                        Select Case SSWorker.CheckBIP39(TextBoxPwd2.Text)
                             Case 0
                             Case 1
-                                MSGBOXNEW(TextStrs(83) + TextStrs(84), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                                MSGBOXNEW(LangStrs(LIdx, UsingTxt.PK_Pv1) + LangStrs(LIdx, UsingTxt.PK_Pv2), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
                                 Exit Sub
                             Case 2
-                                MSGBOXNEW(TextStrs(83) + TextStrs(85), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                                MSGBOXNEW(LangStrs(LIdx, UsingTxt.PK_Pv1) + LangStrs(LIdx, UsingTxt.PK_Pv3), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
                                 Exit Sub
                             Case 3
-                                MSGBOXNEW(TextStrs(83) + TextStrs(86), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                                MSGBOXNEW(LangStrs(LIdx, UsingTxt.PK_Pv1) + LangStrs(LIdx, UsingTxt.PK_Pv4), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
                                 Exit Sub
                         End Select
 
                     Else
-                        MSGBOXNEW(TextStrs(82), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                        MSGBOXNEW(LangStrs(LIdx, UsingTxt.PK_Pvf), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
                         Exit Sub
                     End If
                 End If
@@ -251,101 +328,160 @@ Public Class FormLogin
 
     End Sub
 
-    Private Sub Timer2_Tick(sender As Object, e As EventArgs)
-#If Not DEBUG Then
-        If IsDebugged() Then
-            DbTester.Enabled = False
-            MSGBOXNEW(TextStrs(99), MsgBoxStyle.Critical, TextStrs(100), Me, PictureGray)
-        End If
-#End If
-    End Sub
+    Private Sub GoNext(ByRef BigByte() As Byte, ItsaFile As Boolean, KDF_Type As Integer)
 
-    Public Function IsDebugged() As Boolean
-        Dim isRemoteDebuggerPresent As IntPtr = IntPtr.Zero
-        Dim returnLength As Integer
-        NtQueryInformationProcess(System.Diagnostics.Process.GetCurrentProcess().Handle, 7, isRemoteDebuggerPresent, Marshal.SizeOf(isRemoteDebuggerPresent), returnLength)
-        Return isRemoteDebuggerPresent <> IntPtr.Zero
-    End Function
-
-    Private Sub SecondSHA256Sub(ByRef Second_SHA256() As Byte, ByRef Prograss As Integer)
-        Threading.Thread.Sleep(20)
-        Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
-        For Prograss = 1 To 100
-            For SHA256Times As Integer = 1 To 10000
-                Second_SHA256 = SHA256_Worker.ComputeHash(Second_SHA256)
-            Next
-        Next
-    End Sub
-
-    Private Sub MainSHA256Sub(ByRef First_SHA256() As Byte, ByRef Prograss As Integer)
-        Threading.Thread.Sleep(20)
-        Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
-        For Prograss = 1 To 100
-            For IDX01 As Integer = 1 To 10000
-                First_SHA256 = SHA256_Worker.ComputeHash(First_SHA256)
-            Next
-        Next
-    End Sub
-
-    Private Sub GoNext(ByRef BigByte() As Byte, ItsaFile As Boolean)
-
-        '=========
+        '=========Form KDF
         Dim FKDF As New FormKDF
+        FKDF.PictureBoxKDF.Image = FormKDFBitmap 'Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.PWD_KDF_PNG))
         FKDF.Opacity = Me.Opacity
-        MakeWindowsBlur(Me, PictureGray)
+        MakeWindowsMono(Me, PictureGray)
         Me.Enabled = False
-        My.Application.DoEvents()
+        System.Windows.Forms.Application.DoEvents()
         '=========
 
+        Dim FixSalt() As Byte = {0, 255, 1, 254, 2, 253, 3, 252}
         Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
-        Dim Password_SHA256_As_Key() As Byte
-        Dim Password_SHA256_x2() As Byte
-
-        Password_SHA256_As_Key = SHA256_Worker.ComputeHash(BigByte)
+        This_Time_Key = SHA256_Worker.ComputeHash(BigByte)
         WipeBytes(BigByte)
 
-        SecondSHA256 = Password_SHA256_As_Key.Clone
-        Array.Reverse(SecondSHA256)
+        Select Case KDF_Type
 
-        If This_Time_Salt IsNot Nothing Then
-            Array.Resize(SecondSHA256, SecondSHA256.Length + This_Time_Salt.Length)
-            Array.Copy(This_Time_Salt, 0, SecondSHA256, SecondSHA256.Length - This_Time_Salt.Length, This_Time_Salt.Length)
-        End If
+            Case 2 'Legacy
 
-        Dim t1 As New Threading.Thread(Sub() SecondSHA256Sub(SecondSHA256, FKDF.Progass10R))
-        Dim t2 As New Threading.Thread(Sub() MainSHA256Sub(Password_SHA256_As_Key, FKDF.Progass10L))
-        t1.Start()
-        t2.Start()
-        FKDF.ShowDialog(Me)
+                Dim WorkArray02() As Byte
 
-        t1.Join()
-        t2.Join()
+                WorkArray02 = This_Time_Key.Clone
+                Array.Reverse(WorkArray02)
 
-        Password_SHA256_As_Key = SHA256_Worker.ComputeHash(Password_SHA256_As_Key.Concat(SecondSHA256).ToArray)
+                If This_Time_Salt IsNot Nothing Then
+                    Array.Resize(WorkArray02, WorkArray02.Length + This_Time_Salt.Length)
+                    Array.Copy(This_Time_Salt, 0, WorkArray02, WorkArray02.Length - This_Time_Salt.Length, This_Time_Salt.Length)
+                End If
 
-        Dim TheEncLib As New Encode_Libs
+                Dim t1 As New Threading.Thread(Sub() KDF_legacy_S256_1M(WorkArray02, FKDF.Progass10R, 0))
+                Dim t2 As New Threading.Thread(Sub() KDF_legacy_S256_1M(This_Time_Key, FKDF.Progass10L, 1))
+                t1.Start()
+                t2.Start()
+                FKDF.KDF_Type = KDF_Type
+                FKDF.PicKDF_TYPE.Image = My.Resources.Resource1.KDFT_Types
+                FKDF.ShowDialog(Me)
+                t1.Join()
+                t2.Join()
 
-        UnMakeWindowsBlur(PictureGray)
+                This_Time_Key = SHA256_Worker.ComputeHash(This_Time_Key.Concat(WorkArray02).ToArray)
+                WipeBytes(WorkArray02)
+
+            Case 3 'RFC2898
+
+                Dim WorkArray02() As Byte = This_Time_Key.Clone
+
+                Dim Salt1() As Byte
+                Dim Salt2() As Byte
+
+                If This_Time_Salt Is Nothing Then
+                    Salt1 = SHA256_Worker.ComputeHash(WorkArray02).Concat(FixSalt).ToArray
+                Else
+                    Salt1 = SHA256_Worker.ComputeHash(WorkArray02).Concat(This_Time_Salt).ToArray
+                End If
+
+                Salt2 = Salt1.Clone
+                Array.Reverse(Salt2)
+
+                Dim t1 As New Threading.Thread(Sub() KDF_UseRFC2898(WorkArray02, Salt2, FKDF.Progass10R))
+                Dim t2 As New Threading.Thread(Sub() KDF_UseRFC2898(This_Time_Key, Salt1, FKDF.Progass10L))
+                t1.Start()
+                t2.Start()
+                FKDF.KDF_Type = KDF_Type
+                FKDF.PicKDF_TYPE.Image = My.Resources.Resource1.KDFT_Types
+                FKDF.ShowDialog(Me)
+                t1.Join()
+                t2.Join()
+
+                This_Time_Key = SHA256_Worker.ComputeHash(This_Time_Key.Concat(WorkArray02).ToArray)
+                WipeBytes(WorkArray02)
+
+            Case Else 'MAGI-Crypt
+
+                Dim KDF_MAGIC As New FAST_KDF
+
+                Dim WorkArray01(0), WorkArray02(0), WorkArray03(0), WorkArray04(0) As Byte
+
+                If This_Time_Salt Is Nothing Then
+                    This_Time_Key = This_Time_Key.Concat(FixSalt).ToArray
+                Else
+                    This_Time_Key = This_Time_Key.Concat(This_Time_Salt).ToArray
+                End If
+
+                KDF_MAGIC.Get_MAGIC_4Piece(This_Time_Key, WorkArray01, WorkArray02, WorkArray03, WorkArray04)
+
+                ReDim KDF_MAGIC.TheFullBuck(KDF_MAGIC.TotalLengthUpper)
+
+                Dim t1 As New Threading.Thread _
+                    (Sub() KDF_MAGIC.KDF_MAGIcrypt(WorkArray01, FKDF.Progass10L, KDF_MAGIC.TheFullBuck, 0,
+                                                  KDF_MAGIC.ErrCodeArray(0), Sys_Chk.Use_SE))
+                Dim t2 As New Threading.Thread _
+                    (Sub() KDF_MAGIC.KDF_MAGIcrypt(WorkArray02, FKDF.Progass10R, KDF_MAGIC.TheFullBuck, 1,
+                                                  KDF_MAGIC.ErrCodeArray(1), Sys_Chk.Use_SE))
+                Dim t3 As New Threading.Thread _
+                    (Sub() KDF_MAGIC.KDF_MAGIcrypt(WorkArray03, FKDF.Progass10L2, KDF_MAGIC.TheFullBuck, 2,
+                                                  KDF_MAGIC.ErrCodeArray(2), Sys_Chk.Use_SE))
+                Dim t4 As New Threading.Thread _
+                    (Sub() KDF_MAGIC.KDF_MAGIcrypt(WorkArray04, FKDF.Progass10R2, KDF_MAGIC.TheFullBuck, 3,
+                                                  KDF_MAGIC.ErrCodeArray(3), Sys_Chk.Use_SE))
+                t1.Start()
+                t2.Start()
+                t3.Start()
+                t4.Start()
+                FKDF.ShowDialog(Me)
+                t1.Join()
+                t2.Join()
+                t3.Join()
+                t4.Join()
+
+                For IDX01 As Integer = 0 To 3
+                    Select Case KDF_MAGIC.ErrCodeArray(IDX01)
+                        Case 1
+                            MSGBOXNEW(LangStrs(LIdx, UsingTxt.KDF_Me1), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
+                            Me.Enabled = True
+                            Exit Sub
+                        Case 2
+                            MSGBOXNEW(LangStrs(LIdx, UsingTxt.KDF_Me2), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
+                            Me.Enabled = True
+                            Exit Sub
+                        Case 3
+                            MSGBOXNEW(LangStrs(LIdx, UsingTxt.KDF_Me3), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
+                            Me.Enabled = True
+                            Exit Sub
+                    End Select
+                Next
+
+                This_Time_Key = KDF_MAGIC.Finish_MAGIC_KDF(KDF_MAGIC.TheFullBuck)
+                KDF_MAGIC.Dispose()
+
+                FullGC()
+
+        End Select
+
+        UnMakeWindowsMono(PictureGray)
         FKDF.Dispose()
 
         '=====================================================================================
 
+        Dim TheEncLib As New Encode_Libs
         Dim Work_String, Work_Dir_String As String
-
+        Dim Password_SHA256_x2() As Byte
         ReDim AES_IV_Start(15)
-        Password_SHA256_x2 = SHA256_Worker.ComputeHash(Password_SHA256_As_Key)
+
+        Password_SHA256_x2 = SHA256_Worker.ComputeHash(This_Time_Key)
         Buffer.BlockCopy(Password_SHA256_x2, 0, AES_IV_Start, 0, 16)
 
-        ReDim This_Time_Key(0)
-        This_Time_Key = Security.Cryptography.ProtectedData.Protect(Password_SHA256_As_Key, Nothing, DataProtectionScope.CurrentUser)
+        Security.Cryptography.ProtectedMemory.Protect(This_Time_Key, MemoryProtectionScope.SameProcess)
 
         Dim WorkDIP() As Byte = SHA256_Worker.ComputeHash(Password_SHA256_x2)
         ReDim This_Time_DIP(15)
         Buffer.BlockCopy(WorkDIP, 0, This_Time_DIP, 0, 16)
-        This_Time_DIP = Security.Cryptography.ProtectedData.Protect(This_Time_DIP, Nothing, DataProtectionScope.CurrentUser)
 
-        WipeBytes(Password_SHA256_As_Key)
-        WipeBytes(SecondSHA256)
+        Security.Cryptography.ProtectedMemory.Protect(This_Time_DIP, MemoryProtectionScope.SameProcess)
 
         Work_String = TheEncLib.AES_Encrypt_Byte_Return_String(
             SHA256_Worker.ComputeHash(Password_SHA256_x2), This_Time_Key, AES_IV_Start)
@@ -362,7 +498,7 @@ Public Class FormLogin
         SHA256_Worker.Dispose()
         SHA256_Worker = Nothing
 
-        If Not My.Computer.FileSystem.DirectoryExists(Work_Dir_String) Then
+        If Not System.IO.Directory.Exists(Work_Dir_String) Then
 
             If WorkMode = 3 Then
                 Me.DialogResult = DialogResult.OK
@@ -371,20 +507,28 @@ Public Class FormLogin
 
             If Not ItsaFile Then
                 If TextBoxPwdVerify2.Text = "" Then
-                    MSGBOXNEW(TextStrs(0), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                    MSGBOXNEW(LangStrs(LIdx, UsingTxt.Lo_NoMatch) + LangStrs(LIdx, UsingTxt.Lo_IfNew), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
                     Me.Enabled = True
                     Exit Sub
                 End If
 
                 If TextBoxPwd2.Text <> TextBoxPwdVerify2.Text Then
-                    MSGBOXNEW(TextStrs(1), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                    MSGBOXNEW(LangStrs(LIdx, UsingTxt.Lo_NoMatch) + LangStrs(LIdx, UsingTxt.Lo_AllNo), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
                     Me.Enabled = True
                     Exit Sub
                 End If
             End If
 
-            If MSGBOXNEW(TextStrs(2), MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok Then
-                My.Computer.FileSystem.CreateDirectory(Work_Dir_String)
+            If MSGBOXNEW(LangStrs(LIdx, UsingTxt.Lo_NoMatch) + LangStrs(LIdx, UsingTxt.Lo_DoNew), MsgBoxStyle.OkCancel, LangStrs(LIdx, UsingTxt.Ti_Cnfm), Me, PictureGray) = MsgBoxResult.Ok Then
+
+                Try
+                    System.IO.Directory.CreateDirectory(Work_Dir_String)
+                Catch ex As Exception
+                    MSGBOXNEW(GetSimpleErrorMessage(ex.HResult, WorkType.FileC), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, Me.PictureGray)
+                    Me.DialogResult = DialogResult.Cancel
+                    Exit Sub
+                End Try
+
             Else
                 Me.Enabled = True
                 Exit Sub
@@ -397,133 +541,68 @@ Public Class FormLogin
 
     End Sub
 
-    Private Function CheckBIP39(ByRef BIP39Str As String) As Integer
 
-        Try
-            Dim LotInt(0) As UInteger
+    '=============================KDF Function
+    Private Sub KDF_UseRFC2898(ByRef Input_Datas() As Byte, Thesalt() As Byte, ByRef Prograss As Integer)
 
-            Dim PassLevel As Integer = 0
-            'PassLevel 0 : Pass
-            'PassLevel 1 : Length not match
-            'PassLevel 2 : Word not in list
-            'PassLevel 3 : CheckSum error
+        Dim deriveBytes As Rfc2898DeriveBytes = Nothing
 
-            Dim WorkStr() As String = BIP39Str.ToLower.Split(" ")
-            If WorkStr.Length Mod 3 <> 0 Then PassLevel = 1
-            If WorkStr.Length > 24 Then PassLevel = 1
+        'Dim A As Integer = Environment.TickCount
 
-            If PassLevel = 1 Then 'Why Japanese word make trouble
-                PassLevel = 0
-                WorkStr = BIP39Str.Split("　")
-                If WorkStr.Length Mod 3 <> 0 Then PassLevel = 1
-                If WorkStr.Length > 24 Then PassLevel = 1
-            End If
-
-            If PassLevel = 0 Then
-
-                For IDX01 As Integer = 0 To WorkStr.Length - 1
-
-                    ReDim Preserve LotInt(IDX01)
-                    PassLevel = 2
-
-                    For IDX02 As Integer = 0 To 9
-                        For IDX03 As Integer = 0 To 2047
-                            If String.CompareOrdinal(WorkStr(IDX01), BIP39_Word(IDX02).BIP39Word(IDX03)) = 0 Then
-                                LotInt(IDX01) = IDX03
-                                PassLevel = 0
-                                Exit For
-                            End If
-                        Next
-                        If PassLevel = 0 Then Exit For
-                    Next
-                    If PassLevel = 2 Then Exit For
-                Next
-
-            End If
-
-            If PassLevel = 0 Then
-
-                Dim LastDigi As UInteger
-                Dim CheckSumVal As Byte
-                Dim TheBIP39Tmp As UInteger
-                Dim TBIP39IDX As Integer = 0
-                Dim TmpBytes() As Byte
-                Dim TheBIP39Bytes(((WorkStr.Length / 3) * 4) - 1) As Byte
-
-                For IDX01 As Integer = 0 To WorkStr.Length - 1 Step 3
-
-                    TheBIP39Tmp = (LastDigi << (32 - TBIP39IDX))
-                    TheBIP39Tmp += (LotInt(IDX01) << (21 - TBIP39IDX))
-                    TheBIP39Tmp += (LotInt(IDX01 + 1) << (10 - TBIP39IDX))
-                    TheBIP39Tmp += (LotInt(IDX01 + 2) >> (1 + TBIP39IDX))
-
-                    LastDigi = LotInt(IDX01 + 2) Mod (2 ^ (TBIP39IDX + 1))
-
-                    TmpBytes = BitConverter.GetBytes(TheBIP39Tmp)
-                    Array.Reverse(TmpBytes)
-                    Array.Copy(TmpBytes, 0, TheBIP39Bytes, TBIP39IDX * 4, 4)
-                    TBIP39IDX += 1
-
-                Next
-
-                Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
-                CheckSumVal = SHA256_Worker.ComputeHash(TheBIP39Bytes)(0) >> (8 - TBIP39IDX)
-                SHA256_Worker.Dispose()
-
-                If LastDigi <> CheckSumVal Then PassLevel = 3
-
-            End If
-
-            ReDim WorkStr(0)
-            WipeUINT(LotInt)
-
-            Return PassLevel
-        Catch ex As Exception
-            Return 1
-        End Try
-
-    End Function
-
-    Private Function EvaPwdStrong(ByRef InTextbox As TextBox) As Color
-
-        Dim Score As Integer = 0
-        Dim SNum As Boolean = False
-        Dim SLow As Boolean = False
-        Dim SUpp As Boolean = False
-        Dim SSig As Boolean = False
-
-        For Each TmpCHR As Char In InTextbox.Text
-            Select Case TmpCHR
-                Case "0" To "9"
-                    SNum = True
-                Case "a" To "z"
-                    SLow = True
-                Case "A" To "Z"
-                    SUpp = True
-                Case "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "[", " "
-                    SSig = True
-                Case "]", "\", "{", "}", "|", ";", "'", ":", """", ",", ".", "/", "<", ">", "?"
-                    SSig = True
-            End Select
-            Score += 1
+        For PrograssIDX As Integer = 1 To 10
+            deriveBytes = New Rfc2898DeriveBytes(Input_Datas, Thesalt, 20000)
+            Input_Datas = deriveBytes.GetBytes(32)
+            Prograss = PrograssIDX * 10
         Next
 
-        If SNum Then Score += 3
-        If SLow Then Score += 3
-        If SUpp Then Score += 3
-        If SSig Then Score += 3
+        'MsgBox((Environment.TickCount - A).ToString)
 
-        If Score < 16 Then
-            Return Color.FromArgb(192, 0, 0)
-        ElseIf Score < 28 Then
-            Return Color.FromArgb(128, 128, 0)
-        Else
-            Return Color.FromArgb(0, 188, 0)
-        End If
+        deriveBytes.Dispose()
 
-    End Function
+    End Sub
+
+    Private Sub KDF_legacy_S256_1M(ByRef Input_Array() As Byte, ByRef Prograss As Integer, ThreadIDX As Integer)
+
+        Dim FK256 As New FAST_KDF
+
+        FK256.InitBCrypt(FK256.AlgorithmPtr256, ThreadIDX)
+
+        For Prograss = 1 To 100
+            For IDX01 As Integer = 1 To 10000
+                Input_Array = FK256.HashWithBCryptSHA256(Input_Array, ThreadIDX)
+            Next
+        Next
+
+        FK256.EndBCrypt(ThreadIDX)
+
+    End Sub
+
 
     '============== Form control works =================
+
+    Private Sub ButtonRightArr2_Click(sender As Object, e As EventArgs) Handles ButtonRightArr2.Click
+
+        If WorkMode = 2 Then
+
+            GP_Use_Symbol += 1
+            If GP_Use_Symbol >= 4 Then GP_Use_Symbol = 1
+            PicSelect.Image = My.Resources.Resource1.PWD_Gen
+
+        ElseIf WorkMode = 1 Then
+
+            KDF_Mode_ForExp += 1
+            If KDF_Mode_ForExp >= 4 Then KDF_Mode_ForExp = 1
+            PicSelect.Image = My.Resources.Resource1.KDFS_Types
+
+        ElseIf WorkMode = 0 Then
+
+            Sys_Chk._KDF_Type += 1
+            If Sys_Chk._KDF_Type >= 4 Then Sys_Chk._KDF_Type = 1
+            PicSelect.Image = My.Resources.Resource1.KDFS_Types
+
+        End If
+
+    End Sub
 
     Private Sub ButtonOK_Click(sender As Object, e As EventArgs) Handles ButtonOK.Click
         GoNextPre()
@@ -533,49 +612,69 @@ Public Class FormLogin
         Me.DialogResult = DialogResult.Cancel
     End Sub
 
-    Private Sub Button_Restart_Click(sender As Object, e As EventArgs) Handles Button_Restart.Click
-        Me.DialogResult = DialogResult.Abort
-    End Sub
+    Private Sub ButtonHAGP_Click(sender As Object, e As EventArgs) Handles ButtonHAGP.Click
 
-    Private Sub ButtonHelp_Click(sender As Object, e As EventArgs) Handles ButtonHelp.Click
-
-        If SecureDesktopMode Then
-            MSGBOXNEW(TextStrs(24), MsgBoxStyle.OkOnly, TextStrs(16), Me, PictureGray)
+        If WorkMode = 0 Then
+            If Sys_Chk_Login.Use_Secure_Desktop Then
+                MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_SDnw), MsgBoxStyle.OkOnly, LangStrs(LIdx, UsingTxt.Ti_Info), Me, PictureGray)
+            Else
+                If Not Launch_URI(MainWebURL, Sys_Chk.Running_Admin, Sys_Chk.Found_Bad_MSFile) Then
+                    MSGBOXNEW(LangStrs(LIdx, UsingTxt.Err_Unk), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
+                End If
+            End If
         Else
-            Try
-                Process.Start(MainWebURL)
-            Catch ex As Exception
-            End Try
+
+            Select Case GP_Use_Symbol
+                Case 1
+                    TextBoxPwd2.Text = Random_Strs(20, 22, GP_Use_Symbol)
+                    TextBoxPwdVerify2.Text = TextBoxPwd2.Text
+                Case 2
+                    TextBoxPwd2.Text = Random_Strs(22, 24, GP_Use_Symbol)
+                    TextBoxPwdVerify2.Text = TextBoxPwd2.Text
+                Case 3
+                    TextBoxPwd2.Text = Random_Strs(12, 12, GP_Use_Symbol)
+                    TextBoxPwdVerify2.Text = TextBoxPwd2.Text
+            End Select
         End If
 
     End Sub
 
-    Private Sub ButtonMIT_Click(sender As Object, e As EventArgs) Handles PictureBoxMIT.Click
+    Private Sub ButtonMIT_Click(sender As Object, e As EventArgs) Handles ButtonMIT.Click
+
+        Dim t1 As New Threading.Thread(Sub() Load_Bitmap_For_Threads(8)) 'FormMIT
+        t1.Start()
 
         FormMIT.FormW = Me.Width
         FormMIT.FormH = Me.Height
         FormMIT.FormT = Me.Top
         FormMIT.FormL = Me.Left
-        FormMIT.Opacity = ALLOPACITY
-        MakeWindowsBlur(Me, PictureGray)
+        FormMIT.DocRight.Visible = True
+        FormMIT.DocLeft.Visible = False
+        FormMIT.Opacity = Sys_Chk_Login._OpacitySng
+        FormMIT.NowPage = 0
+        MakeWindowsMono(Me, PictureGray)
+        t1.Join()
+        FormMIT.PictureMIT.Image = FormMITBitmap
         FormMIT.ShowDialog()
-        UnMakeWindowsBlur(PictureGray)
+        UnMakeWindowsMono(PictureGray)
         FullGC()
+
     End Sub
 
     Private Sub ButtonFileOpen_Click(sender As Object, e As EventArgs) Handles ButtonFileOpen.Click
 
         Dim FFE As New FormFileExplorer
+        FFE.PicFileExp.Image = FormFileExpBitmap
 
-        MakeWindowsBlur(Me, PictureGray)
+        MakeWindowsMono(Me, PictureGray)
         FFE.Opacity = Me.Opacity
 
         If FFE.ShowDialog(Me) = DialogResult.OK Then
             FFE.Close()
-            UnMakeWindowsBlur(PictureGray)
-            GoNext(FFE.BigByte, True)
+            UnMakeWindowsMono(PictureGray)
+            GoNext(FFE.BigByte, True, Sys_Chk._KDF_Type)
         Else
-            UnMakeWindowsBlur(PictureGray)
+            UnMakeWindowsMono(PictureGray)
         End If
         FFE.Dispose()
 
@@ -584,73 +683,58 @@ Public Class FormLogin
 
     End Sub
 
-    Dim PWDSHOWon As New Bitmap(My.Resources.Resource1.PASSWORD_SHOW)
-    Dim PWDSHOWoff As New Bitmap(My.Resources.Resource1.PASSWORD_HIDE)
+    Dim B_PWDSHOWon As New Bitmap(My.Resources.Resource1.PASSWORD_SHOW)
+    Dim B_PWDSHOWoff As New Bitmap(My.Resources.Resource1.PASSWORD_HIDE)
+    Dim B_PWDSHOWon_on As Bitmap = Make_Button_brighter(B_PWDSHOWon)
+    Dim B_PWDSHOWoff_on As Bitmap = Make_Button_brighter(B_PWDSHOWoff)
+
+    Dim B_LangR As Bitmap = My.Resources.Resource1.Lang_arr
+    Dim B_LangR_on As New Bitmap(MakeRedArrow(B_LangR))
 
     Private Sub ButtonViewPass_Click(sender As Object, e As EventArgs) Handles ButtonViewPass.Click
-        If TextBoxPwd2.UseSystemPasswordChar Then
-            TextBoxPwd2.UseSystemPasswordChar = False
-            If WorkMode <> 3 Then TextBoxPwdVerify2.UseSystemPasswordChar = False
-            ButtonViewPass.Image = PWDSHOWon
+
+        If Not PwdShow Then
+            TextBoxPwdVerify2.PasswordChar = ControlChars.NullChar
+            TextBoxPwd2.PasswordChar = ControlChars.NullChar
+            ButtonViewPass.Image = B_PWDSHOWon_on
         Else
-            TextBoxPwd2.UseSystemPasswordChar = True
-            If WorkMode <> 3 Then TextBoxPwdVerify2.UseSystemPasswordChar = True
-            ButtonViewPass.Image = PWDSHOWoff
+            TextBoxPwdVerify2.PasswordChar = "●"
+            TextBoxPwd2.PasswordChar = "●"
+            ButtonViewPass.Image = B_PWDSHOWoff_on
         End If
+
+        PwdShow = Not PwdShow
+
+        Exit Sub
+
     End Sub
 
-    Dim SD_ON As New Bitmap(My.Resources.Resource1.SECURE_DESKTOP_ON)
-    Dim RAA_ON As New Bitmap(My.Resources.Resource1.RUN_AS_ADMIN_ON)
+    Private Sub ButtonArr_Click(sender As Object, e As EventArgs) Handles ButtonRightArr.Click
 
-    Dim SD_OFF As Bitmap = Make_Button_Gray(My.Resources.Resource1.SECURE_DESKTOP_ON, -0.4F)
-    Dim RAA_OFF As Bitmap = Make_Button_Gray(My.Resources.Resource1.RUN_AS_ADMIN_ON, -0.4F)
+        LIdx += 1
+        If LIdx = 4 Then LIdx = 0
+        PicLang.Image = GetBitmapFromCode(LIdx)
+        ToolTip1.SetToolTip(TextBoxPwd2, LangStrs(LIdx, UsingTxt.Lo_Login_tt1))
+        ToolTip1.SetToolTip(TextBoxPwdVerify2, LangStrs(LIdx, UsingTxt.Lo_Login_tt2))
+        ToolTip1.SetToolTip(ButtonMIT, LangStrs(LIdx, UsingTxt.MIT_Tol))
 
-    Private Sub PictureBoxSD_Click(sender As Object, e As EventArgs) Handles PictureBoxSD.Click
-        If IsUseSD Then
-            PictureBoxSD.Image = SD_OFF
-        Else
-            PictureBoxSD.Image = SD_ON
+        If WorkMode = 0 Then
+            Select Case sender.Name
+                Case "ButtonLeftArr"
+                    LIdx -= 1
+                    If LIdx = -1 Then LIdx = 3
+                Case "ButtonRightArr"
+
+            End Select
         End If
-        IsUseSD = Not IsUseSD
-    End Sub
 
-    Private Sub PictureBoxRUNAS_Click(sender As Object, e As EventArgs) Handles PictureBoxRUNAS.Click
-        If IsUseRUNAS Then
-            PictureBoxRUNAS.Image = RAA_OFF
-        Else
-            PictureBoxRUNAS.Image = RAA_ON
-        End If
-        IsUseRUNAS = Not IsUseRUNAS
-    End Sub
-
-    Private Sub PictureBoxGenPwd_Click(sender As Object, e As EventArgs) Handles ButtonGenPwd.Click
-        Dim PWDGMode As Integer
-        If GP_Use_Symbol Then
-            PWDGMode = 1
-        Else
-            PWDGMode = 2
-        End If
-        TextBoxPwd2.Text = Random_Strs(24, 24, PWDGMode)
-        TextBoxPwdVerify2.Text = TextBoxPwd2.Text
-    End Sub
-
-    'Dim USING_SYMBOL_OFF As Bitmap = My.Resources.Resource1.USING_SYMBOL_ON 'Make_Button_Gray(My.Resources.Resource1.USING_SYMBOL_ON, -0.4F)
-    'Dim USING_SYMBOL_on As Bitmap = My.Resources.Resource1.USING_SYMBOL_OFF 'Make_Button_Gray(My.Resources.Resource1.USING_SYMBOL_ON, -0.4F)
-
-    Private Sub PictureBoxGPUS_Click(sender As Object, e As EventArgs) Handles PictureBoxGPUS.Click
-        If Not GP_Use_Symbol Then
-            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_ON
-        Else
-            PictureBoxGPUS.Image = My.Resources.Resource1.USING_SYMBOL_OFF
-        End If
-        GP_Use_Symbol = Not GP_Use_Symbol
     End Sub
 
     Private Sub FormLogin_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
 
         If TextBoxPwd2.DetectedPasteIn Or TextBoxPwdVerify2.DetectedPasteIn Then
             Close_Clear_Clipper = False
-            If MSGBOXNEW(TextStrs(70), MsgBoxStyle.OkCancel, TextStrs(9), Me, PictureGray) = MsgBoxResult.Ok Then
+            If MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_CPC), MsgBoxStyle.OkCancel, LangStrs(LIdx, UsingTxt.Ti_Cnfm), Me, PictureGray) = MsgBoxResult.Ok Then
                 'My.Computer.Clipboard.Clear()
                 Close_Clear_Clipper = True
             End If
@@ -659,8 +743,8 @@ Public Class FormLogin
         TextBoxPwd2.TempClipboardStr = ""
         TextBoxPwdVerify2.TempClipboardStr = ""
 
-        DbTester.Enabled = False
-        DbTester.Dispose()
+        Debug_Tester.Enabled = False
+        Debug_Tester.Dispose()
         ClearTextBox(TextBoxPwd2)
         ClearTextBox(TextBoxPwdVerify2)
         TextBoxPwd2.Dispose()
@@ -669,13 +753,75 @@ Public Class FormLogin
     End Sub
 
     Private Sub FormLogin_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
-        timerA.Enabled = False
-        timerA.Dispose()
+
+        SSWorker.Dispose()
+        CapMonTimer.Enabled = False
+        CapMonTimer.Dispose()
         WipeBytes(This_Time_DIP)
         WipeBytes(This_Time_Key)
+        GC.SuppressFinalize(Me)
     End Sub
 
-    '================= BOX2 For fix Copy-past memory leak
+    '================= AT Filed (Protect From Windows Startup (PFWS))
+
+    Dim B_PFWSon As Bitmap = The_Shine_Visual_Filter2(My.Resources.Resource1.PFWS_ON)
+    Dim B_PFWSoff As Bitmap = The_Shine_Visual_Filter2(My.Resources.Resource1.PFWS_OFF)
+    Dim B_PFWSon_on As Bitmap = Make_Button_brighter(B_PFWSon)
+    Dim B_PFWSoff_on As Bitmap = Make_Button_brighter(B_PFWSoff)
+
+    Private Sub ButtonPFWS_Click(sender As Object, e As EventArgs) Handles ButtonPFWS.Click
+
+        Dim ChkErrCode1 As Integer
+        Dim ChkErrCode2 As Integer
+
+        Try
+
+            If Not Sys_Chk.Use_ATField Then
+
+                If MSGBOXNEW(LangStrs(LIdx, UsingTxt.AT_D), MsgBoxStyle.OkCancel, LangStrs(LIdx, UsingTxt.Ti_Cnfm), Me, PictureGray) = DialogResult.OK Then
+
+                    ChkErrCode1 = INSTALL_FADB_TASK(TaskSch_Name_str)
+                    If ChkErrCode1 = 0 Or ChkErrCode1 = 1 Then
+                        ChkErrCode2 = START_FADB_TASK(TaskSch_Name_str)
+                        MSGBOXNEW(LangStrs(LIdx, UsingTxt.AT_dn), MsgBoxStyle.OkOnly, LangStrs(LIdx, UsingTxt.Ti_Cnfm), Me, PictureGray)
+                    Else
+                        'Error
+                        MSGBOXNEW(LangStrs(LIdx, UsingTxt.Ti_Err) + ":" + ChkErrCode2.ToString("x") + D_vbcrlf + LangStrs(LIdx, UsingTxt.AT_Df),
+                                    MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
+                    End If
+
+                End If
+
+            Else
+
+                If MSGBOXNEW(LangStrs(LIdx, UsingTxt.AT_uD), MsgBoxStyle.OkCancel, LangStrs(LIdx, UsingTxt.Ti_Cnfm), Me, PictureGray) = DialogResult.OK Then
+                    ChkErrCode1 = STOP_FADB_TASK(TaskSch_Name_str)
+                    ChkErrCode2 = UNINSTALL_FADB_TASK(TaskSch_Name_str)
+                    If ChkErrCode2 = 0 Or ChkErrCode2 = 1 Then
+                        MSGBOXNEW(LangStrs(LIdx, UsingTxt.AT_dn), MsgBoxStyle.OkOnly, LangStrs(LIdx, UsingTxt.Ti_Cnfm), Me, PictureGray)
+                    Else
+                        MSGBOXNEW(LangStrs(LIdx, UsingTxt.Ti_Err) + ":" + ChkErrCode2.ToString("x") + D_vbcrlf + LangStrs(LIdx, UsingTxt.AT_Df),
+                                  MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
+                    End If
+                End If
+
+            End If
+        Catch ex As Exception
+            MSGBOXNEW(LangStrs(LIdx, UsingTxt.AT_Df), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
+        End Try
+
+
+        Sys_Chk.Use_ATField = Check_Task_Exist(TaskSch_Name_str)
+
+        If Sys_Chk.Use_ATField Then
+            ButtonPFWS.Image = B_PFWSon
+        Else
+            ButtonPFWS.Image = B_PFWSoff
+        End If
+
+    End Sub
+
+    '================= TextBox2 (For fix Copy-past MRI) ======= Works
 
     Private Sub TextBoxPwd2_KeyDown(sender As Object, e As KeyEventArgs)
 
@@ -688,29 +834,62 @@ Public Class FormLogin
     End Sub
 
     Private Sub TextBoxPwd2_TextChanged(sender As Object, e As EventArgs)
-        If Not ClearWorking Then sender.forecolor = EvaPwdStrong(sender)
+
+        If Not ClearWorking Then
+            sender.forecolor = SSWorker.EvaPwdStrong(sender)
+            If TextBoxPwd2.Text.Length > 0 Then
+                EnDisConfirmBtn(True)
+            Else
+                EnDisConfirmBtn(False)
+            End If
+        End If
+
     End Sub
+    Private Sub EnDisConfirmBtn(En As Boolean)
+
+        If En Then
+            ButtonOK.Enabled = True
+            ButtonOK.Image = B_confirm
+        Else
+            ButtonOK.Enabled = False
+            ButtonOK.Image = B_confirm_Dis
+        End If
+
+    End Sub
+
 
     '=============== About CAPS Lock function
 
-    Public CAPon As New Bitmap(My.Resources.Resource1.caps_lock_on)
-    Public CAPoff As New Bitmap(My.Resources.Resource1.caps_lock_off)
+    Private MouseOnIt As Boolean
+
+    Private B_CAPon As New Bitmap(My.Resources.Resource1.caps_lock_on)
+    Private B_CAPoff As New Bitmap(My.Resources.Resource1.caps_lock_off)
+    Private B_CAPon_on As Bitmap = Make_Button_brighter(B_CAPon)
+    Private B_CAPoff_on As Bitmap = Make_Button_brighter(B_CAPoff)
 
     <DllImport("user32.dll")>
     Private Shared Sub keybd_event(ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As UInteger, ByVal dwExtraInfo As UInteger)
     End Sub
 
-    Private Sub PicCAP1_Click(sender As Object, e As EventArgs) Handles PicCAP1.Click
+    Private Sub PicCAP1_Click(sender As Object, e As EventArgs) Handles ButtonCaps.Click
         Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 1, 0)
         Call keybd_event(System.Windows.Forms.Keys.CapsLock, &H14, 3, 0)
     End Sub
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs)
+    Private Sub CapMonTimer_Tick(sender As Object, e As EventArgs)
 
-        If Control.IsKeyLocked(Keys.CapsLock) Then
-            PicCAP1.Image = CAPon
+        If MouseOnIt Then
+            If Control.IsKeyLocked(Keys.CapsLock) Then
+                ButtonCaps.Image = B_CAPon_on
+            Else
+                ButtonCaps.Image = B_CAPoff_on
+            End If
         Else
-            PicCAP1.Image = CAPoff
+            If Control.IsKeyLocked(Keys.CapsLock) Then
+                ButtonCaps.Image = B_CAPon
+            Else
+                ButtonCaps.Image = B_CAPoff
+            End If
         End If
 
     End Sub
@@ -720,15 +899,7 @@ Public Class FormLogin
     Private lastLocation As Point
     Private isMouseDown As Boolean = False
 
-    Private Sub Button_Restart_MouseHover(sender As Object, e As EventArgs) Handles Button_Restart.MouseHover
-        Button_Restart.Image = My.Resources.Resource1.button_RESTART_On
-    End Sub
-
-    Private Sub Button_Restart_MouseLeave(sender As Object, e As EventArgs) Handles Button_Restart.MouseLeave
-        Button_Restart.Image = My.Resources.Resource1.button_RESTART_Off
-    End Sub
-
-    Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles PictureWinMin.Click
+    Private Sub PictureWinMin_Click(sender As Object, e As EventArgs) Handles ButtonWinMin.Click
         Me.WindowState = FormWindowState.Minimized
     End Sub
 
@@ -756,6 +927,8 @@ Public Class FormLogin
 
     '================= Button visual work
 
+    Dim B_confirm_Dis As Bitmap = Make_Button_Gray(My.Resources.Resource1.button_confirm)
+
     Dim B_Logout_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_LOGOUT)
     Dim B_Final_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Final)
     Dim B_HELP_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_HELP)
@@ -764,9 +937,21 @@ Public Class FormLogin
     Dim B_Cancel_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_Cancel)
     Dim B_genpwd_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.button_genpwd)
 
+    Dim B_NextClick As New Bitmap(My.Resources.Resource1.NextClick)
+    Dim B_NextClick_on As Bitmap = Make_Button_brighter(My.Resources.Resource1.NextClick)
+
+    Dim B_Win_Min As New Bitmap(My.Resources.Resource1.WinMin)
+    Dim B_Win_Min_on As Bitmap = Make_Button_brighter(B_Win_Min)
+
+    Dim B_MIT As New Bitmap(My.Resources.Resource1.mit_Btn)
+    Dim B_MIT_on As Bitmap = Make_Button_brighter(B_MIT)
+
+
     Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles _
-        ButtonOK.MouseEnter, ButtonFileOpen.MouseEnter, ButtonFin.MouseEnter, ButtonCancel.MouseEnter, ButtonHelp.MouseEnter,
-        ButtonGenPwd.MouseEnter
+        ButtonOK.MouseEnter, ButtonFileOpen.MouseEnter, ButtonFin.MouseEnter, ButtonCancel.MouseEnter,
+        ButtonHAGP.MouseEnter, ButtonCaps.MouseEnter, ButtonViewPass.MouseEnter, ButtonPFWS.MouseEnter,
+        ButtonPFWS.MouseEnter, ButtonRightArr2.MouseEnter, ButtonRightArr.MouseEnter, ButtonWinMin.MouseEnter,
+        ButtonMIT.MouseEnter
 
         Select Case sender.Name
             Case "ButtonOK"
@@ -777,10 +962,34 @@ Public Class FormLogin
                 ButtonFin.Image = B_Final_on
             Case "ButtonCancel"
                 ButtonCancel.Image = B_Cancel_on
-            Case "ButtonHelp"
-                ButtonHelp.Image = B_HELP_on
-            Case "ButtonGenPwd"
-                ButtonGenPwd.Image = B_genpwd_on
+            Case "ButtonHAGP"
+                If WorkMode = 0 Then
+                    ButtonHAGP.Image = B_HELP_on
+                Else
+                    ButtonHAGP.Image = B_genpwd_on
+                End If
+            Case "ButtonCaps"
+                MouseOnIt = True
+            Case "ButtonViewPass"
+                If PwdShow Then
+                    ButtonViewPass.Image = B_PWDSHOWon_on
+                Else
+                    ButtonViewPass.Image = B_PWDSHOWoff_on
+                End If
+            Case "ButtonPFWS"
+                If Sys_Chk.Use_ATField Then
+                    ButtonPFWS.Image = B_PFWSon_on
+                Else
+                    ButtonPFWS.Image = B_PFWSoff_on
+                End If
+            Case "ButtonRightArr"
+                ButtonRightArr.Image = B_LangR_on
+            Case "ButtonRightArr2"
+                ButtonRightArr2.Image = B_NextClick_on
+            Case "ButtonWinMin"
+                ButtonWinMin.Image = B_Win_Min_on
+            Case "ButtonMIT"
+                ButtonMIT.Image = B_MIT_on
         End Select
 
     End Sub
@@ -789,12 +998,15 @@ Public Class FormLogin
     Dim B_OpenF As New Bitmap(My.Resources.Resource1.button_OpenF)
     Dim B_Final As New Bitmap(My.Resources.Resource1.button_Final)
     Dim B_Cancel As New Bitmap(My.Resources.Resource1.button_Cancel)
+
     Dim B_HELP As New Bitmap(My.Resources.Resource1.button_HELP)
     Dim B_genpwd As New Bitmap(My.Resources.Resource1.button_genpwd)
 
     Private Sub Mouse_Leave(sender As Object, e As EventArgs) Handles _
-        ButtonOK.MouseLeave, ButtonFileOpen.MouseLeave, ButtonFin.MouseLeave, ButtonCancel.MouseLeave, ButtonHelp.MouseLeave,
-        ButtonGenPwd.MouseLeave
+        ButtonOK.MouseLeave, ButtonFileOpen.MouseLeave, ButtonFin.MouseLeave, ButtonCancel.MouseLeave,
+        ButtonHAGP.MouseLeave, ButtonCaps.MouseLeave, ButtonViewPass.MouseLeave, ButtonPFWS.MouseLeave,
+        ButtonPFWS.MouseLeave, ButtonRightArr2.MouseLeave, ButtonRightArr.MouseLeave, ButtonWinMin.MouseLeave,
+        ButtonMIT.MouseLeave
 
         Select Case sender.Name
             Case "ButtonOK"
@@ -805,15 +1017,74 @@ Public Class FormLogin
                 ButtonFin.Image = B_Final
             Case "ButtonCancel"
                 ButtonCancel.Image = B_Cancel
-            Case "ButtonHelp"
-                ButtonHelp.Image = B_HELP
-            Case "ButtonGenPwd"
-                ButtonGenPwd.Image = B_genpwd
+            Case "ButtonHAGP"
+                If WorkMode = 0 Then
+                    ButtonHAGP.Image = B_HELP
+                Else
+                    ButtonHAGP.Image = B_genpwd
+                End If
+            Case "ButtonCaps"
+                MouseOnIt = False
+            Case "ButtonViewPass"
+                If PwdShow Then
+                    ButtonViewPass.Image = B_PWDSHOWon
+                Else
+                    ButtonViewPass.Image = B_PWDSHOWoff
+                End If
+            Case "ButtonPFWS"
+                If Sys_Chk.Use_ATField Then
+                    ButtonPFWS.Image = B_PFWSon
+                Else
+                    ButtonPFWS.Image = B_PFWSoff
+                End If
+            Case "ButtonRightArr"
+                ButtonRightArr.Image = B_LangR
+            Case "ButtonRightArr2"
+                ButtonRightArr2.Image = B_NextClick
+            Case "ButtonWinMin"
+                ButtonWinMin.Image = B_Win_Min
+            Case "ButtonMIT"
+                ButtonMIT.Image = B_MIT
         End Select
     End Sub
+
+    Private Sub PicSelect_Paint(sender As Object, e As PaintEventArgs) Handles PicSelect.Paint
+
+        If WorkMode = 2 Then
+            Select Case GP_Use_Symbol
+                Case 1
+                    e.Graphics.DrawImage(My.Resources.Resource1.PWD_Gen, 0, 0)
+                Case 2
+                    e.Graphics.DrawImage(My.Resources.Resource1.PWD_Gen, 0, -22)
+                Case 3
+                    e.Graphics.DrawImage(My.Resources.Resource1.PWD_Gen, 0, -44)
+            End Select
+        ElseIf WorkMode = 1 Then
+            Select Case KDF_Mode_ForExp
+                Case 1
+                    e.Graphics.DrawImage(My.Resources.Resource1.KDFS_Types, 0, 0)
+                Case 2
+                    e.Graphics.DrawImage(My.Resources.Resource1.KDFS_Types, 0, -22)
+                Case 3
+                    e.Graphics.DrawImage(My.Resources.Resource1.KDFS_Types, 0, -44)
+            End Select
+        ElseIf WorkMode = 0 Then
+            Select Case Sys_Chk._KDF_Type
+                Case 1
+                    e.Graphics.DrawImage(My.Resources.Resource1.KDFS_Types, 0, 0)
+                Case 2
+                    e.Graphics.DrawImage(My.Resources.Resource1.KDFS_Types, 0, -22)
+                Case 3
+                    e.Graphics.DrawImage(My.Resources.Resource1.KDFS_Types, 0, -44)
+            End Select
+        End If
+
+    End Sub
+
+
 End Class
 
-'===== BOX2 For fix Copy-past memory leak
+'===== BOX2 For fix Copy-past memory MRI
 
 Class MyTextBox
     Inherits TextBox
@@ -843,6 +1114,124 @@ Class MyTextBox
 
     End Sub
 
-
-
 End Class
+
+
+Module Login_Work
+
+    Public Function LogInFormWork(TitleStr As String, ByRef ThisTimeDir As String, ByRef ThisTimeKey() As Byte,
+                                  ByRef ThisTimeDIP() As Byte, WorkMode As Integer, PwdState As Integer,
+                                  ByRef Sys_Chk_ As SystemChecklist, ByRef FFPicBox As PictureBox, ByRef WorkSalt() As Byte,
+                                  Optional ByRef FirerForm As FormMain = Nothing) As DialogResult
+
+        LogInFormWork = DialogResult.Cancel
+        Dim LIFWRtn As DialogResult = DialogResult.Cancel
+        Dim Close_Clear_Clipper As Boolean
+
+        Dim LIFW = New FormLogin
+        LIFW.Text = TitleStr
+        LIFW.WorkMode = WorkMode
+        LIFW.This_Time_Salt = WorkSalt
+        LIFW.Sys_Chk_Login = Sys_Chk_
+
+        Select Case WorkMode
+            Case 0 '0=Start mode 
+            Case 1 '1=Non Start mode
+            Case 2 '2=Password mode
+                LIFW.PassByte = CurrentAccountPass
+                LIFW.PwdState = PwdState
+        End Select
+
+        If FirerForm Is Nothing Then
+
+            'GetCurrentThreadId()
+            'Dim ErrHappend As Boolean = False
+
+            Dim Old_hDesktop As IntPtr = GetThreadDesktop(Process.GetCurrentProcess().Threads(0).Id)
+            Dim New_hDesktop As IntPtr = CreateDesktop(
+               System.Text.Encoding.Unicode.GetString(Security.Cryptography.ProtectedData.Unprotect(
+               Sys_Chk_.Secure_Desktop_Name, Nothing, DataProtectionScope.CurrentUser)),
+               IntPtr.Zero, IntPtr.Zero, 0, DESKTOP_ACCESS.GENERIC_ALL, IntPtr.Zero)
+
+            If New_hDesktop = 0 Then
+                MsgBox(LangStrs(LIdx, UsingTxt.OT_SDce) + " 0x" + Marshal.GetLastWin32Error.ToString("x") +
+                       D_vbcrlf + LangStrs(LIdx, UsingTxt.Err_SDf), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err))
+                Exit Function
+            End If
+
+            SwitchDesktop(New_hDesktop)
+
+            Task.Factory.StartNew(Sub()
+
+                                      LIFW.TempClipboardStr = GetTextFromClipboard()
+                                      SetThreadDesktop(New_hDesktop)
+                                      Try
+                                          LIFWRtn = LIFW.ShowDialog()
+                                      Catch ex As Exception
+                                          'ErrHappend = True
+                                      End Try
+                                      SetThreadDesktop(Old_hDesktop)
+
+                                  End Sub).Wait()
+
+            SwitchDesktop(Old_hDesktop)
+            CloseDesktop(New_hDesktop)
+
+            'If ErrHappend Then
+            '    MsgBox(LangStrs(LIdx, UsingTxt.OT_SDce) + " 0x" + Marshal.GetLastWin32Error.ToString("x") +
+            '           D_vbcrlf + LangStrs(LIdx, UsingTxt.Err_SDf), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err))
+            '    Exit Function
+            'End If
+
+        Else
+
+            LIFW.FormW = FirerForm.Width
+            LIFW.FormH = FirerForm.Height
+            LIFW.FormT = FirerForm.Top
+            LIFW.FormL = FirerForm.Left
+
+            MakeWindowsMono(FirerForm, FFPicBox)
+            LIFW.StartPosition = FormStartPosition.CenterParent
+            LIFWRtn = LIFW.ShowDialog()
+            UnMakeWindowsMono(FFPicBox)
+
+        End If
+
+        Select Case WorkMode
+
+            Case 0, 1
+
+                If LIFWRtn = DialogResult.OK Then
+                    ThisTimeKey = LIFW.This_Time_Key.Clone
+                    ThisTimeDir = LIFW.This_Time_Dir.Clone
+                    ThisTimeDIP = LIFW.This_Time_DIP.Clone
+                    If WorkMode = 0 Then
+                        Sys_Chk_._LoginKeyStrength = LIFW.Sys_Chk_Login._LoginKeyStrength
+                        Sys_Chk_.HasDebugger = LIFW.Sys_Chk_Login.HasDebugger
+                        Sys_Chk_.Found_Bad_MSFile = LIFW.Sys_Chk_Login.Found_Bad_MSFile
+                    End If
+                End If
+
+                LogInFormWork = LIFWRtn
+
+            Case 2
+                If LIFWRtn = DialogResult.OK Then
+                    CurrentAccountPass = LIFW.PassByte.Clone
+                    LogInFormWork = LIFW.PwdState
+                Else
+                    LogInFormWork = PwdState
+                End If
+            Case 3
+                ThisTimeDir = LIFW.This_Time_Dir.Clone
+                LogInFormWork = LIFWRtn
+        End Select
+
+        Close_Clear_Clipper = LIFW.Close_Clear_Clipper
+        LIFW.Close()
+        LIFW.Dispose()
+        GC.SuppressFinalize(LIFW)
+        If Close_Clear_Clipper Then System.Windows.Forms.Clipboard.Clear()
+
+    End Function
+
+End Module

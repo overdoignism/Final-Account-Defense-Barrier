@@ -145,9 +145,6 @@
   <data name="button_CAT_CSVEX" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_CAT_CSVEX.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_CAT_TRANS_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_CAT_TRANS_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="button_L_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_L_save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -157,20 +154,11 @@
   <data name="button_CAT_DEL" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_CAT_DEL.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button_CAT_DEL_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_CAT_DEL_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="button_OpenF" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_OpenF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mit_Btn" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\mit_Btn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button_CAT_CSVEX_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_CAT_CSVEX_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Arr_Right" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\Arr_Right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PWD_KDF_PASS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\PWD_KDF_PASS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -187,20 +175,11 @@
   <data name="SCB_S_UP" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\SCB_S_UP.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Title_LOGIN_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\Load as Bin\Title_LOGIN_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="button_Final" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_Final.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DIGI_Y_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\DIGI_Y_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="File_expo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\File_expo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RUN_AS_ADMIN_ON" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\RUN AS ADMIN ON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DIGI_Y_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\DIGI_Y_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -223,9 +202,6 @@
   <data name="CSV_EXP" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\CSV_EXP.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Title_Password_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\Load as Bin\Title_Password_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="button_view_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_view_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -238,17 +214,8 @@
   <data name="Message_CRI_TXTB_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\Load as Bin\Message_CRI_TXTB_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="MIT_DOC_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\Load as Bin\MIT_DOC_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="button_genpwd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_genpwd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button_RESTART_On" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_RESTART_On.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Arr_Left" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\Arr_Left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Message_OK_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\Load as Bin\Message_OK_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -258,9 +225,6 @@
   </data>
   <data name="EPTSLOT_313" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\EPTSLOT_313.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="USING_SYMBOL_ON" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\USING_SYMBOL_ON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_L_moveDWN" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_L_moveDWN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -286,17 +250,11 @@
   <data name="button_L_fileInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_L_fileInfo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="PMP_ON" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\PMP_ON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="caps_lock_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\caps_lock_off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_LOGOUT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_LOGOUT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="main" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\main.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_CATMAN" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_CATMAN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -304,17 +262,8 @@
   <data name="WinMin" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\WinMin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SECURE_DESKTOP_ON" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\SECURE DESKTOP ON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PWD_KDF" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\PWD_KDF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="SCB_BAR" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\SCB_BAR.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button_CAT_CSVIM_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_CAT_CSVIM_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CSV_Waiting" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\CSV_Waiting.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -340,17 +289,11 @@
   <data name="Message_VRF_TXTB_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\Load as Bin\Message_VRF_TXTB_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="SALT_NO" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\SALT_NO.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="TimerID_ACT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\TimerID_ACT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SALT_ADD" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\SALT_ADD.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button_RESTART_Off" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\button_RESTART_Off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_L_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_L_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -358,14 +301,8 @@
   <data name="PASSWORD_SHOW" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\PASSWORD SHOW.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Title_NORMAL_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\Load as Bin\Title_NORMAL_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="DIGI_Y_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\DIGI_Y_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BIP39WORD" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\Load as Bin\BIP39WORD.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="exit_Pic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\exit_Pic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -379,17 +316,8 @@
   <data name="button_Launch" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_Launch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="PMP_OFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\PMP_OFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Message_OK_TXTB_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\Load as Bin\Message_OK_TXTB_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SETTINGS_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>AllResource\Load as Bin\SETTINGS_PNG.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="USING_SYMBOL_OFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>allresource\using_symbol_off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button_HKM_Title" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_HKM_Title.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -399,5 +327,95 @@
   </data>
   <data name="button_HKO_small_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>AllResource\button_HKO_small_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Read_Only_Img" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Read_Only_Img.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PFWS_OFF" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\PFWS_OFF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PFWS_ON" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\PFWS_ON.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PFWS_RA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\PFWS_RA.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TXTFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Load as Bin\TXTFile.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_security_check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_security_check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Title_LOGIN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Title_LOGIN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Arr_Left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Arr_Left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Title_NORMAL" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Title_NORMAL.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Title_Password" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Title_Password.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Form_Config" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Form_Config.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PWD_KDF" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\PWD_KDF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Form_Main" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Form_Main.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Timer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Timer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Doc01P_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Load as Bin\Doc01P_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Doc02P_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Load as Bin\Doc02P_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Doc03P_PNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Load as Bin\Doc03P_PNG.Bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="File_expo_New" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\File_expo_New.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lang_arr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Lang-arr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lang_en" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Lang-en.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lang_jp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Lang-jp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lang_load" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Lang-load.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lang_zhcn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Lang-zhcn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lang_zhtw" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\Lang-zhtw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KDFT_Types" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\KDFT_Types.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NextClick" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\NextClick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PWD_Gen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\PWD_Gen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KDFS_Types" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\KDFS-Types.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_CAT_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\button_CAT_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CBOX_AR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>AllResource\CBOX_AR.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

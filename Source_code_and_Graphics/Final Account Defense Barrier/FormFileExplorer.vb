@@ -15,6 +15,10 @@ Public Class FormFileExplorer
 
     Private Sub FormFileExplorer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        If Not Sys_Chk.Screen_Capture_Allowed Then 'Disable Screen Capture
+            SetWindowDisplayAffinity(Me.Handle, WDA_EXCLUDEFROMCAPTURE)
+        End If
+
         '====================== Listbox Scrollbar work
         UpY = LSCBU.Top + LSCBU.Height
         DwY = LSCBD.Top - LSCBBAR.Height + 1
@@ -31,14 +35,12 @@ Public Class FormFileExplorer
 
         LabelPath.Text = My.Application.Info.DirectoryPath
         DriverList(0) = My.Application.Info.DirectoryPath
-        ListBoxDrivers.Items.Add(TextStrs(47))
+        ListBoxDrivers.Items.Add(LangStrs(LIdx, UsingTxt.IT_Ah))
         DriverList(1) = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-        ListBoxDrivers.Items.Add(TextStrs(45))
+        ListBoxDrivers.Items.Add(LangStrs(LIdx, UsingTxt.IT_dk))
         DriverList(2) = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-        ListBoxDrivers.Items.Add(TextStrs(46))
+        ListBoxDrivers.Items.Add(LangStrs(LIdx, UsingTxt.IT_md))
         IDX01 = 2
-
-        Me.Text = TextStrs(61)
 
         For Each drive As DriveInfo In drives
             If drive.IsReady Then
@@ -50,6 +52,8 @@ Public Class FormFileExplorer
         Next
 
         ListBoxDrivers.SelectedIndex = 0
+        FileSystemWatcher1.InternalBufferSize = 64 * 1024
+        FileSystemWatcher1.EnableRaisingEvents = True
 
     End Sub
 
@@ -66,7 +70,7 @@ Public Class FormFileExplorer
         End If
 
         Try
-            For Each foundDirectory As String In My.Computer.FileSystem.GetDirectories(New_Patch)
+            For Each foundDirectory As String In System.IO.Directory.GetDirectories(New_Patch)
                 ListBoxFiles.Items.Add("<" + Path.GetFileName(foundDirectory) + ">")
             Next
         Catch ex As Exception
@@ -74,7 +78,7 @@ Public Class FormFileExplorer
         End Try
 
         Try
-            For Each foundFiles As String In My.Computer.FileSystem.GetFiles(New_Patch)
+            For Each foundFiles As String In System.IO.Directory.GetFiles(New_Patch, "*.*")
                 ListBoxFiles.Items.Add(Path.GetFileName(foundFiles))
             Next
         Catch ex As Exception
@@ -82,6 +86,7 @@ Public Class FormFileExplorer
         End Try
 
         LabelPath.Text = New_Patch
+        FileSystemWatcher1.Path = New_Patch
 
         Return True
 
@@ -99,7 +104,7 @@ Public Class FormFileExplorer
             Patch_Changed(Path.GetDirectoryName(LabelPath.Text))
             Exe_Fill_Trash()
             LB_Range_Scale = CDbl(ListBoxFiles.Items.Count) - LB_Ration
-            GoCorrectPos()
+            LSCBBAR_GoCorrectPos()
 
         ElseIf GetFile.First = "<" Then
 
@@ -113,11 +118,11 @@ Public Class FormFileExplorer
 
             If Not Patch_Changed(New_Path) Then
                 Patch_Changed(Org_Path)
-                MSGBOXNEW(TextStrs(48), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_nAC), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
             End If
             Exe_Fill_Trash()
             LB_Range_Scale = CDbl(ListBoxFiles.Items.Count) - LB_Ration
-            GoCorrectPos()
+            LSCBBAR_GoCorrectPos()
         Else
 
             Dim Full_Filename As String
@@ -130,10 +135,10 @@ Public Class FormFileExplorer
 
             Select Case ReadFileViaAPI(Full_Filename, BigByte)
                 Case 100
-                    MSGBOXNEW(TextStrs(58), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                    MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_Fz), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Att), Me, PictureGray)
                     Exit Sub
                 Case > 0
-                    MSGBOXNEW(TextStrs(48), MsgBoxStyle.Exclamation, TextStrs(5), Me, PictureGray)
+                    MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_nAC), MsgBoxStyle.Exclamation, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
                     Exit Sub
                 Case Else
 
@@ -152,7 +157,7 @@ Public Class FormFileExplorer
         Patch_Changed(DriverList(ListBoxDrivers.SelectedIndex))
         Exe_Fill_Trash()
         LB_Range_Scale = CDbl(ListBoxFiles.Items.Count) - LB_Ration
-        GoCorrectPos()
+        LSCBBAR_GoCorrectPos()
 
     End Sub
 
@@ -161,7 +166,9 @@ Public Class FormFileExplorer
     End Sub
 
     Private Sub ListBoxFiles_DoubleClick(sender As Object, e As EventArgs) Handles ListBoxFiles.DoubleClick
+        Cursor.Current = Cursors.WaitCursor
         GoWork()
+        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub ListBoxFiles_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBoxFiles.SelectedIndexChanged
@@ -174,7 +181,7 @@ Public Class FormFileExplorer
             ButtonFileOpen.Image = My.Resources.Resource1.button_OpenF
         End If
 
-        GoCorrectPos()
+        LSCBBAR_GoCorrectPos()
 
     End Sub
 
@@ -187,7 +194,7 @@ Public Class FormFileExplorer
         ClearLabel(LabelPath)
     End Sub
 
-    '============================= Read file via API avoid memory leak=================================
+    '============================= Read file via API avoid MRI =================================
 
     Private Const GENERIC_READ As Integer = &H80000000
     Private Const OPEN_EXISTING As Integer = 3
@@ -268,20 +275,20 @@ Public Class FormFileExplorer
     Private lastLocation As Point
     Private isMouseDown As Boolean = False
 
-    Private Sub PictureBox8_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseDown
+    Private Sub PictureBox8_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PicFileExp.MouseDown
         ' 紀錄滑鼠按下的位置
         isMouseDown = True
         lastLocation = e.Location
     End Sub
 
-    Private Sub PictureBox8_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseMove
+    Private Sub PictureBox8_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PicFileExp.MouseMove
         ' 當滑鼠左鍵按下時，設定窗體的位置
         If isMouseDown Then
             Me.Location = New Point(Me.Location.X + (e.X - lastLocation.X), Me.Location.Y + (e.Y - lastLocation.Y))
         End If
     End Sub
 
-    Private Sub PictureBox8_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureBox8.MouseUp
+    Private Sub PictureBox8_MouseUp(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PicFileExp.MouseUp
         ' 當滑鼠左鍵釋放時，重設 isMouseDown 變數
         isMouseDown = False
     End Sub
@@ -303,11 +310,11 @@ Public Class FormFileExplorer
         If sender.Name = "LSCBU" Then
             NowUPorDW = 0
             ListBoxFiles.TopIndex -= 1
-            GoCorrectPos()
+            LSCBBAR_GoCorrectPos()
         ElseIf sender.Name = "LSCBD" Then
             NowUPorDW = 1
             ListBoxFiles.TopIndex += 1
-            GoCorrectPos()
+            LSCBBAR_GoCorrectPos()
         Else
             Dim WhereIsY As Integer = e.Y + LSCBBACK.Top
             If WhereIsY < LSCBBAR.Top Then
@@ -317,11 +324,11 @@ Public Class FormFileExplorer
                 Else
                     ListBoxFiles.TopIndex -= LB_Ration
                 End If
-                GoCorrectPos()
+                LSCBBAR_GoCorrectPos()
             Else
                 NowUPorDW = 3
                 ListBoxFiles.TopIndex += LB_Ration
-                GoCorrectPos()
+                LSCBBAR_GoCorrectPos()
             End If
 
         End If
@@ -344,7 +351,7 @@ Public Class FormFileExplorer
             Case 3
                 ListBoxFiles.TopIndex += LB_Ration
         End Select
-        GoCorrectPos()
+        LSCBBAR_GoCorrectPos()
     End Sub
 
     Private Sub LSCBU_MouseUp(sender As Object, e As MouseEventArgs) Handles LSCBU.MouseUp, LSCBD.MouseUp, LSCBBACK.MouseUp
@@ -352,16 +359,16 @@ Public Class FormFileExplorer
     End Sub
 
     Private Sub LSCB_MSC_WORK(ByVal sender As Object, ByVal e As EventArgs) Handles LSCB_MSC.Tick
-        GoCorrectPos()
+        LSCBBAR_GoCorrectPos()
         LSCB_MSC.Enabled = False
     End Sub
 
-    Private Sub GoCorrectPos()
+    Private Sub LSCBBAR_GoCorrectPos()
 
         If LB_Range_Scale > 0 Then
-            Dim TmpIdx As Double = CDbl(ListBoxFiles.TopIndex) / LB_Range_Scale
-            TmpIdx = TmpIdx * CDbl(DwY - UpY)
-            LSCBBAR.Top = CInt(TmpIdx + UpY)
+            Dim TmpDbl As Double = CDbl(ListBoxFiles.TopIndex) / LB_Range_Scale
+            TmpDbl *= CDbl(DwY - UpY)
+            LSCBBAR.Top = CInt(TmpDbl + UpY)
         Else
             LSCBBAR.Top = UpY
         End If
@@ -402,7 +409,7 @@ Public Class FormFileExplorer
 
     Private Sub Go_ListBoxIdx(Gowhere As Integer)
         ListBoxFiles.SelectedIndex = Gowhere
-        GoCorrectPos()
+        LSCBBAR_GoCorrectPos()
     End Sub
 
     Private Sub ListBoxFiles_MouseWheel(sender As Object, e As MouseEventArgs) Handles ListBoxFiles.MouseWheel
@@ -420,7 +427,7 @@ Public Class FormFileExplorer
         Else
             ListBoxFiles.TopIndex += 3
         End If
-        GoCorrectPos()
+        LSCBBAR_GoCorrectPos()
     End Sub
 
     '=============== Button Visual Work =========================
@@ -458,5 +465,18 @@ Public Class FormFileExplorer
         End Select
     End Sub
 
+    '=================== FileSystemWatcher
+
+    Private Sub FileSystemWatcher1_Deleted(sender As Object, e As FileSystemEventArgs) Handles FileSystemWatcher1.Deleted
+        Patch_Changed(LabelPath.Text)
+    End Sub
+
+    Private Sub FileSystemWatcher1_Created(sender As Object, e As FileSystemEventArgs) Handles FileSystemWatcher1.Created
+        Patch_Changed(LabelPath.Text)
+    End Sub
+
+    Private Sub FileSystemWatcher1_Renamed(sender As Object, e As RenamedEventArgs) Handles FileSystemWatcher1.Renamed
+        Patch_Changed(LabelPath.Text)
+    End Sub
 End Class
 

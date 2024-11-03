@@ -28,7 +28,7 @@ Partial Class MSGBOXXX
         Me.ButtonCancel = New System.Windows.Forms.PictureBox()
         Me.ButtonYes = New System.Windows.Forms.PictureBox()
         Me.Label_Msg_Work = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBackGround = New System.Windows.Forms.PictureBox()
         Me.ButtonNo = New System.Windows.Forms.PictureBox()
         Me.PicTrueMsg = New System.Windows.Forms.PictureBox()
         Me.Label_Msg_Show = New System.Windows.Forms.Label()
@@ -36,7 +36,7 @@ Partial Class MSGBOXXX
         CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonYes, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBackGround, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonNo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicTrueMsg, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -113,15 +113,15 @@ Partial Class MSGBOXXX
         Me.Label_Msg_Work.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.Label_Msg_Work.Visible = False
         '
-        'PictureBox1
+        'PictureBackGround
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.Black
-        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Default
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(659, 409)
-        Me.PictureBox1.TabIndex = 89
-        Me.PictureBox1.TabStop = False
+        Me.PictureBackGround.BackColor = System.Drawing.Color.Black
+        Me.PictureBackGround.Cursor = System.Windows.Forms.Cursors.Default
+        Me.PictureBackGround.Location = New System.Drawing.Point(0, 0)
+        Me.PictureBackGround.Name = "PictureBackGround"
+        Me.PictureBackGround.Size = New System.Drawing.Size(659, 409)
+        Me.PictureBackGround.TabIndex = 89
+        Me.PictureBackGround.TabStop = False
         '
         'ButtonNo
         '
@@ -170,8 +170,8 @@ Partial Class MSGBOXXX
         '
         'MSGBOXXX
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(659, 409)
         Me.ControlBox = False
@@ -185,7 +185,7 @@ Partial Class MSGBOXXX
         Me.Controls.Add(Me.ButtonCancel)
         Me.Controls.Add(Me.ButtonYes)
         Me.Controls.Add(Me.Label_Msg_Work)
-        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.PictureBackGround)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -199,7 +199,7 @@ Partial Class MSGBOXXX
         CType(Me.ButtonOK, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonCancel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonYes, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBackGround, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ButtonNo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PicTrueMsg, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -211,7 +211,7 @@ Partial Class MSGBOXXX
     Friend WithEvents ButtonCancel As PictureBox
     Friend WithEvents ButtonYes As PictureBox
     Friend WithEvents ButtonOK As PictureBox
-    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents PictureBackGround As PictureBox
     Friend WithEvents Label_Title_Show As Label
     Friend WithEvents ButtonNo As PictureBox
     Friend WithEvents PicTrueMsg As PictureBox

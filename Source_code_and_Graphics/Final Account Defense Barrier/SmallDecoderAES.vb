@@ -4,6 +4,8 @@
 
 Imports System.Security.Cryptography
 
+
+<System.Security.SecurityCritical>
 Public Class SmallDecoderAES
 
     Public NeedToDecryptoStr As String
@@ -95,6 +97,43 @@ Public Class SmallDecoderAES
 
     End Sub
 
+    Private Sub SmallDecoderAES_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+        GC.SuppressFinalize(Me)
+    End Sub
 End Class
 
 
+Module SmallDecoderAES_Module
+
+    Public AES_KEY_Protected() As Byte
+    Public DERIVED_IDT_Protected() As Byte
+    Public Read_File_Pass_Str As String
+    Public CurrentAccountPass() As Byte
+
+    Public NowPassStatue As Integer = 0
+    '0=New Account no edit, CurrentAccountPass = "" in init
+    '1=Old File Read, not decrypt
+    '2=Old File Read, decrypted, CurrentAccountPass usable, Not edit
+    '3=Edited
+
+    Public Sub GetPass()
+
+        Select Case NowPassStatue
+            Case 0
+            Case 1
+                Dim SDAES As New SmallDecoderAES
+                SDAES.AES_KEY_Use = AES_KEY_Protected
+                SDAES.NeedToDecryptoStr = Read_File_Pass_Str
+                If SDAES.ShowDialog() = DialogResult.OK Then
+                    CurrentAccountPass = SDAES.CurrentAccountPass
+                    NowPassStatue = 2
+                End If
+                SDAES.Dispose()
+                FullGC()
+            Case 2
+            Case 3
+
+        End Select
+
+    End Sub
+End Module

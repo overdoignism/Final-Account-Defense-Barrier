@@ -1,0 +1,159 @@
+Error,エラー,錯誤
+Confirm,確認,確認
+Information,情報,資訊
+Critical,緊要,緊急
+Attention,注意,注意
+,,
+,,
+No matching catalog found.,一致する目録が見つかりません。,沒有發現對應的目錄。
+\n\nValidation is required if creating a new one.,\n\n新規目録作成には再入力検証が必要です。,\n\n建立新目錄時需輸入二次驗證。
+\n\nThe validation is also mismatch.,\n\nパスワードの検証も一致しません。,\n\n密碼二次驗證亦不一致。
+\n\nDo you want to create a new Catalog?,\n\n新しい目録を作成しますか？,\n\n您想建立新的目錄嗎？
+Please input the password (As seed).\nEach password corresponds to a catalog.,パスワードを入力してください。\n各鍵（種子）は単一の目録に対応します。,請輸入密碼（做為密鑰種子）。\n每組密鑰將對應到一個目錄。
+"For new password validation.\nIf using an existing password, no input required.",新しいパスワードの確認。\n既存のパスワードを使用する場合は、入力は必要ありません。,用於新密碼的二次驗證。\n若使用現存密碼，此欄位不需輸入。
+,,
+,,
+Account transform done.,アカウントの転送が完了しました。,帳號傳輸完成
+"Do you want to delete this catalog ""$$$"" ?\n\n(The program will log out after catalog is deleted.)",この目録から「$$$」を削除しますか？\n\n(目録削除後、プログラムはログアウトします。),"您是否要刪除目錄 ""$$$"" ？\n\n（刪除後程式將會登出）"
+"It will transform ""$$$"" to other catalog.",「$$$」は他の目録に転送されます。,"此帳號 ""$$$"" 將傳輸至別的目錄。"
+"You need to input the target catalog password in the next step.\n\n(Please note if accounts are duplicated, they will coexist)",次のステップで、\n\nターゲットの目録パスワードを入力する必要があります。\n\n（ご注意ください、アカウントが重複する場合は共存します）,下一步會需要輸入目標的目錄密碼。\n\n（請注意，若帳號重複將並存）
+"Please confirm by entering ""DELETE"" in the text box.",テキストボックスに「DELETE」と入力して確認してください。,"請輸入 ""DELETE"" 來確認。"
+Category settings updated.,目録設定を更新しました。,目錄設定已更新。
+All accounts in the catalog were transformed.,全目録が転送されました。,全目錄已傳輸。
+"Do you want to update the settings of catalog ""$$$"" ?",目録「$$$」の設定を更新しますか？,"您確認要更新這個目錄 ""$$$"" 的設定嗎？"
+Catalog login,目録ログイン,目錄登入
+Catalog loaded.,目録がロードされました。,目錄已載入。
+Catalog password input,目録パスワード入力,目錄密碼輸入
+"The destination catalog has already been opened, \n\nso it is in read-only mode.",宛先目録はすでに開かれているため、読み取り専用状態です。,目的地目錄已被開啟，所以目前是唯讀狀態。
+The source and destination are the same.\n\nTransmission aborted.,ソースと宛先が同じです。転送中止。,來源與目的目錄相同，傳輸作業終止。
+"It will transform catalog ""$$$"" to other one.",「$$$」は他の目録に転送されます。,"此目錄 ""$$$"" 內帳號將傳輸至別的目錄。"
+No account in the catalog. Export abort.,目録にアカウントがありません。転送を中止します。,此目錄中沒有帳號資料，傳輸中止。
+,,
+,,
+"Do you want to delete the ""$$$"" from this catalog ?",「$$$」を削除しますか？,"您是否要從目錄中將 ""$$$"" 刪除？"
+"Do you want update the ""$$$"" ?",「$$$」を更新しますか？,"您是否要更新帳號 ""$$$"" ？"
+"Account ""$$$"" added.",「$$$」が追加されました。,"帳號 ""$$$"" 已增加。"
+"Account ""$$$"" updated.",「$$$」が更新されました。,"帳號 ""$$$"" 已更新。"
+"Account ""$$$"" Move Up.",「$$$」が上へ移動。,"帳號 ""$$$"" 往上移動。"
+"Account ""$$$"" Move Down.",「$$$」が下へ移動。,"帳號 ""$$$"" 往下移動。"
+"Account ""$$$"" deleted.",「$$$」が削除されました。,"帳號 ""$$$"" 已刪除。"
+"Account ""$$$"" transformed.",「$$$」が転送されました。,"帳號 ""$$$"" 已傳輸。"
+"Account ""$$$"" opened.",「$$$」が開設されました。,"帳號 ""$$$"" 已開啟。"
+"Do you want to add the ""$$$"" ?",この「$$$」を追加しますか？,"您確認要新增帳號 ""$$$"" 嗎？"
+,,
+,,
+< Build time (by OS) >,＜ ビルド時間（OSによる）＞,＜ 建立時間（由作業系統）＞
+< Last write time (by OS) >,＜ 最終書き込み時間（OSによる）＞,＜ 最後寫入時間（由作業系統）＞
+< Filename >,＜ ファイル名 ＞,＜ 檔案名稱 ＞
+< Current folder >,＜ 現在のフォルダ ＞,＜ 現在的文件夾 ＞
+,,
+,,
+"Are you sure you want to import CSV file?\n\nPlease refer to the online help, ""CSV Import"" section before use.\n\n(Please note if accounts are duplicated, they will coexist)",CSVファイルをインポートしますか？\n\n使用前に、オンライン説明の\n\n「CSV輸入輸出」セクションを参照してください。\n\n（ご注意ください、アカウントが重複する場合は共存します）,您確定要輸入 CSV 檔案嗎？\n\n使用前請參考線上說明「CSV 輸出入」部分。\n\n（請注意，若帳號重複將並存）
+CSV import done.,CSV輸入完了。,CSV 輸入完成。
+CSV import failure.,CSV輸入失敗。,CSV 輸入失敗。
+This may not be a correct CSV file.,これは正しいCSVファイルではない可能性があります。,這可能不是一個正確的 CSV 檔案。
+Please handle the CSV files properly to avoid leakage of confidentiality.,機密情報漏洩防止のため、\nCSVファイルを適切に処理してください。,請妥善處置 CSV 檔，以免機密資料洩漏。
+CSV file is not encrypted and has security risks.\n\nAre you sure you want to export?\n\n(Yow need to enter the password of the current catalog.),CSVファイルは暗号化されておらず、リスクがあります。\n\n輸出してもよろしいですか？\n\n（現在の目録のパスワードを入力する必要があります）,CSV 檔案未經加密，存在安全風險。\n\n您確定要輸出嗎？\n\n（需要輸入本目錄的密碼）
+The password does not match the current catalog. Export abort.,パスワードが現在の目録と一致しません。輸出を中止します。,與現有目錄密碼不匹配，輸出中止。
+No account in the catalog. Export abort.,目録にアカウントがありません。輸出を中止します。,此目錄中沒有帳號資料，輸出中止。
+The saved file name is\n\n$$$\n\nin the application folder.\n\n(Next we will guide you to the file location.),保存されたファイルはアプリケーションフォルダにあります。\n\nファイル名は\n\n$$$\n\n（次に、ファイルの場所に案内します。）,檔案名稱為\n\n$$$\n\n位於應用程式資料夾中。\n\n接下來會導引您到目標檔案。
+,,
+,,
+,,
+,,
+,,
+(New account),（新規アカウント）,（新帳號）
+(Untitled),（無題）,（未命名）
+(Desktop),（デスクトップ）,（桌面）
+(My Documents),（マイドキュメント）,（我的文件）
+(Current Folder),（現在のフォルダ）,（目前資料夾）
+(Disabled),（無効）,（不使用）
+Copy only,コピーのみ,僅複製
+Copy + Paste + Clear,コピペ+クリア,複製貼上+清除
+SendKey,キー送信,SendKey
+Hybrid,ハイブリッド,混合模式
+30 s,30 秒,30 秒
+min,分,分鐘
+,,
+,,
+"Input password, private key or passphrase.",パスワードまたは暗号通貨の秘密鍵／ニモニック。,密碼或加密貨幣私鑰／助記詞。
+The validation to prevent typos. (Omit when using BIP39),タイプミスを防止するための確認。（BIP39使用時は省略）,密碼二次驗證（如使用BIP39，請略過）。
+Title. This field is required.,表題。必須項目です。,標題。此欄位為必須。
+URL or program path.,URLまたはプログラムのパス。,URL或程式路徑。
+Username or cryptocurrency address.,ユーザー名または暗号通貨アドレス。,用戶名稱或加密貨幣地址。
+Registed e-mail or cell phone number.,登録されたメールアドレスまたは携帯電話番号。,註冊使用的Email或手機號碼。
+Note 1 - Any notes can be placed here.,メモ1。ここにノートを入れることができます。,備忘欄1，可以放任何註記。
+Note 2 - For invisible message.,メモ2。非表示メッセージ用。,備忘欄2，用於隱藏的訊息。
+,,
+,,
+Account Password Input,アカウントパスワード入力,帳號密碼輸入
+The validation string is mismatched.,検証文字列が一致しません。,驗證輸入無法匹配。
+"The validation is empty and the input doesn't pass the BIP39 rule.\n\nIf you're using BIP39, this may caused by:\n\n",検証が空であり、入力がBIP39のルールを満たしていません。\n\nBIP39を使用している場合、次の原因が考えられます。\n\n,驗證輸入是空的，且輸入無法通過 BIP39 驗證規則。\n\n如果您正在使用 BIP39，問題可能是：\n\n
+Incorrect format or word count.,形式や単語数が間違っている。,不正確的格式或詞彙數。
+An unknown word appeared. Maybe a typo.,未知の単語が現れた。タイプミスかもしれません。,輸入了未知的詞彙（可能是錯別字）。
+"Bad checksum, probably in the wrong order.",不良なチェックサム。おそらく誤った順序です。,校驗和失敗，可能是順序錯誤。
+Invalid $$$ (or compatible coin) address detected. Possible reasons:\n\n,無効な $$$（または互換コイン）のアドレスが検出されました。\n\n考えられる原因：\n\n,檢測到 $$$（或其相容幣）的無效地址，可能的原因有：\n\n
+"．Typo, case mix-up, order error, or copy-paste miss.\n\n．Misjudgment, this is not a $$$ address.\n\n",．誤字、大小文字の混同、順序ミス、コピペのミス。\n\n．誤判定、これはBTCアドレスではありません。\n\n,．錯字、大小寫混淆、順序錯誤、複製貼上失誤。\n\n．誤判，這不是一個 $$$ 地址。\n\n
+Do you want to countiune to save?,続行保存しますか？,您是否要繼續保存？
+,,
+,,
+Launched.,起動しました。,已啟動。
+Data copied.,データコピーされました。,資料已複製。
+(Decryption failed),（復号に失敗しました）,（解密失敗）
+Unable to launch:\n\nThe path (file/URL) could not be resolved or does not exist.,起動できません。\n\nパス（ファイル／URL）が解析できないか存在しない可能性があります。,無法啟動：可能是路徑（檔案／URL）無法解析或不存在。
+File size must be greater than 0 and less than or equal to 128MB.,ファイルサイズは0より大きく、128MB未満である必要があります。,檔案大小必須大於0、小於128MB
+Detected that you used copy-paste to input.\n\nDo you want to clear the clipboard?,「コピー＆ペースト」を使用して入力したことが検出されました。\n\nクリップボードをクリアしますか？,偵測到您使用了「複製貼上」來輸入。\n\n要清除剪貼簿嗎？
+"Hotkey ($$$) registration failed: possible conflict with existing hotkeys.\n\nAvoid using duplicate hotkeys, check related software, and reconfigure.",ホットキー（$$$）の登録に失敗しました。\n\nホットキーが競合している可能性があります。\n\n同じホットキーの使用を避け、\n関連ソフトを確認して再設定してください。,熱鍵（$$$）登錄失敗：可能是熱鍵發生重複。\n\n請避免使用重複熱鍵，確認相關軟體，並重新設置。
+The web browser can't be opened in secure desktop mode.\n\nYou can open it in the main window later.,ウェブブラウザは Secure Desktop で開くことができません。\n\n後でメインウィンドウで開くことができます。,無法在安全桌面模式下開啟瀏覽器。可以在進入主視窗後再開啟。
+"The Windows version is too low to enable\n\n""Process Mitigation Policy"" security measures.\n\nAt least Windows 8 or Windows Server 2012 or later versions are required.\n\n(It is recommended to use Windows 10 version 20H2 or later)",Windowsのバージョンが古すぎて、\n\nプロセスの緩和ポリシーのセキュリティ対策を有効にできません。\n\n少なくともWindows 8またはWindows Server 2012以降が必要です。\n\n(Windows 10バージョン20H2以降を使用することを推奨します),Windows 版本過低，無法啟用 Process Mitigation Policy 安全措施。\n\n最少需要 Windows 8 或 Windows server 2012 以上版本。\n\n（建議使用 Windows 10 20H2 之後的版本）
+"Attached debugger or Uncertified launcher detected.\n\nIf you're not programming,\nit probably means a malicious attack has occurred.\n\nStrongly recommended to stop using and perform anti-virus.",デバッガーまたは未認証のランチャーが検出されました。\n\nプログラミングしていない場合、\n悪意のある攻撃が発生した可能性があります。\n\n使用を中止し、ウイルス対策を強くお勧めします。,檢測到外部除錯器（Debugger）或未驗證啟動器。\n\n如果您不是正在編程測試，這可能代表發生了惡意攻擊。\n\n強烈建議停止使用並進行掃毒。
+Bad or fake Windows file detected.\n\nIt probably means a malicious attack has occurred.\n\nStrongly recommended to stop using and perform anti-virus.,Windowsファイルが不正または偽造されました。\n\n悪意のある攻撃が発生した可能性があります。\n\n使用を中止し、ウイルス対策を強くお勧めします。,偵測到偽劣的 Windows 檔案。\n\n這可能代表著發生了惡意攻擊，\n\n強烈建議停止使用並進行掃毒。
+(Some error happend),(何らかのエラーが発生しました),(發生一些錯誤)
+Switch to read-only mode.,読み取り専用モードに切り替える,啟用唯讀模式
+Multiple instances detected. Writing locked to prevent conflicts.,複数の実行が検出されました。\n\n書き込みはロックされ、衝突を防止しています。,偵測到多重執行，寫入已鎖定避免造成衝突。
+"When hotkey enabled, override to ""SendKey"" mode.",熱鍵が有効な場合、「キー送信」モードに強制します。,強制為「SendKey」模式（熱鍵啟用時）。
+Access deined. Insufficient permissions.,アクセス拒否。権限不足。,權限不足，存取被拒絕。
+Secure desktop creation error. Code:,Secure Desktop 作成エラー。コード：,Secure Desktop 創建失敗。錯誤代碼：
+Please delete manually after resolving the issue.,問題解決後、手動で削除してください。,請於狀況排除後手動刪除。
+,,
+,,
+Access denied. Insufficient permissions or antivirus protection.,アクセス拒否。権限不足またはウイルス対策保護の可能性。,傳輸被拒絕。可能是權限不足，或防毒保護。
+Write protected. Could also be antivirus protection.,書き込み保護。ウイルス対策保護の可能性もあり。,寫入保護。也可能是防毒保護。
+Write fault. Possible disk failure.,書き込みエラー。ディスク故障の可能性。,寫入失敗。可能是磁碟故障。
+Read fault. Possible disk failure.,読み取りエラー。ディスク故障の可能性。,讀取失敗。可能是磁碟故障。
+Device may have failed or been removed.,デバイスが故障したか、取り外された可能性。,可能是裝置已失效或被移除。
+Some files may be open in other programs.,他のプログラムでファイルが開かれている可能性。,可能是還有檔案被其他的程式開啟。
+Disk is full.,ディスク容量が不足しています。,磁碟空間不足。
+Other unexpected errors or interference. \n(Please refer to Microsoft website),その他の予期しないエラーや干渉。\n（Microsoftサイトを参照してください）,其他非預期的異常或干擾。（請查閱微軟網站）
+Error code:,エラーコード：,錯誤代碼：
+file writing,ファイル書き込み時,檔案寫入時
+file reading,ファイル読み取り時,檔案讀取時
+file or folder creating,ファイルまたはフォルダ作成時,檔案或資料夾建立時
+file or folder deleting,ファイルまたはフォルダ削除時,檔案或資料夾刪除時
+"Error occurred during $$$, operation aborted.",$$$ にエラー発生、作業中断。,在 $$$ 時發生錯誤，作業中斷。
+"""Locked identification"" file creating",「ロックされた識別ファイル」作成時,鎖定識別檔建立時
+,,
+,,
+The file is corrupted and cannot be decrypted.,ファイルが不明な原因で破損し、復号できません。,檔案因不明原因損毀，無法解密。
+"Reason unclear; may be due to antivirus interference.\nIf the issue persists, please disable Secure Desktop mode.",原因不明、ウイルス対策ソフトの干渉の可能性があります。\n解決しない場合は、Secure Desktopモードを無効にしてください。,明確原因不明，可能是防毒軟體干擾。\n若重試仍無法解決，請關閉 Secure Desktop 模式。
+Copying failed.,コピー失敗,複製失敗
+"May be caused by a clipboard utility, malware, or antivirus.",クリップボードユーティリティ、マルウェア、\nまたはアンチウイルスによる可能性があります。,可能由剪貼簿工具、防毒軟體、惡意程式導致。
+Unexplained error.\n\nMaybe it's security limit or special Windows environment.,原因不明のエラー。\n\nセキュリティ制限か特殊なWindows環境の可能性があります。,原因不明的錯誤。\n\n可能是特殊安全限制或Windows環境。
+,,
+,,
+"""A.T.Field"" will be deployed.\n\nFADB program can't be any changes until undeployed.",「ATフィールド」が展開されます。\n\nFADB プログラムは解除されるまで変更できません。,「AT力場」將展開。\n\nFADB 程式將不能被變動，直到解除。
+"""A.T.Field"" will be undeployed.",「ATフィールド」が解除されます。,「AT力場」將解除。
+"Completed. If not effective, a system restart may be needed.",完了しました。\n\n効果がない場合は、システムの再起動が必要かもしれません。,完成。如果未生效，請重新啟動系統。
+Failed to execute the task scheduler.\n\nYou may need to handle it manually.,タスクスケジューラの実行に失敗しました。\n\n手動対応が必要かもしれません。,工作排程器運行失敗。\n\n你可能需要手動處理。
+,,
+,,
+Error occurred while reading Catalog settings.,目録設定の読み取り時にエラーが発生しました。,讀取目錄設定時發生錯誤。
+"Abnormal changes detected in the Catalog.\n\nTo avoid data corruption, please don't modify the content manually.\n\nIf you didn't make these changes, it could be a malware attack.\n\nDo you want to refresh the account list?",目録内容に異常が検出されました。\n\nデータ破損を避けるため、手動で変更しないでください。\n\n手動で変更していない場合、マルウェア攻撃の可能性があります。\n\nアカウントリストを更新しますか？,目錄內容偵測到異常變動。\n\n請避免自行變動內容，以免資料毀損。\n\n如果不是您自行變動，可能是惡意軟體的攻擊。\n\n要更新帳號列表嗎？
+,,
+,,
+Unexplained error.\n\nFailed to initialize the required encryption API.,原因不明、必要な暗号APIを初期化できません。,無法初始化所需要的加密API，原因不明。
+"Unable to allocate required memory.\n\nPossibly low memory, please close other programs and try again.",必要なメモリを割り当てできません。\n\nメモリ不足の可能性があります。\n\n不要なプログラムを閉じて再試行してください。,無法分配所需的記憶體。\n\n可能是記憶體不足，請關閉其他程式再試一次。
+Unknown error.,不明なエラーです。,不確定因素的錯誤。
+,,
+,,
+The software is licensed under the MIT License.\nUse only with terms accepted.,本ソフトウェアはMITライセンスです。\n使用により、ライセンス条項に同意したものとみなします。,本軟體採用MIT授權條款。\n使用即表示您同意本條款的所有內容。

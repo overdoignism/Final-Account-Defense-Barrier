@@ -4,12 +4,21 @@
 
 Imports System.Security.Cryptography
 
+<System.Security.SecurityCritical>
 Public Class SmallDecoderPass
     Public InputByte() As Byte
     Public Workmode As Integer '1=Copy to clipboard
+    Public CopySucess As Boolean
     Private FillTrash() As String
+    Public TextBoxPWDStr As New TextBox
+    Public PictureBoxPwd As New Bitmap(505, 22) 'PictureBox
 
     Private Sub SmallDecoder_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        TextBoxPWDStr.Enabled = False
+        TextBoxPWDStr.Visible = False
+        TextBoxPWDStr.UseSystemPasswordChar = True
+
 
         Me.Width = 1
         Me.Height = 1
@@ -23,7 +32,7 @@ Public Class SmallDecoderPass
                 If TextBoxPWDStr.Text <> "" Then
 
                     Dim CPWorker As New ClipboardHelper2
-                    CPWorker.SetClipboardText(TextBoxPWDStr.Text)
+                    CopySucess = CPWorker.SetClipboardText(TextBoxPWDStr.Text)
 
                 End If
             Case 2
@@ -41,6 +50,7 @@ Public Class SmallDecoderPass
 
     Private Sub SmallDecoder_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
         ClearTextBox(TextBoxPWDStr)
+        GC.SuppressFinalize(Me)
     End Sub
 
     Private Sub GenPic(ByRef TheTextbox As TextBox)
@@ -50,7 +60,7 @@ Public Class SmallDecoderPass
 
         Dim RndFnt() As Font = {New System.Drawing.Font("Courier New", 12, FontStyle.Bold)}
 
-        Dim BitA As Bitmap = New Bitmap(Pic_W, Pic_H)
+        Dim BitA As New Bitmap(Pic_W, Pic_H)
         Dim GrA As Graphics = Graphics.FromImage(BitA)
         Dim Brs1 As Brush = New System.Drawing.SolidBrush(Color.Black)
 
@@ -65,7 +75,9 @@ Public Class SmallDecoderPass
             LeftMove += (textSize.Width * 0.7)
         Next
 
-        PictureBoxPwd.Image = DirectCast(BitA.Clone(), Image)
+        PictureBoxPwd = DirectCast(BitA.Clone(), Image)
 
     End Sub
+
+
 End Class

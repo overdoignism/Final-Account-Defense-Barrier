@@ -6,41 +6,56 @@ Public Class FormMIT
     Public FormL, FormT, FormW, FormH As Integer
     Private lastLocation As Point
     Private isMouseDown As Boolean = False
-    Dim NowPage As Integer = 1
+    Public NowPage As Integer = 0
+    Dim DocPage(2) As Bitmap
 
     Private Sub FormMIT_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Me.StartPosition = FormStartPosition.Manual
         Me.Left = FormL + (FormW - Me.Width) / 2
         Me.Top = FormT + (FormH - Me.Height) / 2
-        PictureLICENSE.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.MIT_DOC_PNG))
+
+        'PictureLICENSEBack.Image = Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.MIT_DOC_PNG))
+        'PictureBoxTXT.Image = My.Resources.Resource1.Doc01P
+
+        Dim BackPaper As Bitmap = CreateGradientBitmap(423, 470)
+
+        DocPage(0) = TwoBmpStack(BackPaper, Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Doc01P_PNG)))
+        DocPage(1) = TwoBmpStack(BackPaper, Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Doc02P_PNG)))
+        DocPage(2) = TwoBmpStack(BackPaper, Image.FromStream(New IO.MemoryStream(My.Resources.Resource1.Doc03P_PNG)))
+
+        PictureLICENSEBack.Image = DocPage(0)
+
+        DocRight.Image = MirrorBitmap(DocLeft.Image, 0)
+
     End Sub
 
     Private Sub DocRight_Click(sender As Object, e As EventArgs) Handles DocRight.Click
 
-        Select Case NowPage
-            Case 1
-                PictureLICENSE.Location = New Point(-423, 0) ' 423 'Image = DOC02
-                DocLeft.Visible = True
-                NowPage = 2
-            Case 2
-                PictureLICENSE.Location = New Point(-846, 0)
-                DocRight.Visible = False
-                NowPage = 3
-        End Select
+        DocRight.Visible = True
+        DocLeft.Visible = True
+
+        If NowPage < 2 Then
+            NowPage += 1
+            PictureLICENSEBack.Image = DocPage(NowPage)
+        End If
+
+        If NowPage = 2 Then DocRight.Visible = False
 
     End Sub
 
     Private Sub DocLeft_Click(sender As Object, e As EventArgs) Handles DocLeft.Click
-        Select Case NowPage
-            Case 3
-                PictureLICENSE.Location = New Point(-423, 0)
-                DocRight.Visible = True
-                NowPage = 2
-            Case 2
-                PictureLICENSE.Location = New Point(0, 0)
-                DocLeft.Visible = False
-                NowPage = 1
-        End Select
+
+        DocRight.Visible = True
+        DocLeft.Visible = True
+
+        If NowPage > 0 Then
+            NowPage -= 1
+            PictureLICENSEBack.Image = DocPage(NowPage)
+        End If
+
+        If NowPage = 0 Then DocLeft.Visible = False
+
     End Sub
 
     Private Sub PictureMIT_MouseDown(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureMIT.MouseDown
@@ -48,6 +63,8 @@ Public Class FormMIT
         isMouseDown = True
         lastLocation = e.Location
     End Sub
+
+
 
     Private Sub PictureMIT_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles PictureMIT.MouseMove
         ' 當滑鼠左鍵按下時，設定窗體的位置

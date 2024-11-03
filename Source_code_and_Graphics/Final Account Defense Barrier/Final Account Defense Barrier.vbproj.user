@@ -11,10 +11,12 @@
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <StartArguments>SECUREDESKTOP NONOTICE</StartArguments>
+    <StartArguments>NOSECDESK NoNotice</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <StartArguments>
-    </StartArguments>
+    <StartArguments>ALLOWCAP NOSECDESK</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>Nosecdesk</StartArguments>
   </PropertyGroup>
 </Project>
