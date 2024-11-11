@@ -4,10 +4,10 @@
 
 ### 將原始 seed 分成 4 份、以 4 Thread 平行運算：
 
-1.  1=SHA512(seed)
-2.  2=Reverse(1)
-3.  3=Reverse(SHA512(2))
-4.  4=Reverse(SHA512(3))
+1.  t1=SHA512(seed)
+2.  t2=Reverse(1)
+3.  t3=Reverse(SHA512(2))
+4.  t4=Reverse(SHA512(3))
 
 ### 每 Thread 進行演算：
 
@@ -38,7 +38,7 @@
 
 * 依賴 SHA512
 
-### 抗側信道攻擊重點：
+### 抗側信道攻擊重點
 
 1. 記憶體初始為循序填滿 64MByte，沒有側信道特徵。
 2. 每次產生偽隨機地址表，種子來源於 SHA512 得到的 4 Bytes，即使被側信道攻擊成功，仍有 60 Bytes 是不被曝露的，無法反推。
