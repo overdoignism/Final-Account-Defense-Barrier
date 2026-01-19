@@ -54,10 +54,11 @@ Partial Class FormFileExplorer
         Me.ListBoxDrivers.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListBoxDrivers.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.ListBoxDrivers.FormattingEnabled = True
-        Me.ListBoxDrivers.ItemHeight = 18
-        Me.ListBoxDrivers.Location = New System.Drawing.Point(21, 162)
+        Me.ListBoxDrivers.ItemHeight = 30
+        Me.ListBoxDrivers.Location = New System.Drawing.Point(37, 284)
+        Me.ListBoxDrivers.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.ListBoxDrivers.Name = "ListBoxDrivers"
-        Me.ListBoxDrivers.Size = New System.Drawing.Size(225, 270)
+        Me.ListBoxDrivers.Size = New System.Drawing.Size(394, 450)
         Me.ListBoxDrivers.TabIndex = 0
         '
         'ListBoxFiles
@@ -67,10 +68,12 @@ Partial Class FormFileExplorer
         Me.ListBoxFiles.Font = New System.Drawing.Font("Arial", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListBoxFiles.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.ListBoxFiles.FormattingEnabled = True
-        Me.ListBoxFiles.ItemHeight = 18
+        Me.ListBoxFiles.IntegralHeight = False
+        Me.ListBoxFiles.ItemHeight = 30
         Me.ListBoxFiles.Location = New System.Drawing.Point(0, 0)
+        Me.ListBoxFiles.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.ListBoxFiles.Name = "ListBoxFiles"
-        Me.ListBoxFiles.Size = New System.Drawing.Size(617, 342)
+        Me.ListBoxFiles.Size = New System.Drawing.Size(1080, 598)
         Me.ListBoxFiles.TabIndex = 3
         '
         'LabelPath
@@ -79,27 +82,30 @@ Partial Class FormFileExplorer
         Me.LabelPath.BackColor = System.Drawing.Color.Black
         Me.LabelPath.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelPath.ForeColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(171, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LabelPath.Location = New System.Drawing.Point(186, 63)
+        Me.LabelPath.Location = New System.Drawing.Point(326, 110)
+        Me.LabelPath.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.LabelPath.Name = "LabelPath"
-        Me.LabelPath.Size = New System.Drawing.Size(692, 19)
+        Me.LabelPath.Size = New System.Drawing.Size(1211, 33)
         Me.LabelPath.TabIndex = 119
         Me.LabelPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Panel1
         '
         Me.Panel1.Controls.Add(Me.ListBoxFiles)
-        Me.Panel1.Location = New System.Drawing.Point(271, 162)
+        Me.Panel1.Location = New System.Drawing.Point(474, 284)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(590, 343)
+        Me.Panel1.Size = New System.Drawing.Size(1032, 600)
         Me.Panel1.TabIndex = 131
         '
         'LSCBBAR
         '
         Me.LSCBBAR.BackColor = System.Drawing.Color.Black
         Me.LSCBBAR.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_BAR
-        Me.LSCBBAR.Location = New System.Drawing.Point(862, 178)
+        Me.LSCBBAR.Location = New System.Drawing.Point(1508, 312)
+        Me.LSCBBAR.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.LSCBBAR.Name = "LSCBBAR"
-        Me.LSCBBAR.Size = New System.Drawing.Size(17, 59)
+        Me.LSCBBAR.Size = New System.Drawing.Size(30, 103)
         Me.LSCBBAR.TabIndex = 130
         Me.LSCBBAR.TabStop = False
         '
@@ -107,9 +113,10 @@ Partial Class FormFileExplorer
         '
         Me.LSCBD.BackColor = System.Drawing.Color.Black
         Me.LSCBD.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_S_DW
-        Me.LSCBD.Location = New System.Drawing.Point(862, 488)
+        Me.LSCBD.Location = New System.Drawing.Point(1508, 854)
+        Me.LSCBD.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.LSCBD.Name = "LSCBD"
-        Me.LSCBD.Size = New System.Drawing.Size(17, 17)
+        Me.LSCBD.Size = New System.Drawing.Size(30, 30)
         Me.LSCBD.TabIndex = 129
         Me.LSCBD.TabStop = False
         '
@@ -117,9 +124,10 @@ Partial Class FormFileExplorer
         '
         Me.LSCBU.BackColor = System.Drawing.Color.Black
         Me.LSCBU.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_S_UP
-        Me.LSCBU.Location = New System.Drawing.Point(862, 161)
+        Me.LSCBU.Location = New System.Drawing.Point(1508, 282)
+        Me.LSCBU.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.LSCBU.Name = "LSCBU"
-        Me.LSCBU.Size = New System.Drawing.Size(17, 17)
+        Me.LSCBU.Size = New System.Drawing.Size(30, 30)
         Me.LSCBU.TabIndex = 128
         Me.LSCBU.TabStop = False
         '
@@ -127,9 +135,10 @@ Partial Class FormFileExplorer
         '
         Me.LSCBBACK.BackColor = System.Drawing.Color.Black
         Me.LSCBBACK.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.SCB_BARV
-        Me.LSCBBACK.Location = New System.Drawing.Point(862, 178)
+        Me.LSCBBACK.Location = New System.Drawing.Point(1508, 312)
+        Me.LSCBBACK.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.LSCBBACK.Name = "LSCBBACK"
-        Me.LSCBBACK.Size = New System.Drawing.Size(17, 310)
+        Me.LSCBBACK.Size = New System.Drawing.Size(30, 542)
         Me.LSCBBACK.TabIndex = 127
         Me.LSCBBACK.TabStop = False
         '
@@ -138,9 +147,10 @@ Partial Class FormFileExplorer
         Me.ButtonCancel.BackColor = System.Drawing.Color.Black
         Me.ButtonCancel.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ButtonCancel.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_Cancel
-        Me.ButtonCancel.Location = New System.Drawing.Point(138, 450)
+        Me.ButtonCancel.Location = New System.Drawing.Point(242, 788)
+        Me.ButtonCancel.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.ButtonCancel.Name = "ButtonCancel"
-        Me.ButtonCancel.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonCancel.Size = New System.Drawing.Size(196, 107)
         Me.ButtonCancel.TabIndex = 85
         Me.ButtonCancel.TabStop = False
         '
@@ -149,9 +159,10 @@ Partial Class FormFileExplorer
         Me.ButtonFileOpen.BackColor = System.Drawing.Color.Black
         Me.ButtonFileOpen.Cursor = System.Windows.Forms.Cursors.Hand
         Me.ButtonFileOpen.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.button_OpenF
-        Me.ButtonFileOpen.Location = New System.Drawing.Point(21, 450)
+        Me.ButtonFileOpen.Location = New System.Drawing.Point(37, 788)
+        Me.ButtonFileOpen.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.ButtonFileOpen.Name = "ButtonFileOpen"
-        Me.ButtonFileOpen.Size = New System.Drawing.Size(112, 61)
+        Me.ButtonFileOpen.Size = New System.Drawing.Size(196, 107)
         Me.ButtonFileOpen.TabIndex = 84
         Me.ButtonFileOpen.TabStop = False
         '
@@ -159,31 +170,34 @@ Partial Class FormFileExplorer
         '
         Me.PicFileExp.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.File_expo_New
         Me.PicFileExp.Location = New System.Drawing.Point(0, 0)
+        Me.PicFileExp.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.PicFileExp.Name = "PicFileExp"
-        Me.PicFileExp.Size = New System.Drawing.Size(901, 548)
+        Me.PicFileExp.Size = New System.Drawing.Size(1577, 959)
         Me.PicFileExp.TabIndex = 53
         Me.PicFileExp.TabStop = False
         '
         'PictureGray
         '
         Me.PictureGray.Location = New System.Drawing.Point(0, 0)
+        Me.PictureGray.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.PictureGray.Name = "PictureGray"
-        Me.PictureGray.Size = New System.Drawing.Size(901, 548)
+        Me.PictureGray.Size = New System.Drawing.Size(1577, 959)
         Me.PictureGray.TabIndex = 86
         Me.PictureGray.TabStop = False
         Me.PictureGray.Visible = False
         '
         'FileSystemWatcher1
         '
+        Me.FileSystemWatcher1.EnableRaisingEvents = True
         Me.FileSystemWatcher1.NotifyFilter = CType((System.IO.NotifyFilters.FileName Or System.IO.NotifyFilters.DirectoryName), System.IO.NotifyFilters)
         Me.FileSystemWatcher1.SynchronizingObject = Me
         '
         'FormFileExplorer
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(168.0!, 168.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.Lime
-        Me.ClientSize = New System.Drawing.Size(898, 524)
+        Me.ClientSize = New System.Drawing.Size(1572, 917)
         Me.ControlBox = False
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.LSCBBAR)
@@ -197,6 +211,7 @@ Partial Class FormFileExplorer
         Me.Controls.Add(Me.PicFileExp)
         Me.Controls.Add(Me.PictureGray)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FormFileExplorer"

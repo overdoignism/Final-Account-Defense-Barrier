@@ -43,7 +43,7 @@ Public Class SmallDecoderAES
                 Dim WorkingByte() As Byte
 
                 TheEncLib.StringIn_ByteOut(WorkingStr(1), AES_IV_PWD_Current)
-                WorkingByte = TheEncLib.AES_Decrypt_Str_Return_Bytes(WorkingStr(0), AES_KEY_Use, AES_IV_PWD_Current)
+                WorkingByte = TheEncLib.AES_Decrypt_Str_Return_Bytes_Cut_16_Head(WorkingStr(0), AES_KEY_Use, AES_IV_PWD_Current)
 
                 Dim TmpBytes() As Byte = Nothing
                 GetEss(WorkingByte, TmpBytes)

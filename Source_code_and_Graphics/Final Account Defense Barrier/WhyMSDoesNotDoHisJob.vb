@@ -30,6 +30,7 @@ Module Common_Use
         Dim WER_Disabled As Boolean
         Dim Found_Bad_MSFile As Boolean
         Dim Found_Bad_MSFile_Warned As Boolean
+        Dim IsLinuxWine As Boolean
         '以上與Windows機制有關
         Dim _Self_Ver_Str As String
         Dim _KDF_Type As Integer
@@ -280,6 +281,11 @@ Module Security_Risk_Reporter
     End Function
 
     Public Function Get_Risk_Message(RiskIDX As Integer) As String
+
+        If Sys_Chk.IsLinuxWine Then
+            Return "Wine detected.".ToUpper
+        End If
+
 
         Select Case RiskIDX
             Case 0
@@ -1672,7 +1678,7 @@ Public Module Unelevate_Process_and_SendMessage
 
         If Not IO.File.Exists(Windows_Notepad_Path) Then Return False
 
-        Dim hProcessID As Integer = Launch_Unelevated_Core(Windows_NotePad_Path, False, Sys_Chk.Found_Bad_MSFile)
+        Dim hProcessID As Integer = Launch_Unelevated_Core(Windows_Notepad_Path, False, Sys_Chk.Found_Bad_MSFile)
 
         Return SendToNotepad_Core(hProcessID, WhatToSend)
 
@@ -1766,3 +1772,68 @@ Public Module Unelevate_Process_and_SendMessage
 
 End Module
 
+
+'by Gemini 3 for Wine
+Public Module WineDetector
+
+    ' 引入必要的 Win32 API
+    <DllImport("kernel32.dll", CharSet:=CharSet.Auto, SetLastError:=True)>
+    Private Function GetModuleHandle(ByVal moduleName As String) As IntPtr
+    End Function
+
+    <DllImport("kernel32.dll", CharSet:=CharSet.Ansi, SetLastError:=True, ExactSpelling:=True)>
+    Private Function GetProcAddress(ByVal hModule As IntPtr, ByVal procName As String) As IntPtr
+    End Function
+
+    ' 用來存放快取結果，避免重複檢測
+    Private _isWine As Boolean? = Nothing
+    Private _wineVersion As String = String.Empty
+
+    ''' <summary>
+    ''' 檢測當前是否運行在 Wine 環境中 (高準確度、難以偽造)
+    ''' </summary>
+    Public Function IsRunningOnWine() As Boolean
+        If _isWine.HasValue Then Return _isWine.Value
+
+        Try
+            ' 1. 取得 ntdll.dll 的控制代碼 (它一定會被載入)
+            Dim hModule As IntPtr = GetModuleHandle("ntdll.dll")
+            If hModule = IntPtr.Zero Then
+                ' 理論上不可能發生，除非環境極度異常
+                _isWine = False
+                Return False
+            End If
+
+            ' 2. 嘗試尋找 Wine 專屬的導出函數 "wine_get_version"
+            ' 這是 Wine 核心的一部分，極難被隱藏
+            Dim fPtr As IntPtr = GetProcAddress(hModule, "wine_get_version")
+
+            If fPtr <> IntPtr.Zero Then
+                _isWine = True
+
+                ' 額外功能：如果你想知道 Wine 的版本
+                ' 因為 wine_get_version 回傳的是一個指向 ANSI 字串的指標
+                _wineVersion = Marshal.PtrToStringAnsi(InvokeWineGetVersion(fPtr))
+                Debug.WriteLine("Detected Wine Version: " & _wineVersion)
+            Else
+                _isWine = False
+            End If
+
+        Catch ex As Exception
+            ' 發生錯誤時保守判定為否，以免誤殺
+            Debug.WriteLine("Wine detection error: " & ex.Message)
+            _isWine = False
+        End Try
+
+        Return _isWine.Value
+    End Function
+
+    ' 定義委派來呼叫該函數 (如果需要取得版本號)
+    Private Delegate Function wine_get_version_delegate() As IntPtr
+
+    Private Function InvokeWineGetVersion(ptr As IntPtr) As IntPtr
+        Dim del As wine_get_version_delegate = Marshal.GetDelegateForFunctionPointer(ptr, GetType(wine_get_version_delegate))
+        Return del.Invoke()
+    End Function
+
+End Module

@@ -39,6 +39,7 @@ Public Class FormLogin
     Dim ToolTip1 As New System.Windows.Forms.ToolTip()
 
     Dim Debug_Tester As New Timer()
+    Dim WARN_Timer As New Timer()
 
     Dim KDF_Mode_ForExp As Integer = Sys_Chk_Login._KDF_Type
 
@@ -104,17 +105,6 @@ Public Class FormLogin
                 ButtonCancel.Visible = False
                 ButtonFin.Visible = True
                 ButtonPFWS.Visible = True
-
-                If Sys_Chk.Running_Admin Then
-                    ButtonPFWS.Enabled = True
-                    If Sys_Chk.Use_ATField = False Then
-                        ButtonPFWS.Image = B_PFWSoff
-                    Else
-                        ButtonPFWS.Image = B_PFWSon
-                    End If
-                Else
-                    ButtonPFWS.Image = The_Shine_Visual_Filter2(My.Resources.Resource1.PFWS_RA)
-                End If
 
                 'Multi Language
 
@@ -229,6 +219,19 @@ Public Class FormLogin
 
         End Select
 
+        PicSelect.Image = My.Resources.Resource1.KDFS_Types
+
+        If Sys_Chk_Login.Running_Admin Then
+            ButtonPFWS.Enabled = True
+            If Sys_Chk.Use_ATField = False Then
+                ButtonPFWS.Image = B_PFWSoff
+            Else
+                ButtonPFWS.Image = B_PFWSon
+            End If
+        Else
+            ButtonPFWS.Image = The_Shine_Visual_Filter2(My.Resources.Resource1.PFWS_RA)
+        End If
+
         If Sys_Chk_Login.Use_Secure_Desktop = True Then
             Me.CenterToScreen()
             Me.ButtonWinMin.Visible = False
@@ -253,6 +256,10 @@ Public Class FormLogin
         Debug_Tester.Enabled = True
         AddHandler Debug_Tester.Tick, AddressOf Debug_Tester_Tick
 
+        WARN_Timer.Interval = 500
+        WARN_Timer.Enabled = False
+        AddHandler WARN_Timer.Tick, AddressOf WARN_Timer_Tick
+
         SetForegroundWindow(Me.Handle)
 
         'Dim g As Graphics = Me.CreateGraphics()
@@ -265,6 +272,12 @@ Public Class FormLogin
     Private Shared Function SetForegroundWindow(hWnd As IntPtr) As Boolean
     End Function
 
+    Private Sub WARN_Timer_Tick(sender As Object, e As EventArgs)
+
+        PicWarn.Visible = Not PicWarn.Visible
+
+    End Sub
+
     Private Sub Debug_Tester_Tick(sender As Object, e As EventArgs)
 
         If Not Sys_Chk_Login.HasDebugger Then
@@ -273,13 +286,31 @@ Public Class FormLogin
 
         If Sys_Chk_Login.HasDebugger And Not Sys_Chk_Login.HasDebugger_Warned Then
             Sys_Chk_Login.HasDebugger_Warned = True
-            MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_dbg), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+
+            If Not Sys_Chk_Login.IsLinuxWine Then
+                MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_dbg), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+                PicWarn.Image = The_Shine_Visual_Filter2(My.Resources.Resource1.WARN_1)
+                WARN_Timer.Enabled = True
+            End If
+
         End If
 
         If Sys_Chk_Login.Found_Bad_MSFile And Not Sys_Chk_Login.Found_Bad_MSFile_Warned Then
             Sys_Chk_Login.Found_Bad_MSFile_Warned = True
-            MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_bwf), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+
+            If Not Sys_Chk_Login.IsLinuxWine Then
+                MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_bwf), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+                PicWarn.Image = The_Shine_Visual_Filter2(My.Resources.Resource1.WARN_1)
+                WARN_Timer.Enabled = True
+            End If
         End If
+
+        If Sys_Chk_Login.IsLinuxWine Then
+            PicWarn.Image = The_Shine_Visual_Filter2(My.Resources.Resource1.WARN_2)
+            If WorkMode = 0 Then WARN_Timer.Enabled = True
+            Debug_Tester.Enabled = False
+        End If
+
 
     End Sub
 
@@ -468,7 +499,7 @@ Public Class FormLogin
         '=====================================================================================
 
         Dim TheEncLib As New Encode_Libs
-        Dim Work_String, Work_Dir_String As String
+        Dim Work_Dir_String As String
         Dim Password_SHA256_x2() As Byte
         ReDim AES_IV_Start(15)
 
@@ -483,12 +514,10 @@ Public Class FormLogin
 
         Security.Cryptography.ProtectedMemory.Protect(This_Time_DIP, MemoryProtectionScope.SameProcess)
 
-        Work_String = TheEncLib.AES_Encrypt_Byte_Return_String(
-            SHA256_Worker.ComputeHash(Password_SHA256_x2), This_Time_Key, AES_IV_Start)
+        'Dim DirWorkByte() As Byte = TheEncLib.AES_Encrypt_Byte_Return_Byte_For_Enter(SHA256_Worker.ComputeHash(Password_SHA256_x2), This_Time_Key, AES_IV_Start)
+        'Work_Dir_String = Byte_to_x36(DirWorkByte)
 
-        Work_Dir_String = Decimal_to_x36(CX16STR_2_DEC(Work_String.Substring(0, 24)), False)
-        Work_Dir_String = Work_Dir_String + "-" + Decimal_to_x36(CX16STR_2_DEC(Work_String.Substring(24, 24)), False)
-        Work_Dir_String = Work_Dir_String + "-" + Decimal_to_x36(CX16STR_2_DEC(Work_String.Substring(48, 16)), False)
+        Work_Dir_String = TheEncLib.Get_Target_Dir(Password_SHA256_x2)
 
         WipeBytes(Password_SHA256_x2)
 
@@ -998,7 +1027,6 @@ Public Class FormLogin
     Dim B_OpenF As New Bitmap(My.Resources.Resource1.button_OpenF)
     Dim B_Final As New Bitmap(My.Resources.Resource1.button_Final)
     Dim B_Cancel As New Bitmap(My.Resources.Resource1.button_Cancel)
-
     Dim B_HELP As New Bitmap(My.Resources.Resource1.button_HELP)
     Dim B_genpwd As New Bitmap(My.Resources.Resource1.button_genpwd)
 
@@ -1046,6 +1074,17 @@ Public Class FormLogin
             Case "ButtonMIT"
                 ButtonMIT.Image = B_MIT
         End Select
+    End Sub
+
+    'fix WINE Compatible
+    Private Sub Mouse_Down(sender As Object, e As EventArgs) Handles _
+        ButtonOK.MouseDown, ButtonFileOpen.MouseDown, ButtonFin.MouseDown, ButtonCancel.MouseDown,
+        ButtonHAGP.MouseDown, ButtonCaps.MouseDown, ButtonViewPass.MouseDown, ButtonPFWS.MouseDown,
+        ButtonPFWS.MouseDown, ButtonRightArr2.MouseDown, ButtonRightArr.MouseDown, ButtonWinMin.MouseDown,
+        ButtonMIT.MouseDown
+
+        DirectCast(sender, Control).Capture = False
+
     End Sub
 
     Private Sub PicSelect_Paint(sender As Object, e As PaintEventArgs) Handles PicSelect.Paint

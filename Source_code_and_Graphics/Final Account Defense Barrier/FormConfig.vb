@@ -294,7 +294,6 @@ Public Class FormConfig
     Dim B_CAT_CSVIM_on As Bitmap = Make_Button_brighter(TwoBmpStack(B_CAT_CSVIM, B_CAT_on))
     Dim B_CAT_CSVEX_on As Bitmap = Make_Button_brighter(TwoBmpStack(B_CAT_CSVEX, B_CAT_on))
 
-
     Private Sub Mouse_Enter(sender As Object, e As EventArgs) Handles ButtonOK.MouseEnter,
         ButtonCancel.MouseEnter, ButtonDelCat.MouseEnter, ButtonTransFullCat.MouseEnter,
         ButtonCSVIM.MouseEnter, ButtonCSVEx.MouseEnter
@@ -313,6 +312,15 @@ Public Class FormConfig
             Case "ButtonCSVEx"
                 ButtonCSVEx.Image = B_CAT_CSVEX_on
         End Select
+
+    End Sub
+
+    'fix WINE Compatible
+    Private Sub Mouse_Down(sender As Object, e As EventArgs) Handles ButtonOK.MouseDown,
+        ButtonCancel.MouseDown, ButtonDelCat.MouseDown, ButtonTransFullCat.MouseDown,
+        ButtonCSVIM.MouseDown, ButtonCSVEx.MouseDown
+
+        DirectCast(sender, Control).Capture = False
 
     End Sub
 

@@ -2,10 +2,11 @@
 'Copyright (c) 2023 overdoingism Labs.
 'https://github.com/overdoignism/Final-Account-Defense-Barrier
 
+Imports System.IO
+Imports System.Numerics
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
 Imports System.Text
-Imports System.IO
 
 <System.Security.SecurityCritical>
 Public Class SmallSecurtiyWorkers : Implements IDisposable
@@ -140,7 +141,6 @@ Public Class SmallSecurtiyWorkers : Implements IDisposable
         End If
 
     End Function
-
 
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
@@ -289,7 +289,6 @@ Public Class FAST_KDF : Implements IDisposable
 
     End Sub
 
-
     Public Sub KDF_MAGIcrypt(ByRef Input_Array() As Byte, ByRef Prograss As Integer,
                               ByRef FullBuck() As Byte, ThreadIDX As Integer,
                               ByRef ErrCode As Integer, SeLockMP As Boolean)
@@ -395,7 +394,6 @@ Public Class FAST_KDF : Implements IDisposable
 
     End Sub
 
-
     Private Sub Wash_TableV2(WhatSeed As Integer, ByRef AdderTable1() As Integer,
                              ByRef AdderTable2() As Integer, ByRef AdderTable3() As Integer)
 
@@ -492,17 +490,75 @@ Public Class Encode_Libs : Implements IDisposable
 
     Private disposedValue As Boolean
 
-    Public Overloads Function AES_Encrypt_String_Return_String(ByRef Input_String As String, ByRef AES_Key() As Byte, ByRef AES_IV() As Byte) As String
 
-        Get_The_IV_By_SHA512(Input_String, AES_IV)
-        AES_Encrypt_String_Return_String = AES_Encrypt_Byte_Return_String(Encoding.GetEncoding("UTF-8").GetBytes(Input_String), AES_Key, AES_IV)
+    Public Function Get_Target_Dir(ByRef InByte() As Byte) As String
+
+        Dim SHA512_Worker As New Security.Cryptography.SHA512CryptoServiceProvider
+        Dim TmpBytes64(63) As Byte
+
+        TmpBytes64 = SHA512_Worker.ComputeHash(InByte)
+
+        For IDX As Integer = 0 To 63
+            TmpBytes64 = SHA512_Worker.ComputeHash(TmpBytes64)
+        Next
+
+        Dim TmpBytes32(31) As Byte
+
+        Using hmac As New HMACSHA256(TmpBytes64)
+            TmpBytes32 = hmac.ComputeHash(Encoding.UTF8.GetBytes("Path-Derivation-Index"))
+        End Using
+
+        Dim x38Str() As Char = {"0"c, "1"c, "2"c, "3"c, "4"c, "5"c, "6"c, "7"c, "8"c, "9"c, "A"c, "B"c, "C"c,
+        "D"c, "E"c, "F"c, "G"c, "H"c, "I"c, "J"c, "K"c, "L"c, "M"c, "N"c, "O"c, "P"c, "Q"c, "R"c, "S"c, "T"c, "U"c,
+        "V"c, "W"c, "X"c, "Y"c, "Z"c, "-"c, "_"c}
+
+        Dim FinalStr As String = ""
+        Dim TmpRemainder1 As BigInteger = 0
+        Dim Remainder As BigInteger = 0
+
+        For IDX01 As Integer = 0 To 31
+            TmpRemainder1 = (TmpRemainder1 * 256) + TmpBytes32(IDX01)
+        Next
+
+        Do
+            TmpRemainder1 = BigInteger.DivRem(TmpRemainder1, 38, Remainder)
+            If CInt(Remainder) < 0 Then Exit Do
+            FinalStr = x38Str(Remainder) + FinalStr
+        Loop While TmpRemainder1 > 0
+
+        FinalStr = FinalStr.PadLeft(49, "0"c)
+
+        Return FinalStr
+
 
     End Function
 
-    Public Function AES_Encrypt_Byte_Return_String(ByRef Input_byte() As Byte, ByRef AES_Key() As Byte, ByRef AES_IV() As Byte) As String
+
+    Public Function AES_Encrypt_Str_Rtn_Str_with_16rnd(ByRef Input_String As String, ByRef AES_Key() As Byte, ByRef AES_IV() As Byte) As String
 
         Try
 
+            Dim Orginial_str_Byte() As Byte = Encoding.GetEncoding("UTF-8").GetBytes(Input_String)
+
+            'Phase 1 Get first 16 Bytes Randomization
+            Dim work_buffer(Orginial_str_Byte.Length + 15) As Byte
+            Using rng As RandomNumberGenerator = RandomNumberGenerator.Create()
+                rng.GetBytes(work_buffer, 0, 16)
+            End Using
+            Array.Copy(Orginial_str_Byte, 0, work_buffer, 16, Orginial_str_Byte.Length)
+            WipeBytes(Orginial_str_Byte)
+
+            'Phase 2 Get IV
+            Dim SHA512_Worker As New Security.Cryptography.SHA512CryptoServiceProvider
+            Dim WorkBytes512b() As Byte = SHA512_Worker.ComputeHash(work_buffer)
+            For IDX01 As Integer = 0 To 63 'no need be 254
+                WorkBytes512b = SHA512_Worker.ComputeHash(WorkBytes512b)
+            Next
+            Buffer.BlockCopy(WorkBytes512b, 0, AES_IV, 0, 16)
+            SHA512_Worker.Dispose()
+            WipeBytes(WorkBytes512b)
+
+            'Phase 3 encryption
             Dim AES_KEY_TmpWorker() As Byte = AES_Key.Clone
             Dim AES As New RijndaelManaged()
 
@@ -520,7 +576,7 @@ Public Class Encode_Libs : Implements IDisposable
 
             Dim stream1 As New MemoryStream()
             Dim stream2 As New CryptoStream(stream1, AES.CreateEncryptor(), CryptoStreamMode.Write)
-            stream2.Write(Input_byte, 0, Input_byte.Length)
+            stream2.Write(work_buffer, 0, work_buffer.Length)
             stream2.FlushFinalBlock()
 
             Dim ReturnString As String = ByteIn_StringOut(stream1.ToArray)
@@ -533,6 +589,10 @@ Public Class Encode_Libs : Implements IDisposable
             stream2.Dispose()
             AES.Dispose()
 
+            'Phase 4 wipeout
+            WipeBytes(work_buffer)
+
+
             Return ReturnString
 
         Catch Exception_Name As Exception
@@ -543,7 +603,8 @@ Public Class Encode_Libs : Implements IDisposable
         End Try
     End Function
 
-    Public Function AES_Decrypt_Str_Return_Bytes(ByRef Input_string As String, ByRef AES_Key() As Byte, ByRef AES_IV() As Byte) As Byte()
+    Public Function AES_Decrypt_Str_Return_Bytes_Cut_16_Head _
+        (ByRef Input_string As String, ByRef AES_Key() As Byte, ByRef AES_IV() As Byte) As Byte()
 
         Try
 
@@ -572,7 +633,7 @@ Public Class Encode_Libs : Implements IDisposable
             stream2.Write(buffer, 0, buffer.Length)
             stream2.FlushFinalBlock()
 
-            AES_Decrypt_Str_Return_Bytes = stream1.ToArray()
+            AES_Decrypt_Str_Return_Bytes_Cut_16_Head = stream1.GetBuffer().Skip(16).Take(stream1.Length - 16).ToArray()
 
             ClearMS(stream1)
             stream2.Clear()
@@ -611,32 +672,13 @@ Public Class Encode_Libs : Implements IDisposable
 
     End Function
 
-    Private Sub Get_The_IV_By_SHA512(ByRef inputStr As String, ByRef InByte() As Byte)
-
-        Dim SHA512_Worker As New Security.Cryptography.SHA512CryptoServiceProvider
-        Dim inputStr_ToByte() As Byte = Encoding.UTF8.GetBytes(inputStr)
-
-        Dim WorkBytes512b() As Byte = inputStr_ToByte
-
-        For IDX01 As Integer = 0 To inputStr_ToByte.Length - 1
-            inputStr_ToByte(IDX01) = 0
-        Next
-
-        For IDX01 As Integer = 0 To 255
-            WorkBytes512b = SHA512_Worker.ComputeHash(WorkBytes512b)
-        Next
-
-        Buffer.BlockCopy(WorkBytes512b, 0, InByte, 0, 16)
-        SHA512_Worker.Dispose()
-
-    End Sub
 
     'The Old way
-    Public Sub Get_The_IV_By_RND(ByRef TheIV() As Byte)
-        Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
-        rng.GetBytes(TheIV)
-        rng.Dispose()
-    End Sub
+    'Public Sub Get_The_IV_By_RND(ByRef TheIV() As Byte)
+    '    Dim rng As RandomNumberGenerator = RandomNumberGenerator.Create()
+    '    rng.GetBytes(TheIV)
+    '    rng.Dispose()
+    'End Sub
 
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
@@ -700,3 +742,4 @@ Module Am_I_Writing_C
     End Function
 
 End Module
+

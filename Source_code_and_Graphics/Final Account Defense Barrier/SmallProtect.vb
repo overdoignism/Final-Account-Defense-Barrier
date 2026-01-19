@@ -17,6 +17,7 @@ Public Class SmallProtect
         HideFromDebugger()
         ProcessPriorityUp()
         Sys_Chk.HasDebugger = Not TestParentProc()
+        Sys_Chk.IsLinuxWine = WineDetector.IsRunningOnWine
 
         Dim osVersion As OperatingSystem = Environment.OSVersion
         Sys_Chk.OS_ver = (Environment.OSVersion.Version.Major * 10) + osVersion.Version.Minor
@@ -31,7 +32,7 @@ Public Class SmallProtect
 
         SeLock()
         WER_Dis(Sys_Chk.Running_Admin)
-        IsDebugged()
+        Sys_Chk.HasDebugger = IsDebugged()
 
         Dim Arguments() As String = Environment.GetCommandLineArgs()
         For Each ArgStr As String In Arguments
@@ -59,6 +60,7 @@ Public Class SmallProtect
             Me.Close()
 
         End If
+
 
     End Sub
 

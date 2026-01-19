@@ -427,6 +427,8 @@
     <None Include="AllResource\KDFS-Types.png" />
     <None Include="AllResource\button_CAT_on.png" />
     <None Include="AllResource\CBOX_AR.png" />
+    <Content Include="AllResource\WARN_1.png" />
+    <Content Include="AllResource\WARN_2.png" />
     <Content Include="fadb4.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

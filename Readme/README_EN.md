@@ -18,9 +18,9 @@
 
 ## Operation Guide
 
-### For Users Upgrading from v1.3
+### For users upgrading from v2.0 or earlier to v3.0
 
-*   When logging in, select the Legacy KDF. After login, it's recommended to transfer to MAGI-Crypt.
+*   v3.0 is not compatible with previous data. Please migrate via CSV export/import (ensure a secure environment; offline operation is recommended).
 *   If you wish to use non-admin permissions, run the included No_Admin.bat file and modify it as needed.
 
 ### Getting Started

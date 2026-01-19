@@ -3,6 +3,7 @@
 'https://github.com/overdoignism/Final-Account-Defense-Barrier
 
 
+Imports System.Numerics
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
 
@@ -24,7 +25,6 @@ Module CommonModule
     Public ACTLimit As Integer
     Public ACTLimitSelectIDX As Integer
     Public ACTLimitSelect() As Integer = {0, 30, 60, 180, 300, 600, 1800}
-
 
     'Const
     Public Const INDTstr As String = "AccountMan"
@@ -52,38 +52,39 @@ Module CommonModule
         "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "-", "=",
         "[", "]", ";", "'", "<", ">", "/"}
 
-
     Public CoinList() As String = {"-", "BTC", "TRX", "Doge", "LTC", "ETH", "BTC"}
 
-    Public Function CX16STR_2_DEC(ByRef InputStr As String) As Decimal
 
-        Dim TmpDecimal As Decimal = 0
-        For IDX01 As Integer = 0 To InputStr.Length - 1
-            TmpDecimal = (TmpDecimal * 16) + Convert.ToDecimal(Convert.ToInt32(InputStr.Substring(IDX01, 1), 16))
-        Next
-        Return TmpDecimal
+    ' Fixed by Gemini 3 for Wine
+    Public Function BigInt_to_x36(InVal As BigInteger, AsFileName As Boolean) As String
 
-    End Function
-
-    Public Function Decimal_to_x36(InVal As Decimal, AsFileName As Boolean) As String
-
-        Dim x36Str() As Char = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C",
-        "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
-        "V", "W", "X", "Y", "Z"}
+        Dim x36Str() As Char = {"0"c, "1"c, "2"c, "3"c, "4"c, "5"c, "6"c, "7"c, "8"c, "9"c, "A"c, "B"c, "C"c,
+        "D"c, "E"c, "F"c, "G"c, "H"c, "I"c, "J"c, "K"c, "L"c, "M"c, "N"c, "O"c, "P"c, "Q"c, "R"c, "S"c, "T"c, "U"c,
+        "V"c, "W"c, "X"c, "Y"c, "Z"c}
 
         Dim OutputStr As String = ""
-        Dim Tmp1, Tmp2 As Decimal
+        Dim Tmp1 As Integer
+        Dim Tmp2 As BigInteger = InVal ' 使用 BigInteger
+        Dim Remainder As BigInteger = 0
 
-        Tmp2 = InVal
+        ' 如果是 0 的情況
+        If Tmp2 <= 0 Then
+            Return If(AsFileName, "0".PadLeft(13, "0"c), "0")
+        End If
 
         Do
-            Tmp1 = Tmp2 Mod 36
-            Tmp2 = (Tmp2 - Tmp1) / 36
-            OutputStr = x36Str(Tmp1) + OutputStr
+            ' BigInteger.DivRem 同時算出商數(Tmp2)與餘數(Remainder)
+            ' 這比手寫 Mod 和 / 更快且原子化操作
+            Tmp2 = BigInteger.DivRem(Tmp2, 36, Remainder)
+
+            ' 將餘數轉為 Int32 (因為餘數絕對是 0-35，所以這行絕對安全)
+            Tmp1 = CInt(Remainder)
+
+            OutputStr = x36Str(Tmp1) & OutputStr
         Loop While Tmp2 > 0
 
         If AsFileName Then
-            Return OutputStr.PadLeft(13, "0")
+            Return OutputStr.PadLeft(13, "0"c)
         Else
             Return OutputStr
         End If

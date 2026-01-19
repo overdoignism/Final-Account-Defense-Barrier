@@ -102,6 +102,16 @@ Public Class MSGBOXXX
                 ButtonNo.Image = B_no
         End Select
     End Sub
+
+    'fix WINE Compatible
+    Private Sub Mouse_Down(sender As Object, e As EventArgs) Handles _
+        ButtonOK.MouseDown, ButtonCancel.MouseDown, ButtonYes.MouseDown,
+        ButtonNo.MouseDown
+
+        DirectCast(sender, Control).Capture = False
+
+    End Sub
+
 End Class
 
 Module MSGBOXXX_Work

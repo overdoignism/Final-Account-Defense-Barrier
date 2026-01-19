@@ -274,7 +274,6 @@ Public Class FormMain
         FileSystemWatcher1.InternalBufferSize = 64 * 1024
         FileSystemWatcher1.EnableRaisingEvents = True
 
-
         'ListBoxAccounts.DrawMode = DrawMode.OwnerDrawFixed
 
     End Sub
@@ -289,12 +288,16 @@ Public Class FormMain
 
         If Sys_Chk.HasDebugger And Not Sys_Chk.HasDebugger_Warned Then
             Sys_Chk.HasDebugger_Warned = True
-            MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_dbg), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+            If Not Sys_Chk.IsLinuxWine Then
+                MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_dbg), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+            End If
         End If
 
         If Sys_Chk.Found_Bad_MSFile And Not Sys_Chk.Found_Bad_MSFile_Warned Then
             Sys_Chk.Found_Bad_MSFile_Warned = True
-            MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_bwf), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+            If Not Sys_Chk.IsLinuxWine Then
+                MSGBOXNEW(LangStrs(LIdx, UsingTxt.OT_bwf), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Cri), Me, PictureGray)
+            End If
         End If
 
         Dim Risk_Index As Integer = Get_Risk_Index()
@@ -618,7 +621,7 @@ Public Class FormMain
                         TheEncLib.StringIn_ByteOut(AccountDatas(1), AES_IV_USE)
 
                         Dim WorkStr1 As String = System.Text.Encoding.UTF8.
-                             GetString(TheEncLib.AES_Decrypt_Str_Return_Bytes(AccountDatas(0), AES_KEY_Protected, AES_IV_USE))
+                             GetString(TheEncLib.AES_Decrypt_Str_Return_Bytes_Cut_16_Head(AccountDatas(0), AES_KEY_Protected, AES_IV_USE))
 
                         TheEncLib.Dispose()
 
@@ -728,7 +731,7 @@ Public Class FormMain
 
                     TMPstr0 = TextBoxTitle.Text + vbCr + Random_Strs(30, 50, 1) + vbCr + INDTstr
 
-                    TMPstr0 = TheEncLib.AES_Encrypt_String_Return_String(TMPstr0, PKey, AES_IV_Use) +
+                    TMPstr0 = TheEncLib.AES_Encrypt_Str_Rtn_Str_with_16rnd(TMPstr0, PKey, AES_IV_Use) +
                         "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
 
                 Else
@@ -748,7 +751,7 @@ Public Class FormMain
                     vbCr + Random_Strs(30, 50, 1) + vbCr + TextBoxNote1.Text + vbCr + TextBoxRegMailPhone.Text +
                     vbCr + TextBoxNote2Hid.Text + vbCr + TextBox_BHKMHelper.Text
 
-                    TMPstr1 = TheEncLib.AES_Encrypt_String_Return_String(TMPstr1, PKey, AES_IV_Use) +
+                    TMPstr1 = TheEncLib.AES_Encrypt_Str_Rtn_Str_with_16rnd(TMPstr1, PKey, AES_IV_Use) +
                         "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
 
                 Else
@@ -773,7 +776,7 @@ Public Class FormMain
                     Dim D02_IDX As Long = Get_RangeRnd_ByRNG(50, 100) - (PwdLength * Get_RangeRnd_ByRNG(2, 5))
                     If D02_IDX < 30 Then D02_IDX = Get_RangeRnd_ByRNG(50, 100)
 
-                    TMPstr2 = TheEncLib.AES_Encrypt_String_Return_String(Random_Strs(D01_IDX, D01_IDX, 1) + vbCr +
+                    TMPstr2 = TheEncLib.AES_Encrypt_Str_Rtn_Str_with_16rnd(Random_Strs(D01_IDX, D01_IDX, 1) + vbCr +
                         SD.TextBoxPWDStr.Text + vbCr + Random_Strs(D02_IDX, D02_IDX, 1), PKey, AES_IV_Use) +
                         "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
 
@@ -851,7 +854,7 @@ Public Class FormMain
                         Dim TmpWorkStr() As String
 
                         TheEncLib.StringIn_ByteOut(TitleDatas(1), AES_IV_USE)
-                        WorkByte = TheEncLib.AES_Decrypt_Str_Return_Bytes(TitleDatas(0), AES_KEY_Protected, AES_IV_USE)
+                        WorkByte = TheEncLib.AES_Decrypt_Str_Return_Bytes_Cut_16_Head(TitleDatas(0), AES_KEY_Protected, AES_IV_USE)
                         TmpWorkStr = System.Text.Encoding.UTF8.GetString(WorkByte).Split(vbCr)
                         FilesList1(IDX01).ShowName = TmpWorkStr(0)
 
@@ -1000,10 +1003,23 @@ Public Class FormMain
 
     End Sub
 
+    'Private Function Get_New_ACC_Filename(ByRef The_path As String) As String
+
+    '    Return The_path + "\" + Decimal_to_x36(Now.Ticks - New DateTime(2001, 1, 1).Ticks, True).ToString + ".ACC"
+
+    'End Function
+
     Private Function Get_New_ACC_Filename(ByRef The_path As String) As String
+        ' 1. 計算出 Ticks 差值（結果是 Long/Int64）
+        Dim ticksDiff As Long = Now.Ticks - New DateTime(2001, 1, 1).Ticks
 
-        Return The_path + "\" + Decimal_to_x36(Now.Ticks - New DateTime(2001, 1, 1).Ticks, True).ToString + ".ACC"
+        ' 2. 將 Long 轉換為 BigInteger 並傳入新函數
+        ' BigInteger 可以直接從 Long 隱式或顯式轉換
+        Dim bigTicks As System.Numerics.BigInteger = New System.Numerics.BigInteger(ticksDiff)
 
+        ' 3. 組合成路徑
+        ' 注意：Linux 環境路徑分隔符號建議用 / 或 Path.Combine，但 Wine 通常能處理 \
+        Return System.IO.Path.Combine(The_path, BigInt_to_x36(bigTicks, True) & ".ACC")
     End Function
 
     Private Sub Full_Catalog_Delete()
@@ -1538,7 +1554,7 @@ Public Class FormMain
             Dim TheEncLib As New Encode_Libs
             Dim AES_IV_Use(15) As Byte
 
-            TmpWork = TheEncLib.AES_Encrypt_String_Return_String(TmpWork, AES_KEY_Protected, AES_IV_Use) +
+            TmpWork = TheEncLib.AES_Encrypt_Str_Rtn_Str_with_16rnd(TmpWork, AES_KEY_Protected, AES_IV_Use) +
                 "," + TheEncLib.ByteIn_StringOut(AES_IV_Use)
 
             IOWer1.WriteLine(TmpWork)
@@ -1591,7 +1607,7 @@ Public Class FormMain
                         TheEncLib.StringIn_ByteOut(WorkStr(1), AES_IV_USE)
 
                         TmpWorkStr = System.Text.Encoding.UTF8.
-                            GetString(TheEncLib.AES_Decrypt_Str_Return_Bytes(WorkStr(0), AES_KEY_Protected, AES_IV_USE))
+                            GetString(TheEncLib.AES_Decrypt_Str_Return_Bytes_Cut_16_Head(WorkStr(0), AES_KEY_Protected, AES_IV_USE))
 
                         TmpWorkStr2 = TmpWorkStr.Split(vbCr)
 
@@ -2051,6 +2067,12 @@ Public Class FormMain
     End Sub
 
     Private Sub ButtonSystemCheck_Click(sender As Object, e As EventArgs) Handles ButtonSecCheck.Click
+
+        If Sys_Chk.IsLinuxWine Then
+            MSGBOXNEW(LangStrs(LIdx, UsingTxt.WINE_WARN), MsgBoxStyle.Critical, LangStrs(LIdx, UsingTxt.Ti_Err), Me, PictureGray)
+            Return
+        End If
+
 
         Dim ErrFlag As Boolean
 
@@ -2692,6 +2714,7 @@ Public Class FormMain
                 ButtonWinMin.Image = BTN_Win_Min_on
             Case "ButtonPwd"
                 ButtonPwd.Image = BTN_Pwd_on
+
         End Select
     End Sub
 
@@ -2739,6 +2762,7 @@ Public Class FormMain
             Case "ButtonPwd"
                 ButtonPwd.Image = BTN_Pwd
         End Select
+
     End Sub
 
     Dim LBTN_Save_En As New Bitmap(My.Resources.Resource1.button_L_save)
@@ -2767,6 +2791,7 @@ Public Class FormMain
         ButtonTransCatalog.MouseEnter, ButtonFileInfo.MouseEnter
 
         If sender.Enabled = True Then
+
             Select Case sender.Name
                 Case "ButtonSave"
                     ButtonSave.Image = LBTN_Save_on
@@ -2780,8 +2805,8 @@ Public Class FormMain
                     ButtonTransCatalog.Image = LBTN_transKEY_on
                 Case "ButtonFileInfo"
                     ButtonFileInfo.Image = LBTN_fileInfo_on
-
             End Select
+
         End If
 
     End Sub
@@ -2790,6 +2815,7 @@ Public Class FormMain
         ButtonSave.MouseLeave, ButtonDelete.MouseLeave, ButtonGoUP.MouseLeave, ButtonGoDown.MouseLeave,
         ButtonTransCatalog.MouseLeave, ButtonFileInfo.MouseLeave
 
+
         If sender.Enabled = True Then
 
             Select Case sender.Name
@@ -2797,23 +2823,36 @@ Public Class FormMain
                     ButtonSave.Image = LBTN_Save_En
                 Case "ButtonDelete"
                     ButtonDelete.Image = LBTN_Del_En
-                Case "ButtonGoUP"
-                    ButtonGoUP.Image = LBTN_MoveU_En
-                Case "ButtonGoDown"
-                    ButtonGoDown.Image = LBTN_MoveD_En
                 Case "ButtonTransCatalog"
                     ButtonTransCatalog.Image = LBTN_TKey_En
                 Case "ButtonFileInfo"
                     ButtonFileInfo.Image = LBTN_FInfo_En
                 Case "ButtonGoUP"
+                    ButtonGoUP.Image = LBTN_MoveU_En
                     B_GoUP_Holding = False
                     B_GoUP_Holding_InTimer = False
                 Case "ButtonGoDown"
+                    ButtonGoDown.Image = LBTN_MoveD_En
                     B_GoDN_Holding = False
                     B_GoDN_Holding_InTimer = False
             End Select
 
+
         End If
+
+    End Sub
+
+    'fix WINE Compatible
+    Private Sub Mouse_Down(sender As Object, e As EventArgs) Handles _
+        ButtonSave.MouseDown, ButtonDelete.MouseDown, ButtonGoUP.MouseDown, ButtonGoDown.MouseDown,
+        ButtonTransCatalog.MouseDown, ButtonFileInfo.MouseDown,
+        ButtonRestart.MouseDown, ButtonFin.MouseDown, ButtonHelp.MouseDown, ButtonLaunch.MouseDown,
+        ButtonCopyAccount.MouseDown, PictureBoxPwdVi.MouseDown, PictureBoxPwdCPY.MouseDown,
+        ButtonCopyReg.MouseDown, ButtonViewNote.MouseDown, PictureBoxCATMAN.MouseDown,
+        ButtonHotkeyMode.MouseDown, ButtonSecCheck.MouseDown, ButtonWinMin.MouseDown,
+        ButtonPwd.MouseDown
+
+        DirectCast(sender, Control).Capture = False
 
     End Sub
 

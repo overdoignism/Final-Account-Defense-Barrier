@@ -127,6 +127,7 @@ Partial Class FormMain
         Me.ListBoxAccounts.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ListBoxAccounts.ForeColor = System.Drawing.Color.FromArgb(CType(CType(126, Byte), Integer), CType(CType(237, Byte), Integer), CType(CType(176, Byte), Integer))
         Me.ListBoxAccounts.FormattingEnabled = True
+        Me.ListBoxAccounts.IntegralHeight = False
         Me.ListBoxAccounts.ItemHeight = 19
         Me.ListBoxAccounts.Items.AddRange(New Object() {""})
         Me.ListBoxAccounts.Location = New System.Drawing.Point(0, 0)

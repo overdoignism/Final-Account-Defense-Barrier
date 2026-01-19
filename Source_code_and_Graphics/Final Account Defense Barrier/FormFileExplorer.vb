@@ -465,6 +465,16 @@ Public Class FormFileExplorer
         End Select
     End Sub
 
+
+    'fix WINE Compatible
+    Private Sub Mouse_Down(sender As Object, e As EventArgs) Handles _
+       ButtonFileOpen.MouseDown, ButtonCancel.MouseDown
+
+        DirectCast(sender, Control).Capture = False
+
+    End Sub
+
+
     '=================== FileSystemWatcher
 
     Private Sub FileSystemWatcher1_Deleted(sender As Object, e As FileSystemEventArgs) Handles FileSystemWatcher1.Deleted

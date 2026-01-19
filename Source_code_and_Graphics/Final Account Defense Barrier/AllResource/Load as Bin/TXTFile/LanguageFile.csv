@@ -157,3 +157,4 @@ Unknown error.,不明なエラーです。,不確定因素的錯誤。
 ,,
 ,,
 The software is licensed under the MIT License.\nUse only with terms accepted.,本ソフトウェアはMITライセンスです。\n使用により、ライセンス条項に同意したものとみなします。,本軟體採用MIT授權條款。\n使用即表示您同意本條款的所有內容。
+Linux Wine environment detected.\n\nProtection is limited and cannot be evaluated.,Wine（Linux）環境を検出。\n\n保護は限定的で、点検不可。,偵測到 Linux Wine 環境。\n\n保護是有限的，且無法進行安全檢測。

@@ -170,6 +170,9 @@
         'MIT
         MIT_Tol = 159
 
+        'WINE
+        WINE_WARN = 160
+
 
     End Enum
 

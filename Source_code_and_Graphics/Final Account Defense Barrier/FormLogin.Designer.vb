@@ -43,6 +43,7 @@ Partial Class FormLogin
         Me.ButtonCaps = New System.Windows.Forms.PictureBox()
         Me.PictureBoxLogin = New System.Windows.Forms.PictureBox()
         Me.PictureGray = New System.Windows.Forms.PictureBox()
+        Me.PicWarn = New System.Windows.Forms.PictureBox()
         CType(Me.PicSelect, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PicLangLoad, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ButtonRightArr, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -61,6 +62,7 @@ Partial Class FormLogin
         CType(Me.ButtonCaps, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBoxLogin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PicWarn, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBoxPwd
@@ -302,6 +304,18 @@ Partial Class FormLogin
         Me.PictureGray.TabStop = False
         Me.PictureGray.Visible = False
         '
+        'PicWarn
+        '
+        Me.PicWarn.BackColor = System.Drawing.Color.Black
+        Me.PicWarn.Cursor = System.Windows.Forms.Cursors.Default
+        Me.PicWarn.Image = Global.Final_Account_Defense_Barrier.My.Resources.Resource1.WARN_1
+        Me.PicWarn.Location = New System.Drawing.Point(171, 40)
+        Me.PicWarn.Name = "PicWarn"
+        Me.PicWarn.Size = New System.Drawing.Size(139, 22)
+        Me.PicWarn.TabIndex = 132
+        Me.PicWarn.TabStop = False
+        Me.PicWarn.Visible = False
+        '
         'FormLogin
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -309,6 +323,7 @@ Partial Class FormLogin
         Me.BackColor = System.Drawing.Color.Lime
         Me.ClientSize = New System.Drawing.Size(535, 667)
         Me.ControlBox = False
+        Me.Controls.Add(Me.PicWarn)
         Me.Controls.Add(Me.PicSelect)
         Me.Controls.Add(Me.PicLangLoad)
         Me.Controls.Add(Me.ButtonRightArr)
@@ -358,6 +373,7 @@ Partial Class FormLogin
         CType(Me.ButtonCaps, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBoxLogin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureGray, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PicWarn, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -383,4 +399,5 @@ Partial Class FormLogin
     Friend WithEvents ButtonRightArr As PictureBox
     Friend WithEvents PicLangLoad As PictureBox
     Friend WithEvents PicSelect As PictureBox
+    Friend WithEvents PicWarn As PictureBox
 End Class
