@@ -23,6 +23,10 @@
 *   v3.0 is not compatible with previous data. Please migrate via CSV export/import (ensure a secure environment; offline operation is recommended).
 *   If you wish to use non-admin permissions, run the included No_Admin.bat file and modify it as needed.
 
+### For users upgrading from MAGI-Crypt v3.0 (or earlier) to MAGI-Crypt V2 in v3.1
+
+* The MAGI-Crypt V2 algorithm has been upgraded. Please use CSV export/import to migrate your data (mind your environment's security — disconnecting from the network is recommended).
+
 ### Getting Started
 
 *   Place this program in a prepared folder.
@@ -100,9 +104,9 @@
 ### New KDF Algorithm: MAGI-Crypt (For more details, please read [Introduction to MAGI-Crypt](MAGIC.md)(zh-TW only))
 
 * A new KDF algorithm, "MAGI-Crypt" (Memory-hard Algorithm Guard Improve), was introduced in version 2.0.
-* Enhanced from 2 million SHA-256 hashes to 8 million SHA-512 hashes.
-* Adds "memory-hard" resistance to brute-force attacks, requiring 256MB memory allocation during KDF with substantial random, unaligned read/write operations.
-* Execution speed is nearly unchanged compared to the previous KDF version (using 4 or more CPU cores).
+* Enhanced from 2 million SHA-256 hashes to 14 million SHA-512 hashes.
+* Adds "memory-hard" resistance to brute-force attacks, requiring > 64MB memory allocation during KDF with substantial random, unaligned read/write operations.
+* Note: MAGI-Crypt is upgraded to V2 in version 3.1. Please use CSV export/import to migrate your data.
 
 ### A.T. Field Protection Mode (Administrator Task Field)(Note 1)
 

@@ -1,6 +1,6 @@
-## Final Account Defense Barrier 最終アカウント防御障壁 V3.0
+## Final Account Defense Barrier 最終アカウント防御障壁 V3.1
 
-v3.0.9516.726
+v3.1.9739.3565
 
 (繁中) 一個福音戰士風格的帳號密碼管理程式，基於Windows平台。  
 (English) An Evangelion style account management program, based on the Windows platform.  
@@ -19,9 +19,9 @@ v3.0.9516.726
 
 ---
 
-★ 3.0 與舊版的資料不相容，請用 CSV 輸出／輸入來進行轉換。詳細請見下方說明文件。  
-★ 3.0 is not compatible with previous data. Please migrate via CSV export/import. Please refer to the Help Document.  
-★ 3.0 は旧バージョンとデータ互換性がありません。CSV の輸出／輸入で移行してください。詳細は下記のヘルプ文書をご参照ください。
+★ 3.1 與舊版的資料不相容，請用 CSV 輸出／輸入來進行轉換。詳細請見下方說明文件。  
+★ 3.1 is not compatible with previous data. Please migrate via CSV export/import. Please refer to the Help Document.  
+★ 3.1 は旧バージョンとデータ互換性がありません。CSV の輸出／輸入で移行してください。詳細は下記のヘルプ文書をご参照ください。
 
 ---
 

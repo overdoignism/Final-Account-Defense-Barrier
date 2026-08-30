@@ -7,6 +7,7 @@ Imports System.Numerics
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
 Imports System.Text
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
 <System.Security.SecurityCritical>
 Public Class SmallSecurtiyWorkers : Implements IDisposable
@@ -100,7 +101,7 @@ Public Class SmallSecurtiyWorkers : Implements IDisposable
 
     End Function
 
-    Public Function EvaPwdStrong(ByRef InTextbox As TextBox) As Color
+    Public Function EvaPwdStrong(ByRef InTextbox As System.Windows.Forms.TextBox) As Color
 
         Dim Score As Integer = 0
         Dim SNum As Boolean = False
@@ -320,9 +321,9 @@ Public Class FAST_KDF : Implements IDisposable
                 If TmpErrCode = 0 Then ErrCode = 4
             End If
 
-            Dim AddrTable1(0) As Integer
-            Dim AddrTable2(0) As Integer
-            Dim AddrTable3(0) As Integer
+            Dim AddrTable1(WorkTimesRound - 1) As Integer
+            Dim AddrTable2(WorkTimesRound - 1) As Integer
+            Dim AddrTable3(WorkTimesRound - 1) As Integer
 
             Dim TmpWork As Integer
 
@@ -332,14 +333,14 @@ Public Class FAST_KDF : Implements IDisposable
                     Marshal.Copy(work_byte64, 0, pMemory + AddrTableOrg(TmpWork + LoopLeveL2), 64)
                     HashWithBCryptSHA512(work_byte64, 64, work_byte64, ThreadIDX)
                 Next
-                PrograssSng += 0.0244140625 ' = (50*0.5)/1024  
+                PrograssSng += 0.0122070313F ' = (25*0.5)/1024  
                 Prograss = Convert.ToInt32(PrograssSng)
             Next
 
-            For LoopLeveL1 As Integer = 1 To 32 ' 32*WorkTimesRound = TotalLength/64
+            For LoopLeveL1 As Integer = 1 To 64 ' 32*WorkTimesRound = TotalLength/64
 
                 AddrTableIdx = 0
-                Wash_TableV2(BitConverter.ToInt32(work_byte64, 0), AddrTable1, AddrTable2, AddrTable3)
+                Wash_TableV3(work_byte64, AddrTable1, AddrTable2, AddrTable3, ThreadIDX)
 
                 For LoopLeveL2 As Integer = 0 To WorkTimesRound - 1
                     Marshal.Copy(pMemory + AddrTable1(AddrTableIdx), work_byte128, 0, 64)
@@ -349,7 +350,7 @@ Public Class FAST_KDF : Implements IDisposable
                     AddrTableIdx += 1
                 Next
 
-                PrograssSng += 0.78125 ' = (50*0.5)/32
+                PrograssSng += 0.5859375F ' = (75*0.5)/64  '0.78125
                 Prograss = Convert.ToInt32(PrograssSng)
 
             Next
@@ -394,47 +395,67 @@ Public Class FAST_KDF : Implements IDisposable
 
     End Sub
 
-    Private Sub Wash_TableV2(WhatSeed As Integer, ByRef AdderTable1() As Integer,
-                             ByRef AdderTable2() As Integer, ByRef AdderTable3() As Integer)
+    Private Sub Wash_TableV3(ByRef ByteAsSeed() As Byte, ByRef AdderTable1() As Integer,
+                             ByRef AdderTable2() As Integer, ByRef AdderTable3() As Integer, ThreadIDX As Integer)
 
-        ReDim AdderTable1(WorkTimesRound - 1)
-        ReDim AdderTable2(WorkTimesRound - 1)
-        ReDim AdderTable3(WorkTimesRound - 1)
+        Dim ByteAsSeedTmp(63) As Byte
+        Dim WorkableUpper As UInteger = LengthPerThread - 64 + 1
 
-        Dim WorkableUpper As Integer = LengthPerThread - 64 + 1
+        HashWithBCryptSHA512(ByteAsSeed, 64, ByteAsSeedTmp, ThreadIDX)
 
-        Dim GRnd As New Random(WhatSeed)
+        For IDX02 As Integer = 0 To WorkTimesRound - 1 Step 4
 
-        For IDX02 As Integer = 0 To WorkTimesRound - 1
-            AdderTable1(IDX02) = GRnd.Next(0, WorkableUpper)
-            AdderTable2(IDX02) = GRnd.Next(0, WorkableUpper)
+            HashWithBCryptSHA512(ByteAsSeedTmp, 64, ByteAsSeedTmp, ThreadIDX)
 
-            If GRnd.Next(0, 2) = 0 Then
+            AdderTable1(IDX02) = CInt(BitConverter.ToUInt32(ByteAsSeedTmp, 0) Mod WorkableUpper)
+            AdderTable2(IDX02) = CInt(BitConverter.ToUInt32(ByteAsSeedTmp, 4) Mod WorkableUpper)
+
+            If (ByteAsSeedTmp(63) Xor ByteAsSeedTmp(62)) Mod 2 = 0 Then
                 AdderTable3(IDX02) = AdderTable1(IDX02)
             Else
                 AdderTable3(IDX02) = AdderTable2(IDX02)
             End If
 
+            AdderTable1(IDX02 + 1) = CInt(BitConverter.ToUInt32(ByteAsSeedTmp, 8) Mod WorkableUpper)
+            AdderTable2(IDX02 + 1) = CInt(BitConverter.ToUInt32(ByteAsSeedTmp, 12) Mod WorkableUpper)
+
+            If (ByteAsSeedTmp(61) Xor ByteAsSeedTmp(60)) Mod 2 = 0 Then
+                AdderTable3(IDX02 + 1) = AdderTable1(IDX02 + 1)
+            Else
+                AdderTable3(IDX02 + 1) = AdderTable2(IDX02 + 1)
+            End If
+
+            AdderTable1(IDX02 + 2) = CInt(BitConverter.ToUInt32(ByteAsSeedTmp, 16) Mod WorkableUpper)
+            AdderTable2(IDX02 + 2) = CInt(BitConverter.ToUInt32(ByteAsSeedTmp, 20) Mod WorkableUpper)
+
+            If (ByteAsSeedTmp(59) Xor ByteAsSeedTmp(58)) Mod 2 = 0 Then
+                AdderTable3(IDX02 + 2) = AdderTable1(IDX02 + 2)
+            Else
+                AdderTable3(IDX02 + 2) = AdderTable2(IDX02 + 2)
+            End If
+
+            AdderTable1(IDX02 + 3) = CInt(BitConverter.ToUInt32(ByteAsSeedTmp, 24) Mod WorkableUpper)
+            AdderTable2(IDX02 + 3) = CInt(BitConverter.ToUInt32(ByteAsSeedTmp, 28) Mod WorkableUpper)
+
+            If (ByteAsSeedTmp(57) Xor ByteAsSeedTmp(56)) Mod 2 = 0 Then
+                AdderTable3(IDX02 + 3) = AdderTable1(IDX02 + 3)
+            Else
+                AdderTable3(IDX02 + 3) = AdderTable2(IDX02 + 3)
+            End If
+
         Next
+
+        WipeBytes(ByteAsSeedTmp)
 
     End Sub
 
     Public Function Finish_MAGIC_KDF(ByRef LargeBytes() As Byte) As Byte()
 
-        Dim SHA512_Worker As New Security.Cryptography.SHA512CryptoServiceProvider
         Dim SHA256_Worker As New Security.Cryptography.SHA256CryptoServiceProvider
-
-        Dim TmpBytes64(63) As Byte
-
-        Array.Copy(LargeBytes, 0, TmpBytes64, 0, 32)
-        Array.Copy(LargeBytes, LargeBytes.Length - 32, TmpBytes64, 32, 32)
-
-        TmpBytes64 = SHA512_Worker.ComputeHash(TmpBytes64)
-
-        Array.Copy(TmpBytes64, 0, LargeBytes, 0, 32)
-        Array.Copy(TmpBytes64, 32, LargeBytes, LargeBytes.Length - 32, 32)
-
-        Return SHA256_Worker.ComputeHash(TmpBytes64)
+        Dim TmpBytes32() As Byte = SHA256_Worker.ComputeHash(LargeBytes)
+        SHA256_Worker.Dispose()
+        WipeBytes(LargeBytes)
+        Return TmpBytes32
 
     End Function
 
